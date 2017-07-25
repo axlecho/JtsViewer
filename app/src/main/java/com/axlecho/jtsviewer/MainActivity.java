@@ -1,8 +1,8 @@
 package com.axlecho.jtsviewer;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.KeyEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -16,14 +16,18 @@ import android.view.MenuItem;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
-import com.axlecho.jtsviewer.network.Conf;
+import com.axlecho.jtsviewer.network.JtsConf;
 import com.axlecho.jtsviewer.network.JtsCookieManager;
+import com.axlecho.jtsviewer.network.JtsServerApi;
 import com.axlecho.jtsviewer.network.webview.MainWebViewClient;
+import com.axlecho.jtsviewer.network.webview.MainWebViewListener;
+import com.axlecho.jtsviewer.untils.JtsViewerLog;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
-
+        implements NavigationView.OnNavigationItemSelectedListener, MainWebViewListener {
+    private String TAG = MainActivity.class.getSimpleName();
     private WebView mMainWebView;
+    private FloatingActionButton mFab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,14 +36,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        mFab = (FloatingActionButton) findViewById(R.id.fab);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -51,12 +48,14 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         mMainWebView = (WebView) findViewById(R.id.main_content_webview);
-        JtsCookieManager.setCookie(mMainWebView,Conf.HOST);
-        mMainWebView.loadUrl(Conf.HOST);
-        mMainWebView.setWebViewClient(new MainWebViewClient(this));
+        JtsCookieManager.getInstance(this).setCookie(mMainWebView, JtsConf.HOST_URL);
+        mMainWebView.loadUrl(JtsConf.HOST_URL);
+        mMainWebView.setWebViewClient(new MainWebViewClient(this, this));
 
         WebSettings webSettings = mMainWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
+
+        JtsServerApi.checkLogin();
     }
 
     @Override
@@ -124,5 +123,29 @@ public class MainActivity extends AppCompatActivity
         }
 
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void urlChange(String url) {
+        processUrlChange(url);
+    }
+
+    private void processUrlChange(final String url) {
+        if (url == null) {
+            JtsViewerLog.e(TAG, "process url change failed -- url is null");
+            return;
+        }
+
+        if (Uri.parse(url).getPath().contains("/tab/")) {
+            mFab.setVisibility(View.VISIBLE);
+            mFab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    JtsServerApi.getTabImageUrl(MainActivity.this, url);
+                }
+            });
+        } else {
+            mFab.setVisibility(View.INVISIBLE);
+        }
     }
 }
