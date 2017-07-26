@@ -14,7 +14,7 @@ import java.util.List;
 
 public class JtsImageTabAction extends JtsBaseAction {
 
-    private static final String IMAGE_PATTERN = "//att.jitashe.org/.*jpg@!tab_thumb";
+    private static final String IMAGE_PATTERN = "//att.jitashe.org/.+?.(?:jpg|png)";
     private static final String TAG = JtsImageTabAction.class.getSimpleName();
 
     public static final String CONTEXT_KEY = "image_tab_action_context";
@@ -22,7 +22,6 @@ public class JtsImageTabAction extends JtsBaseAction {
 
     @Override
     public void execute() {
-
         String webpageContent = (String) getKey(JtsNetworkManager.WEBPAGE_CONTENT_KEY);
         Context context = (Context) getKey(CONTEXT_KEY);
         long gid = (long) getKey(GID_KEY);

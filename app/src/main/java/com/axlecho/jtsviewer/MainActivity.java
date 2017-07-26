@@ -1,8 +1,13 @@
 package com.axlecho.jtsviewer;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -23,6 +28,8 @@ import com.axlecho.jtsviewer.network.webview.MainWebViewClient;
 import com.axlecho.jtsviewer.network.webview.MainWebViewListener;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 
+import org.json.JSONArray;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainWebViewListener {
     private String TAG = MainActivity.class.getSimpleName();
@@ -33,6 +40,14 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 3);
+        } else {
+            Intent openCameraIntent = new Intent(this, MainActivity.class);
+            startActivityForResult(openCameraIntent, 0);
+        }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -141,7 +156,8 @@ public class MainActivity extends AppCompatActivity
             mFab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    JtsServerApi.getTabImageUrl(MainActivity.this, url);
+                    // JtsServerApi.getTabImageUrl(MainActivity.this, url);
+                    JtsServerApi.getGtp(MainActivity.this, url);
                 }
             });
         } else {

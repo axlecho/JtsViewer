@@ -2,6 +2,7 @@ package com.axlecho.jtsviewer.network.webview;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -24,7 +25,7 @@ public class MainWebViewClient extends WebViewClient {
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
-        JtsViewerLog.d(TAG, url);
+
         if (url.contains(JtsConf.HOST_URL)) {
             return false;
         }
@@ -35,10 +36,17 @@ public class MainWebViewClient extends WebViewClient {
 
     @Override
     public void onPageCommitVisible(WebView view, String url) {
+
+        super.onPageCommitVisible(view, url);
+    }
+
+    @Override
+    public void onPageStarted(WebView view, String url, Bitmap favicon) {
+        super.onPageStarted(view, url, favicon);
+        JtsViewerLog.d(TAG, url);
         if (mListener != null) {
             mListener.urlChange(url);
         }
-        super.onPageCommitVisible(view, url);
     }
 
     @Override

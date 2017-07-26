@@ -9,6 +9,8 @@ import android.webkit.WebView;
 
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 
+import okhttp3.internal.http2.Header;
+
 public class JtsCookieManager {
     private static final String TAG = JtsCookieManager.class.getSimpleName();
     private static final String PREFERENCES_PATH = "network";
@@ -34,7 +36,7 @@ public class JtsCookieManager {
             return;
         }
 
-        if (!cookieStr.contains("yGhj_ec43_auth")) {
+        if (!cookieStr.contains("auth=")) {
             return;
         }
 
@@ -46,7 +48,7 @@ public class JtsCookieManager {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(COOKIES_KEY, cookieStr);
         editor.apply();
-        JtsViewerLog.i(TAG, "Cookies = " + cookieStr);
+        JtsViewerLog.i(TAG, "save cookie " + cookieStr);
     }
 
     public void setCookie(WebView webView, String url) {
@@ -68,5 +70,10 @@ public class JtsCookieManager {
             cookieManager.setCookie(url, cookie);
         }
         CookieSyncManager.getInstance().sync();
+    }
+
+    public String getCookie() {
+        SharedPreferences preferences = this.context.getSharedPreferences(PREFERENCES_PATH, Context.MODE_PRIVATE);
+        return preferences.getString(COOKIES_KEY, null);
     }
 }
