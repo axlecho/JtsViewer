@@ -9,34 +9,32 @@ import android.webkit.WebViewClient;
 
 import com.axlecho.jtsviewer.network.JtsConf;
 import com.axlecho.jtsviewer.network.JtsCookieManager;
+import com.axlecho.jtsviewer.network.JtsServerApi;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 
 public class MainWebViewClient extends WebViewClient {
 
     private static final String TAG = MainWebViewClient.class.getSimpleName();
-    private Context mContext;
-    private MainWebViewListener mListener;
+    private Context context;
 
-    public MainWebViewClient(Context context, MainWebViewListener listener) {
-        mContext = context;
-        mListener = listener;
+    public MainWebViewClient(Context context) {
+        this.context = context;
     }
 
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
-
         if (url.contains(JtsConf.HOST_URL)) {
             return false;
         }
+
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        mContext.startActivity(intent);
+        context.startActivity(intent);
         return true;
     }
 
     @Override
     public void onPageCommitVisible(WebView view, String url) {
-
         super.onPageCommitVisible(view, url);
     }
 
@@ -44,14 +42,13 @@ public class MainWebViewClient extends WebViewClient {
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
         super.onPageStarted(view, url, favicon);
         JtsViewerLog.d(TAG, url);
-        if (mListener != null) {
-            mListener.urlChange(url);
-        }
+        JtsServerApi.getInstance(context).processUrlChange(url);
     }
+
 
     @Override
     public void onPageFinished(WebView view, String url) {
-        JtsCookieManager.getInstance(mContext).saveCookie(url);
+        JtsCookieManager.getInstance(context).saveCookie(url);
         super.onPageFinished(view, url);
     }
 }

@@ -1,8 +1,10 @@
 package com.axlecho.jtsviewer.action;
 
+import android.view.View;
+
 import java.util.HashMap;
 
-public abstract class JtsBaseAction {
+public abstract class JtsBaseAction implements View.OnClickListener {
     private HashMap<String, Object> param = new HashMap<>();
 
     public abstract void execute();
@@ -13,5 +15,10 @@ public abstract class JtsBaseAction {
 
     public Object getKey(String key) {
         return param.get(key);
+    }
+
+    @Override
+    public void onClick(View v) {
+        execute();
     }
 }
