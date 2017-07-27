@@ -30,6 +30,6 @@ dependencies {
 
     compile 'com.squareup.okhttp3:okhttp:3.8.1'
     compile 'com.github.axlecho.tuxguitar:tuxguitar-widget:v0.0.2'
-    compile 'com.github.axlecho:ImageTab:v0.0.5'
+    compile 'com.github.axlecho:ImageTab:v0.0.7'
     testCompile 'junit:junit:4.12'
 }
