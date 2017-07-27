@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onClick(View v) {
                     // JtsServerApi.getTabImageUrl(MainActivity.this, url);
-                    JtsServerApi.getGtp(MainActivity.this, url);
+                    JtsServerApi.getTab(MainActivity.this, url);
                 }
             });
         } else {

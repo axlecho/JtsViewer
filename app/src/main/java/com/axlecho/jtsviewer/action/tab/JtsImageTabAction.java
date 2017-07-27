@@ -14,17 +14,15 @@ import java.util.List;
 
 public class JtsImageTabAction extends JtsBaseAction {
 
-    private static final String IMAGE_PATTERN = "//att.jitashe.org/.+?.(?:jpg|png)";
+    private static final String IMAGE_PATTERN = "//att.jitashe.org/.+?.(?:jpg|png|gif)";
     private static final String TAG = JtsImageTabAction.class.getSimpleName();
 
-    public static final String CONTEXT_KEY = "image_tab_action_context";
-    public static final String GID_KEY = "image_tab_action_webpage_content";
 
     @Override
     public void execute() {
         String webpageContent = (String) getKey(JtsNetworkManager.WEBPAGE_CONTENT_KEY);
-        Context context = (Context) getKey(CONTEXT_KEY);
-        long gid = (long) getKey(GID_KEY);
+        Context context = (Context) getKey(JtsTabAction.CONTEXT_KEY);
+        long gid = (long) getKey(JtsTabAction.GID_KEY);
         JtsViewerLog.appendToFile(context, webpageContent);
         JtsViewerLog.d(TAG, "gid " + gid);
 

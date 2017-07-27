@@ -22,14 +22,12 @@ public class JtsGtpTabAction extends JtsBaseAction {
     private static final String GTP_PATTERN = "dlink=\"/forum.php\\?mod=attachment.*?\"";
     private static final String TAG = JtsGtpTabAction.class.getSimpleName();
 
-    public static final String CONTEXT_KEY = "gtp_tab_action_context";
-    public static final String GID_KEY = "gtp_tab_action_webpage_content";
 
     @Override
     public void execute() {
         String webpageContent = (String) getKey(JtsNetworkManager.WEBPAGE_CONTENT_KEY);
-        Context context = (Context) getKey(CONTEXT_KEY);
-        long gid = (long) getKey(GID_KEY);
+        Context context = (Context) getKey(JtsTabAction.CONTEXT_KEY);
+        long gid = (long) getKey(JtsTabAction.GID_KEY);
 
         JtsViewerLog.appendToFile(context, webpageContent);
         JtsViewerLog.d(TAG, "gid " + gid);
@@ -59,7 +57,7 @@ public class JtsGtpTabAction extends JtsBaseAction {
         JtsViewerLog.d(TAG, url);
 
         DownloadAction action = new DownloadAction();
-        action.setKey(DownloadAction.CONTEXT_KEY, getKey(CONTEXT_KEY));
+        action.setKey(DownloadAction.CONTEXT_KEY, getKey(JtsTabAction.CONTEXT_KEY));
         action.setKey(DownloadAction.URL_KEY, url);
         action.setDownloadHandler(new DownloadListener() {
             @Override
@@ -87,7 +85,7 @@ public class JtsGtpTabAction extends JtsBaseAction {
     }
 
     private void showGtp(String filePath) {
-        Context context = (Context) getKey(CONTEXT_KEY);
+        Context context = (Context) getKey(JtsTabAction.CONTEXT_KEY);
         Uri gtpUri = Uri.parse("file://" + filePath);
         Intent intent = new Intent();
         intent.setData(gtpUri);
