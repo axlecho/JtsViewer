@@ -1,23 +1,20 @@
 package com.axlecho.jtsviewer;
 
-import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.view.KeyEvent;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
@@ -28,13 +25,16 @@ import com.axlecho.jtsviewer.network.webview.MainWebViewClient;
 import com.axlecho.jtsviewer.network.webview.MainWebViewListener;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 
-import org.json.JSONArray;
-
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainWebViewListener {
     private String TAG = MainActivity.class.getSimpleName();
     private WebView mMainWebView;
     private FloatingActionButton mFab;
+
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            "android.permission.READ_EXTERNAL_STORAGE",
+            "android.permission.WRITE_EXTERNAL_STORAGE"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,4 +157,17 @@ public class MainActivity extends AppCompatActivity
             mFab.setVisibility(View.INVISIBLE);
         }
     }
+
+    public static void verifyStoragePermissions(AppCompatActivity activity) {
+        try {
+            int permission = ActivityCompat.checkSelfPermission(activity,
+                    "android.permission.READ_EXTERNAL_STORAGE");
+            if (permission != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

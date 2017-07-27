@@ -1,13 +1,19 @@
 package com.axlecho.jtsviewer.action.tab;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
 
 import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.download.DownloadAction;
 import com.axlecho.jtsviewer.network.JtsConf;
 import com.axlecho.jtsviewer.network.JtsNetworkManager;
+import com.axlecho.jtsviewer.network.download.DownloadListener;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
+
+import org.herac.tuxguitar.android.activity.TGActivity;
 
 import java.util.List;
 
@@ -55,6 +61,43 @@ public class JtsGtpTabAction extends JtsBaseAction {
         DownloadAction action = new DownloadAction();
         action.setKey(DownloadAction.CONTEXT_KEY, getKey(CONTEXT_KEY));
         action.setKey(DownloadAction.URL_KEY, url);
+        action.setDownloadHandler(new DownloadListener() {
+            @Override
+            public void onStart(long size) {
+                JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, "[download] size " + size);
+            }
+
+            @Override
+            public void onFinish(String result) {
+                JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, "[download] result " + result);
+                showGtp(result);
+            }
+
+            @Override
+            public void onError(String msg) {
+                JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, "[download] error " + msg);
+            }
+
+            @Override
+            public void onProgress(long progress) {
+                JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, "[download] progress " + progress);
+            }
+        });
         action.execute();
+    }
+
+    private void showGtp(String filePath) {
+        Context context = (Context) getKey(CONTEXT_KEY);
+        Uri gtpUri = Uri.parse("file://" + filePath);
+        Intent intent = new Intent();
+        intent.setData(gtpUri);
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("title", "test");
+        intent.putExtras(bundle);
+
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.setClass(context, TGActivity.class);
+        context.startActivity(intent);
     }
 }

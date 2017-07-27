@@ -37,7 +37,7 @@ public class DownloadAction extends JtsBaseAction {
 
     private DownloadListener handler;
 
-    public void SetDownloadHandler(DownloadListener handler) {
+    public void setDownloadHandler(DownloadListener handler) {
         this.handler = handler;
     }
 }
