@@ -24,7 +24,7 @@ public class MainWebViewClient extends WebViewClient {
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
-        if (url.contains(JtsConf.HOST_URL)) {
+        if (url.contains(JtsConf.NONE_HOST_URL)) {
             return false;
         }
 
