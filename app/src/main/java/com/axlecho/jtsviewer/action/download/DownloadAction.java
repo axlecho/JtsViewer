@@ -1,9 +1,9 @@
-package com.axlecho.jtsviewer.download;
+package com.axlecho.jtsviewer.action.download;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.axlecho.jtsviewer.action.JtsBaseAction;
+import com.axlecho.jtsviewer.action.tab.JtsTabAction;
 import com.axlecho.jtsviewer.network.download.DownloadListener;
 import com.axlecho.jtsviewer.network.download.DownloadManager;
 import com.axlecho.jtsviewer.network.download.DownloadTask;
@@ -12,11 +12,12 @@ import com.axlecho.jtsviewer.untils.JtsViewerLog;
 
 public class DownloadAction extends JtsBaseAction {
     private static final String TAG = DownloadAction.class.getSimpleName();
-    public static final String CONTEXT_KEY = "gtp_tab_action_context";
-    public static final String URL_KEY = "gtp_tab_action_webpage_content";
+    public static final String CONTEXT_KEY = "download_action_context";
+    public static final String URL_KEY = "download_action_webpage_content";
 
-    private Context mContext;
-    private String mUrl;
+    private Context context;
+    private String url;
+    private long gid;
 
     private DownloadTask mDownloadTask;
 
@@ -27,12 +28,15 @@ public class DownloadAction extends JtsBaseAction {
 
     @Override
     public void execute() {
-        this.mContext = (Context) getKey(CONTEXT_KEY);
-        this.mUrl = (String) getKey(URL_KEY);
-        JtsViewerLog.d(TAG, "[download url] " + mUrl);
-        mDownloadTask = new DownloadTask(mContext,mUrl);
+        this.context = (Context) getKey(CONTEXT_KEY);
+        this.url = (String) getKey(URL_KEY);
+        this.gid = (long) getKey(JtsTabAction.GID_KEY);
+
+        JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, "[download url] " + url);
+        JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, "[download gid] " + gid);
+        mDownloadTask = new DownloadTask(context, url, gid);
         mDownloadTask.setDownloadListener(handler);
-        DownloadManager.getInstance(mContext).executeTask(mDownloadTask);
+        DownloadManager.getInstance(context).executeTask(mDownloadTask);
     }
 
     private DownloadListener handler;

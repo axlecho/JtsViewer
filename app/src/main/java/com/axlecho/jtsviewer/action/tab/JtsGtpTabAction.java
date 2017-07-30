@@ -6,7 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.axlecho.jtsviewer.action.JtsBaseAction;
-import com.axlecho.jtsviewer.download.DownloadAction;
+import com.axlecho.jtsviewer.action.download.DownloadAction;
 import com.axlecho.jtsviewer.network.JtsConf;
 import com.axlecho.jtsviewer.network.JtsNetworkManager;
 import com.axlecho.jtsviewer.network.download.DownloadListener;
@@ -16,6 +16,7 @@ import com.axlecho.jtsviewer.untils.JtsViewerLog;
 import org.herac.tuxguitar.android.activity.TGActivity;
 
 import java.util.List;
+
 
 public class JtsGtpTabAction extends JtsBaseAction {
 
@@ -59,6 +60,8 @@ public class JtsGtpTabAction extends JtsBaseAction {
         DownloadAction action = new DownloadAction();
         action.setKey(DownloadAction.CONTEXT_KEY, getKey(JtsTabAction.CONTEXT_KEY));
         action.setKey(DownloadAction.URL_KEY, url);
+        action.setKey(JtsTabAction.GID_KEY, getKey(JtsTabAction.GID_KEY));
+
         action.setDownloadHandler(new DownloadListener() {
             @Override
             public void onStart(long size) {

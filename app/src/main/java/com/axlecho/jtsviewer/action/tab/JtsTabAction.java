@@ -9,7 +9,7 @@ public class JtsTabAction extends JtsBaseAction {
     private static final int TAB_TYPE_GTP = 2;
 
     public static final String CONTEXT_KEY = "tab_action_context";
-    public static final String GID_KEY = "tab_action_webpage_content";
+    public static final String GID_KEY = "tab_action_gid";
     public static final String TAG = JtsTabAction.class.getSimpleName();
 
     @Override

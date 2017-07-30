@@ -3,8 +3,10 @@ package com.axlecho.jtsviewer.network.download;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.text.TextUtils;
 
 import com.axlecho.jtsviewer.network.JtsCookieManager;
+import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 
 import java.io.BufferedInputStream;
@@ -39,18 +41,21 @@ public class DownloadTask extends AsyncTask<Void, Long, String> {
     private String mFileName;
     private Context mContext;
     private File mFile;
+    private long gid;
 
     private List<DownloadListener> mListeners = new ArrayList<>();
 
-    public DownloadTask(Context context, String url) {
+    public DownloadTask(Context context, String url, long gid) {
         mUrl = url;
         mContext = context;
         mFileName = getFileNameByUUID();
-
+        this.gid = gid;
     }
 
     public void setPath(String path) {
         mPath = path;
+        mPath = mPath + File.separator + gid;
+
     }
 
     public void setDownloadListener(DownloadListener listener) {
@@ -83,6 +88,11 @@ public class DownloadTask extends AsyncTask<Void, Long, String> {
         }
 
         InputStream is = response.body().byteStream();
+
+        File dir = new File(mPath);
+        if(!dir.exists()) {
+            dir.mkdirs();
+        }
 
         BufferedInputStream input = new BufferedInputStream(is);
         OutputStream output = new FileOutputStream(mFile);
