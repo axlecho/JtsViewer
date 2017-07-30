@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.text.TextUtils;
 
+import com.axlecho.jtsviewer.module.CacheModule;
 import com.axlecho.jtsviewer.network.JtsCookieManager;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
@@ -90,7 +91,7 @@ public class DownloadTask extends AsyncTask<Void, Long, String> {
         InputStream is = response.body().byteStream();
 
         File dir = new File(mPath);
-        if(!dir.exists()) {
+        if (!dir.exists()) {
             dir.mkdirs();
         }
 
@@ -217,6 +218,7 @@ public class DownloadTask extends AsyncTask<Void, Long, String> {
         for (DownloadListener listener : mListeners) {
             listener.onFinish(result);
         }
+        cacheInfo();
         super.onPostExecute(result);
     }
 
@@ -232,8 +234,16 @@ public class DownloadTask extends AsyncTask<Void, Long, String> {
         return mUrl;
     }
 
-    public String getFileName() {
-        return mFile.getAbsolutePath();
+    public void cacheInfo() {
+        CacheModule cacheInfo = new CacheModule();
+        cacheInfo.path = mPath;
+        cacheInfo.fileName = mFileName;
+        cacheInfo.gid = String.valueOf(gid);
+        cacheInfo.type = "gtp";
+        try {
+            cacheInfo.writeToFile();
+        } catch (IOException e) {
+            JtsViewerLog.e(TAG, "cache info failed " + e.getMessage());
+        }
     }
-
 }
