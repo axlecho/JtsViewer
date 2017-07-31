@@ -5,7 +5,9 @@ import com.axlecho.jtsviewer.untils.JtsViewerLog;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -55,5 +57,25 @@ public class CacheModule {
         FileWriter writer = new FileWriter(info);
         writer.write(infoString);
         writer.close();
+    }
+
+    public static CacheModule loadFromFile(File f) throws IOException, JSONException {
+        BufferedReader reader = new BufferedReader(new FileReader(f));
+        String jsonStr = reader.readLine();
+        reader.close();
+        JtsViewerLog.d(JtsViewerLog.CACHE_MODULE, TAG, jsonStr);
+        JSONObject json = new JSONObject(jsonStr);
+
+        CacheModule module = new CacheModule();
+        module.path = json.getString("path");
+        module.fileName = json.getString("fileName");
+        module.type = json.getString("type");
+        module.gid = json.getString("gid");
+        return module;
+    }
+
+    @Override
+    public String toString() {
+        return "[path " + path + " fileName " + fileName + " type " + type + " gid " + gid + "]\n";
     }
 }

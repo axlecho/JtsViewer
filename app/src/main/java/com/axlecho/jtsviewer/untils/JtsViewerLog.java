@@ -19,6 +19,7 @@ public class JtsViewerLog {
 
     public static String DEFAULT_MODULE = "jts-viewer";
     public static String NETWORK_MODULE = "jts-network";
+    public static String CACHE_MODULE = "jts-cache";
     private static int level = INFO_LEVEL;
 
 

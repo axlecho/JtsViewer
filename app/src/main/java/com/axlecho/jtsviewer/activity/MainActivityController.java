@@ -1,5 +1,6 @@
-package com.axlecho.jtsviewer;
+package com.axlecho.jtsviewer.activity;
 
+import android.content.Intent;
 import android.view.View;
 
 import com.axlecho.jtsviewer.action.JtsBaseAction;
@@ -43,5 +44,11 @@ public class MainActivityController {
             }
             activity.progressBar.setProgress(progress);
         }
+    }
+
+    public void processJumpCache() {
+        Intent intent = new Intent();
+        intent.setClass(activity, CacheActivity.class);
+        activity.startActivity(intent);
     }
 }

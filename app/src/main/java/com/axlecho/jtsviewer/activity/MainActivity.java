@@ -1,4 +1,4 @@
-package com.axlecho.jtsviewer;
+package com.axlecho.jtsviewer.activity;
 
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
 
+import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.network.JtsConf;
 import com.axlecho.jtsviewer.network.JtsServerApi;
 
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity
     public WebView mMainWebView;
     public FloatingActionButton floatingActionButton;
     public ProgressBar progressBar;
+    private MainActivityController controller;
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
@@ -36,7 +38,9 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        MainActivityController.getInstance().setActivity(this);
+        this.controller = MainActivityController.getInstance();
+        this.controller.setActivity(this);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -97,8 +101,8 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_camera) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
+        } else if (id == R.id.nav_cache) {
+            this.controller.processJumpCache();
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {

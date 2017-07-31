@@ -2,15 +2,9 @@ package com.axlecho.jtsviewer.network;
 
 import android.content.Context;
 import android.net.Uri;
-import android.view.View;
 
-import com.axlecho.jtsviewer.MainActivity;
-import com.axlecho.jtsviewer.MainActivityController;
+import com.axlecho.jtsviewer.activity.MainActivityController;
 import com.axlecho.jtsviewer.action.tab.JtsGetTabAction;
-import com.axlecho.jtsviewer.action.tab.JtsGtpTabAction;
-import com.axlecho.jtsviewer.action.tab.JtsImageTabAction;
-import com.axlecho.jtsviewer.action.tab.JtsTabAction;
-import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 
 public class JtsServerApi {
