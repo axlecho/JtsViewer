@@ -4,6 +4,7 @@ import android.net.Uri;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,5 +46,20 @@ public class JtsTextUnitls {
 
         JtsViewerLog.e(TAG, "get tabkey from url failed -- path error " + path);
         return -1;
+    }
+
+    public static String getRandomUUID() {
+        UUID uuid = UUID.randomUUID();
+        return uuid.toString();
+    }
+
+    public static String getFileNameFromPath(String path) {
+        int start = path.lastIndexOf("/");
+        int end = path.lastIndexOf(".");
+        if (start != -1 && end != -1) {
+            return path.substring(start + 1, end);
+        } else {
+            return "";
+        }
     }
 }

@@ -8,4 +8,9 @@
     tools:context="com.axlecho.jtsviewer.activity.CacheActivity"
     tools:showIn="@layout/activity_cache">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/cache_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" />
 </android.support.constraint.ConstraintLayout>

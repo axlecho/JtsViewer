@@ -2,17 +2,19 @@ package com.axlecho.jtsviewer.network.download;
 
 import android.content.Context;
 
+import com.axlecho.jtsviewer.cache.CacheManager;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class DownloadManager {
-    private final String CACHE_PATH;
+    private final String cachePath;
     private List<DownloadTask> mDownloadQueue = new ArrayList<>();
 
     private static DownloadManager mInstance;
 
     private DownloadManager(Context context) {
-        CACHE_PATH = context.getDir("download_cache", Context.MODE_PRIVATE).getPath();
+        cachePath = CacheManager.getInstance(context).getCachePath();
     }
 
     public static DownloadManager getInstance(Context context) {
@@ -27,7 +29,6 @@ public class DownloadManager {
     }
 
     public int executeTask(DownloadTask task) {
-        task.setPath(CACHE_PATH);
         mDownloadQueue.add(task);
         task.execute();
         return 0;

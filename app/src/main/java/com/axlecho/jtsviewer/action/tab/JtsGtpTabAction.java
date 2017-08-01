@@ -94,7 +94,7 @@ public class JtsGtpTabAction extends JtsBaseAction {
         intent.setData(gtpUri);
 
         Bundle bundle = new Bundle();
-        bundle.putSerializable("title", "test");
+        bundle.putSerializable("title", JtsTextUnitls.getFileNameFromPath(filePath));
         intent.putExtras(bundle);
 
         intent.setAction(Intent.ACTION_VIEW);
