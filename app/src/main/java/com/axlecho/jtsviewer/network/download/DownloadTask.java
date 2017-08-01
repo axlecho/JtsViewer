@@ -26,8 +26,8 @@ public class DownloadTask extends AsyncTask<Void, Long, String> {
     public DownloadTask(Context context, String url, long gid) {
         mUrl = url;
         mContext = context;
-        mPath = CacheManager.getInstance(context).getCachePath();
         this.gid = gid;
+        mPath = CacheManager.getInstance(context).getCachePath() + File.separator + gid;
     }
 
     public void setDownloadListener(DownloadListener listener) {
