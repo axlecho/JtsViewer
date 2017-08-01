@@ -71,7 +71,10 @@ public class JtsGtpTabAction extends JtsBaseAction {
             @Override
             public void onFinish(String result) {
                 JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, "[download] result " + result);
-                showGtp(result);
+                JtsShowGtpTabAction action = new JtsShowGtpTabAction();
+                action.setKey(JtsTabAction.CONTEXT_KEY, getKey(JtsTabAction.CONTEXT_KEY));
+                action.setKey(JtsShowGtpTabAction.GTP_FILE_PATH, result);
+                action.execute();
             }
 
             @Override
@@ -87,18 +90,5 @@ public class JtsGtpTabAction extends JtsBaseAction {
         action.execute();
     }
 
-    private void showGtp(String filePath) {
-        Context context = (Context) getKey(JtsTabAction.CONTEXT_KEY);
-        Uri gtpUri = Uri.parse("file://" + filePath);
-        Intent intent = new Intent();
-        intent.setData(gtpUri);
 
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("title", JtsTextUnitls.getFileNameFromPath(filePath));
-        intent.putExtras(bundle);
-
-        intent.setAction(Intent.ACTION_VIEW);
-        intent.setClass(context, TGActivity.class);
-        context.startActivity(intent);
-    }
 }

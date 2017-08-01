@@ -62,4 +62,13 @@ public class JtsTextUnitls {
             return "";
         }
     }
+
+    public static String removePostfixFromFileName(String fileName) {
+        int end = fileName.lastIndexOf(".");
+        if (end == -1) {
+            return fileName;
+        }
+
+        return fileName.substring(0, end);
+    }
 }

@@ -8,8 +8,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.axlecho.jtsviewer.R;
+import com.axlecho.jtsviewer.action.tab.JtsShowGtpTabAction;
+import com.axlecho.jtsviewer.action.tab.JtsTabAction;
 import com.axlecho.jtsviewer.module.CacheModule;
+import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 
+import java.io.File;
 import java.util.List;
 
 public class CacheViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -29,7 +33,13 @@ public class CacheViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((CacheViewHolder) holder).contentView.setText(modules.get(position).fileName);
+        CacheModule module = modules.get(position);
+        JtsShowGtpTabAction action = new JtsShowGtpTabAction();
+        action.setKey(JtsTabAction.CONTEXT_KEY, this.context.getApplicationContext());
+        action.setKey(JtsShowGtpTabAction.GTP_FILE_PATH, module.path + File.separator + module.fileName);
+
+        ((CacheViewHolder) holder).contentView.setText(JtsTextUnitls.removePostfixFromFileName(module.fileName));
+        ((CacheViewHolder) holder).contentView.setOnClickListener(action);
     }
 
     @Override
