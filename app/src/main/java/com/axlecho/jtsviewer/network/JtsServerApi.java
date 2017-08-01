@@ -10,7 +10,7 @@ import com.axlecho.jtsviewer.untils.JtsViewerLog;
 public class JtsServerApi {
 
     private static final String TAG = JtsServerApi.class.getSimpleName();
-
+    private static final String TAB_URL_PATTERN = "/tab/\\d+/";
     private static JtsServerApi instace;
     private Context context;
 
@@ -34,7 +34,7 @@ public class JtsServerApi {
             return;
         }
 
-        if (Uri.parse(url).getPath().contains("/tab/")) {
+        if (Uri.parse(url).getPath().matches(TAB_URL_PATTERN)) {
             JtsGetTabAction action = new JtsGetTabAction();
             action.setKey(JtsGetTabAction.CONTEXT_KEY, context);
             action.setKey(JtsGetTabAction.URL_KEY, url);
