@@ -39,7 +39,7 @@ public class CacheViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         action.setKey(JtsShowGtpTabAction.GTP_FILE_PATH, module.path + File.separator + module.fileName);
 
         ((CacheViewHolder) holder).contentView.setText(JtsTextUnitls.removePostfixFromFileName(module.fileName));
-        ((CacheViewHolder) holder).contentView.setOnClickListener(action);
+        ((CacheViewHolder) holder).cardView.setOnClickListener(action);
     }
 
     @Override
@@ -50,10 +50,12 @@ public class CacheViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     private class CacheViewHolder extends RecyclerView.ViewHolder {
         public TextView contentView;
+        public View cardView;
 
         public CacheViewHolder(View view) {
             super(view);
             this.contentView = (TextView) view.findViewById(R.id.cache_item_content);
+            this.cardView = (View) view.findViewById(R.id.cache_item_view);
         }
     }
 }

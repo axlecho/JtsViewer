@@ -5,16 +5,17 @@
     android:padding="@dimen/item_cache_padding">
 
     <android.support.v7.widget.CardView
+        android:id="@+id/cache_item_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/item_cache_height"
         android:clickable="true"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:padding="@dimen/item_cache_padding">
+        android:foreground="?android:attr/selectableItemBackgroundBorderless">
 
         <TextView
             android:id="@+id/cache_item_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_vertical|start" />
+            android:gravity="center_vertical|start"
+            android:padding="@dimen/item_cache_padding" />
     </android.support.v7.widget.CardView>
 </RelativeLayout>

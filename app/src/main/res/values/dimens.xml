@@ -7,5 +7,5 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="item_cache_height">64dp</dimen>
-    <dimen name="item_cache_padding">8dp</dimen>
+    <dimen name="item_cache_padding">16dp</dimen>
 </resources>
