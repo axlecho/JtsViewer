@@ -2,7 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="@dimen/item_cache_padding">
+    android:paddingEnd="@dimen/activity_horizontal_margin"
+    android:paddingStart="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/item_cache_vertical_margin">
 
     <android.support.v7.widget.CardView
         android:id="@+id/cache_item_view"
@@ -16,6 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical|start"
-            android:padding="@dimen/item_cache_padding" />
+            android:paddingEnd="@dimen/card_horizontal_margin"
+            android:paddingStart="@dimen/card_horizontal_margin" />
     </android.support.v7.widget.CardView>
 </RelativeLayout>
