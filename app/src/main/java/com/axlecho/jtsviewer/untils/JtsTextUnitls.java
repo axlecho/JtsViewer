@@ -25,6 +25,15 @@ public class JtsTextUnitls {
         return result;
     }
 
+    public static String findByPatternOnce(String s, String reg) {
+        List<String> result = findByPattern(s, reg);
+        if (result != null && result.size() > 0) {
+            return result.get(0);
+        }
+
+        return null;
+    }
+
     public static long getTabKeyFromUrl(String url) {
         if (url == null) {
             JtsViewerLog.e(TAG, "get tabkey from url failed -- url is null");

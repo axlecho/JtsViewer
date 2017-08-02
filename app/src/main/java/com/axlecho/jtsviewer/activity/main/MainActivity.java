@@ -11,7 +11,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.WebView;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.axlecho.jtsviewer.R;
@@ -24,6 +26,8 @@ public class MainActivity extends AppCompatActivity
     public WebView mMainWebView;
     public FloatingActionButton floatingActionButton;
     public ProgressBar progressBar;
+    public NavigationView navigationView;
+
     private MainActivityController controller;
 
 
@@ -47,13 +51,14 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        this.navigationView = (NavigationView) findViewById(R.id.nav_view);
+        this.navigationView.setNavigationItemSelectedListener(this);
 
         mMainWebView = (WebView) findViewById(R.id.main_content_webview);
         mMainWebView.loadUrl(JtsConf.HOST_URL);
         progressBar = (ProgressBar) findViewById(R.id.main_content_progressbar);
-        JtsServerApi.getInstance(this).checkLogin();
+
+        this.controller.loadUserInfo();
     }
 
     @Override

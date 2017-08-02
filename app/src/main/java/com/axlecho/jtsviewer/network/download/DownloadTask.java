@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.axlecho.jtsviewer.cache.CacheManager;
-import com.axlecho.jtsviewer.cache.module.CacheModule;
+import com.axlecho.jtsviewer.module.CacheModule;
 import com.axlecho.jtsviewer.network.JtsNetworkManager;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 

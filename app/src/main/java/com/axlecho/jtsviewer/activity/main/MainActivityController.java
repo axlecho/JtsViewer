@@ -3,14 +3,22 @@ package com.axlecho.jtsviewer.activity.main;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.action.JtsBaseAction;
+import com.axlecho.jtsviewer.action.user.JtsParseUserInfoAction;
 import com.axlecho.jtsviewer.activity.cache.CacheActivity;
+import com.axlecho.jtsviewer.module.UserModule;
+import com.axlecho.jtsviewer.network.JtsConf;
+import com.axlecho.jtsviewer.network.JtsNetworkManager;
+import com.axlecho.jtsviewer.untils.JtsViewerLog;
+import com.squareup.picasso.Picasso;
 
 public class MainActivityController {
-
+    private static final String TAG = MainActivityController.class.getSimpleName();
     private static MainActivityController instance;
     private MainActivity activity;
 
@@ -77,4 +85,29 @@ public class MainActivityController {
         }
     }
 
+    public void loadUserInfo() {
+        JtsParseUserInfoAction action = new JtsParseUserInfoAction();
+        JtsNetworkManager.getInstance(activity).get(JtsConf.HOST_URL, action);
+    }
+
+    public void processLoadUserInfo(final UserModule user) {
+        JtsViewerLog.d(TAG, user.toString());
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                View headerView = activity.navigationView.getHeaderView(0);
+                ImageView drawerUserInfoImageView = (ImageView) headerView.findViewById(R.id.nav_user_imageView);
+                TextView userNameTextView = (TextView) headerView.findViewById(R.id.nav_user_name);
+
+                if (user.avatarUrl != null) {
+                    Picasso.with(activity).load(user.avatarUrl).into(drawerUserInfoImageView);
+                }
+
+                if (user.userName != null) {
+                    userNameTextView.setText(user.userName);
+                }
+            }
+        });
+
+    }
 }

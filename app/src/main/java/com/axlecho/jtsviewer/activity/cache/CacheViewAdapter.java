@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.action.tab.JtsShowGtpTabAction;
-import com.axlecho.jtsviewer.cache.module.CacheModule;
+import com.axlecho.jtsviewer.module.CacheModule;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 
 import java.io.File;

@@ -3,7 +3,7 @@ package com.axlecho.jtsviewer.cache;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.axlecho.jtsviewer.cache.module.CacheModule;
+import com.axlecho.jtsviewer.module.CacheModule;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 
 import org.json.JSONException;
