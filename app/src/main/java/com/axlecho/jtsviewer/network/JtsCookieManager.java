@@ -9,13 +9,11 @@ import android.webkit.WebView;
 
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 
-import okhttp3.internal.http2.Header;
-
 public class JtsCookieManager {
     private static final String TAG = JtsCookieManager.class.getSimpleName();
     private static final String PREFERENCES_PATH = "network";
     private static final String COOKIES_KEY = "cookies";
-    private static JtsCookieManager manager;
+    private static JtsCookieManager instance;
     private Context context;
 
     private JtsCookieManager(Context context) {
@@ -23,10 +21,14 @@ public class JtsCookieManager {
     }
 
     public static JtsCookieManager getInstance(Context context) {
-        if (manager == null) {
-            manager = new JtsCookieManager(context.getApplicationContext());
+        if (instance == null) {
+            synchronized (JtsCookieManager.class) {
+                if (instance == null) {
+                    instance = new JtsCookieManager(context.getApplicationContext());
+                }
+            }
         }
-        return manager;
+        return instance;
     }
 
     public void saveCookie(String url) {

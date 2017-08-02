@@ -1,4 +1,4 @@
-package com.axlecho.jtsviewer.activity;
+package com.axlecho.jtsviewer.activity.cache;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,7 +8,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.cache.CacheManager;
-import com.axlecho.jtsviewer.module.CacheModule;
+import com.axlecho.jtsviewer.cache.module.CacheModule;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 
 import java.util.List;

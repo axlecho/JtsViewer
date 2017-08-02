@@ -1,9 +1,6 @@
 package com.axlecho.jtsviewer.action.tab;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
 
 import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.action.download.DownloadAction;
@@ -12,8 +9,6 @@ import com.axlecho.jtsviewer.network.JtsNetworkManager;
 import com.axlecho.jtsviewer.network.download.DownloadListener;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
-
-import org.herac.tuxguitar.android.activity.TGActivity;
 
 import java.util.List;
 
@@ -27,8 +22,8 @@ public class JtsGtpTabAction extends JtsBaseAction {
     @Override
     public void execute() {
         String webpageContent = (String) getKey(JtsNetworkManager.WEBPAGE_CONTENT_KEY);
-        Context context = (Context) getKey(JtsTabAction.CONTEXT_KEY);
-        long gid = (long) getKey(JtsTabAction.GID_KEY);
+        Context context = (Context) getKey(CONTEXT_KEY);
+        long gid = (long) getKey(JtsParseTabAction.GID_KEY);
 
         JtsViewerLog.appendToFile(context, webpageContent);
         JtsViewerLog.d(TAG, "gid " + gid);
@@ -58,9 +53,9 @@ public class JtsGtpTabAction extends JtsBaseAction {
         JtsViewerLog.d(TAG, url);
 
         DownloadAction action = new DownloadAction();
-        action.setKey(DownloadAction.CONTEXT_KEY, getKey(JtsTabAction.CONTEXT_KEY));
+        action.setKey(CONTEXT_KEY, getKey(CONTEXT_KEY));
         action.setKey(DownloadAction.URL_KEY, url);
-        action.setKey(JtsTabAction.GID_KEY, getKey(JtsTabAction.GID_KEY));
+        action.setKey(JtsParseTabAction.GID_KEY, getKey(JtsParseTabAction.GID_KEY));
 
         action.setDownloadHandler(new DownloadListener() {
             @Override
@@ -72,7 +67,7 @@ public class JtsGtpTabAction extends JtsBaseAction {
             public void onFinish(String result) {
                 JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, "[download] result " + result);
                 JtsShowGtpTabAction action = new JtsShowGtpTabAction();
-                action.setKey(JtsTabAction.CONTEXT_KEY, getKey(JtsTabAction.CONTEXT_KEY));
+                action.setKey(CONTEXT_KEY, getKey(CONTEXT_KEY));
                 action.setKey(JtsShowGtpTabAction.GTP_FILE_PATH, result);
                 action.execute();
             }
@@ -89,6 +84,4 @@ public class JtsGtpTabAction extends JtsBaseAction {
         });
         action.execute();
     }
-
-
 }

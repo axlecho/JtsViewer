@@ -1,4 +1,4 @@
-package com.axlecho.jtsviewer.activity;
+package com.axlecho.jtsviewer.activity.cache;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.axlecho.jtsviewer.R;
+import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.action.tab.JtsShowGtpTabAction;
-import com.axlecho.jtsviewer.action.tab.JtsTabAction;
-import com.axlecho.jtsviewer.module.CacheModule;
+import com.axlecho.jtsviewer.cache.module.CacheModule;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 
 import java.io.File;
@@ -35,7 +35,7 @@ public class CacheViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         CacheModule module = modules.get(position);
         JtsShowGtpTabAction action = new JtsShowGtpTabAction();
-        action.setKey(JtsTabAction.CONTEXT_KEY, this.context.getApplicationContext());
+        action.setKey(JtsBaseAction.CONTEXT_KEY, this.context.getApplicationContext());
         action.setKey(JtsShowGtpTabAction.GTP_FILE_PATH, module.path + File.separator + module.fileName);
 
         ((CacheViewHolder) holder).contentView.setText(JtsTextUnitls.removePostfixFromFileName(module.fileName));

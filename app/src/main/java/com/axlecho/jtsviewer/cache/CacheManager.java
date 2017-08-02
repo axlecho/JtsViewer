@@ -3,7 +3,7 @@ package com.axlecho.jtsviewer.cache;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.axlecho.jtsviewer.module.CacheModule;
+import com.axlecho.jtsviewer.cache.module.CacheModule;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 
 import org.json.JSONException;
@@ -30,7 +30,11 @@ public class CacheManager {
 
     public static CacheManager getInstance(Context context) {
         if (instance == null) {
-            instance = new CacheManager(context);
+            synchronized (CacheManager.class) {
+                if (instance == null) {
+                    instance = new CacheManager(context);
+                }
+            }
         }
 
         return instance;

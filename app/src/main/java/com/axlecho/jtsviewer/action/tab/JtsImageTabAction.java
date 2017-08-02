@@ -21,8 +21,8 @@ public class JtsImageTabAction extends JtsBaseAction {
     @Override
     public void execute() {
         String webpageContent = (String) getKey(JtsNetworkManager.WEBPAGE_CONTENT_KEY);
-        Context context = (Context) getKey(JtsTabAction.CONTEXT_KEY);
-        long gid = (long) getKey(JtsTabAction.GID_KEY);
+        Context context = (Context) getKey(CONTEXT_KEY);
+        long gid = (long) getKey(JtsParseTabAction.GID_KEY);
         JtsViewerLog.appendToFile(context, webpageContent);
         JtsViewerLog.d(TAG, "gid " + gid);
 

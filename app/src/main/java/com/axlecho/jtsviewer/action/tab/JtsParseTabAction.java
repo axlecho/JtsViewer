@@ -4,13 +4,12 @@ import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.network.JtsNetworkManager;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 
-public class JtsTabAction extends JtsBaseAction {
+public class JtsParseTabAction extends JtsBaseAction {
     private static final int TAB_TYPE_IMAGE = 1;
     private static final int TAB_TYPE_GTP = 2;
 
-    public static final String CONTEXT_KEY = "tab_action_context";
     public static final String GID_KEY = "tab_action_gid";
-    public static final String TAG = JtsTabAction.class.getSimpleName();
+    public static final String TAG = JtsParseTabAction.class.getSimpleName();
 
     @Override
     public void execute() {

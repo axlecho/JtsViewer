@@ -32,12 +32,13 @@ import okio.Okio;
 import okio.Source;
 
 public class JtsNetworkManager {
-    public static final String WEBPAGE_CONTENT_KEY = "webpage_content";
     private static final String TAG = JtsNetworkManager.class.getSimpleName();
-    private static JtsNetworkManager jtsNetworkManager;
+    private static final int DEFAULT_TIMEOUT = 15;
+    public static final String WEBPAGE_CONTENT_KEY = "webpage_content";
+
+    private static JtsNetworkManager instance;
     private OkHttpClient client;
     private Context context;
-    private static final int DEFAULT_TIMEOUT = 15;
 
     private JtsNetworkManager(Context context) {
         this.context = context;
@@ -49,10 +50,14 @@ public class JtsNetworkManager {
     }
 
     public static JtsNetworkManager getInstance(Context context) {
-        if (jtsNetworkManager == null) {
-            jtsNetworkManager = new JtsNetworkManager(context);
+        if (instance == null) {
+            synchronized (JtsNetworkManager.class) {
+                if (instance == null) {
+                    instance = new JtsNetworkManager(context);
+                }
+            }
         }
-        return jtsNetworkManager;
+        return instance;
     }
 
     public void get(String url, JtsBaseAction action) {
@@ -63,7 +68,6 @@ public class JtsNetworkManager {
 
         client.newCall(request).enqueue(new JtsNetworkCallback(action));
     }
-
 
     public String download(String url, String path) throws Exception {
         Request request = new Request.Builder()

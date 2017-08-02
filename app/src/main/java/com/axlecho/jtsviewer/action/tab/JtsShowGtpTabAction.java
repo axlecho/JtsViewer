@@ -11,17 +11,13 @@ import com.axlecho.jtsviewer.untils.JtsViewerLog;
 
 import org.herac.tuxguitar.android.activity.TGActivity;
 
-/**
- * Created by Administrator on 2017/8/1.
- */
-
 public class JtsShowGtpTabAction extends JtsBaseAction {
     private static final String TAG = JtsShowGtpTabAction.class.getSimpleName();
     public static final String GTP_FILE_PATH = "show_gtp_file_path";
 
     @Override
     public void execute() {
-        Context context = (Context) getKey(JtsTabAction.CONTEXT_KEY);
+        Context context = (Context) getKey(CONTEXT_KEY);
         String filePath = (String) getKey(JtsShowGtpTabAction.GTP_FILE_PATH);
         if (filePath == null) {
             JtsViewerLog.e(TAG, "file path is null");

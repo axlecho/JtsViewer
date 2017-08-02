@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.axlecho.jtsviewer.cache.CacheManager;
-import com.axlecho.jtsviewer.module.CacheModule;
+import com.axlecho.jtsviewer.cache.module.CacheModule;
 import com.axlecho.jtsviewer.network.JtsNetworkManager;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 
@@ -16,18 +16,18 @@ import java.util.List;
 public class DownloadTask extends AsyncTask<Void, Long, String> {
     private static final String TAG = "DownloadTask";
 
-    private String mPath;
-    private String mUrl;
-    private Context mContext;
+    private String path;
+    private String url;
+    private Context context;
     private long gid;
 
     private List<DownloadListener> mListeners = new ArrayList<>();
 
     public DownloadTask(Context context, String url, long gid) {
-        mUrl = url;
-        mContext = context;
+        this.url = url;
+        this.context = context;
         this.gid = gid;
-        mPath = CacheManager.getInstance(context).getCachePath() + File.separator + gid;
+        this.path = CacheManager.getInstance(context).getCachePath() + File.separator + gid;
     }
 
     public void setDownloadListener(DownloadListener listener) {
@@ -42,10 +42,6 @@ public class DownloadTask extends AsyncTask<Void, Long, String> {
         mListeners.remove(listener);
     }
 
-    public void cancel() {
-
-    }
-
     @Override
     protected void onPreExecute() {
         for (DownloadListener listener : mListeners) {
@@ -58,7 +54,7 @@ public class DownloadTask extends AsyncTask<Void, Long, String> {
     @Override
     protected String doInBackground(Void... voids) {
         try {
-            return JtsNetworkManager.getInstance(mContext).download(mUrl, mPath);
+            return JtsNetworkManager.getInstance(context).download(url, path);
         } catch (Exception e) {
             e.printStackTrace();
             cancel(true);
@@ -84,7 +80,7 @@ public class DownloadTask extends AsyncTask<Void, Long, String> {
     @Override
     protected void onPostExecute(String result) {
         for (DownloadListener listener : mListeners) {
-            listener.onFinish(mPath + File.separator + result);
+            listener.onFinish(path + File.separator + result);
         }
         this.cacheInfo(result);
         super.onPostExecute(result);
@@ -100,7 +96,7 @@ public class DownloadTask extends AsyncTask<Void, Long, String> {
 
     public void cacheInfo(String fileName) {
         CacheModule cacheInfo = new CacheModule();
-        cacheInfo.path = mPath;
+        cacheInfo.path = path;
         cacheInfo.fileName = fileName;
         cacheInfo.gid = String.valueOf(gid);
         cacheInfo.type = "gtp";
