@@ -65,7 +65,8 @@ public class JtsTextUnitls {
     public static String getFileNameFromPath(String path) {
         int start = path.lastIndexOf("/");
         int end = path.lastIndexOf(".");
-        if (start != -1 && end != -1) {
+
+        if (start != -1 && end != -1 && end > start) {
             return path.substring(start + 1, end);
         } else {
             return "";

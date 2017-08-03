@@ -4,12 +4,16 @@ import android.content.Context;
 
 import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.action.download.DownloadAction;
+import com.axlecho.jtsviewer.activity.main.MainActivity;
+import com.axlecho.jtsviewer.activity.main.MainActivityController;
 import com.axlecho.jtsviewer.network.JtsConf;
+import com.axlecho.jtsviewer.network.JtsCookieManager;
 import com.axlecho.jtsviewer.network.JtsNetworkManager;
 import com.axlecho.jtsviewer.network.download.DownloadListener;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 
+import java.net.CookieManager;
 import java.util.List;
 
 
@@ -37,6 +41,12 @@ public class JtsGtpTabAction extends JtsBaseAction {
             JtsViewerLog.e(TAG, "execute failed - context is null");
             return;
         }
+        if (JtsCookieManager.getInstance(context).getCookie().equals("") ||
+                JtsCookieManager.getInstance(context).getCookie() == null) {
+            MainActivityController.getInstance().processShowLogin();
+            return;
+        }
+
         List<String> gtpUrls = JtsTextUnitls.findByPattern(webpageContent, GTP_PATTERN);
         JtsViewerLog.i(TAG, gtpUrls.toString());
 

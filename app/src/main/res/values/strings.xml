@@ -6,5 +6,6 @@
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_cache">Cache</string>
-    <string name="unlogin">Please login</string>
+    <string name="unlogin_tip">Please login</string>
+    <string name="login">login</string>
 </resources>

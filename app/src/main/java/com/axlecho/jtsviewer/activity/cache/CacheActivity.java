@@ -39,6 +39,7 @@ public class CacheActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         cacheView.setLayoutManager(layoutManager);
 
+        CacheManager.getInstance(this).reloadModule();
         this.modules = CacheManager.getInstance(this).getModule();
         JtsViewerLog.d(JtsViewerLog.CACHE_MODULE, TAG, modules.toString());
 

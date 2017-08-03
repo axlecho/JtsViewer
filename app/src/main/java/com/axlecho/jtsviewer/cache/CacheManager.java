@@ -32,7 +32,7 @@ public class CacheManager {
         if (instance == null) {
             synchronized (CacheManager.class) {
                 if (instance == null) {
-                    instance = new CacheManager(context);
+                    instance = new CacheManager(context.getApplicationContext());
                 }
             }
         }

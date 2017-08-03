@@ -11,19 +11,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.webkit.WebView;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.axlecho.jtsviewer.R;
-import com.axlecho.jtsviewer.network.JtsConf;
-import com.axlecho.jtsviewer.network.JtsServerApi;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private String TAG = MainActivity.class.getSimpleName();
-    public WebView mMainWebView;
+    public WebView webView;
     public FloatingActionButton floatingActionButton;
     public ProgressBar progressBar;
     public NavigationView navigationView;
@@ -54,10 +50,10 @@ public class MainActivity extends AppCompatActivity
         this.navigationView = (NavigationView) findViewById(R.id.nav_view);
         this.navigationView.setNavigationItemSelectedListener(this);
 
-        mMainWebView = (WebView) findViewById(R.id.main_content_webview);
-        mMainWebView.loadUrl(JtsConf.HOST_URL);
+        webView = (WebView) findViewById(R.id.main_content_webview);
         progressBar = (ProgressBar) findViewById(R.id.main_content_progressbar);
 
+        this.controller.processLoadHome();
         this.controller.loadUserInfo();
     }
 
@@ -100,7 +96,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            // Handle the camera action
+            this.controller.processLoadHome();
         } else if (id == R.id.nav_cache) {
             this.controller.processJumpCache();
         } else if (id == R.id.nav_manage) {
@@ -116,8 +112,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if ((keyCode == KeyEvent.KEYCODE_BACK) && mMainWebView.canGoBack()) {
-            mMainWebView.goBack();
+        if ((keyCode == KeyEvent.KEYCODE_BACK) && webView.canGoBack()) {
+            webView.goBack();
             return true;
         }
 

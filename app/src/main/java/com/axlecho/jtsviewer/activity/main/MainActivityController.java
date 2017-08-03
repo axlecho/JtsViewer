@@ -2,13 +2,17 @@ package com.axlecho.jtsviewer.activity.main;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.action.JtsBaseAction;
+import com.axlecho.jtsviewer.action.user.JtsLoginAction;
 import com.axlecho.jtsviewer.action.user.JtsParseUserInfoAction;
 import com.axlecho.jtsviewer.activity.cache.CacheActivity;
 import com.axlecho.jtsviewer.module.UserModule;
@@ -92,6 +96,7 @@ public class MainActivityController {
 
     public void processLoadUserInfo(final UserModule user) {
         JtsViewerLog.d(TAG, user.toString());
+
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -106,8 +111,27 @@ public class MainActivityController {
                 if (user.userName != null) {
                     userNameTextView.setText(user.userName);
                 }
+
+                if (user.uid <= 0) {
+                    drawerUserInfoImageView.setOnClickListener(new JtsLoginAction());
+                }
             }
         });
 
+    }
+
+    public void processLogin() {
+        activity.webView.loadUrl(JtsConf.LOGIN_URL);
+        DrawerLayout drawer = (DrawerLayout) activity.findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+    }
+
+    public void processLoadHome() {
+        activity.webView.loadUrl(JtsConf.HOST_URL);
+    }
+
+    public void processShowLogin() {
+        Snackbar.make(activity.webView, activity.getResources().getString(R.string.unlogin_tip), Snackbar.LENGTH_LONG)
+                .setAction(activity.getResources().getString(R.string.login), new JtsLoginAction()).show();
     }
 }

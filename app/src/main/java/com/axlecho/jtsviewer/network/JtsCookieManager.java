@@ -7,6 +7,7 @@ import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 
+import com.axlecho.jtsviewer.activity.main.MainActivityController;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 
 public class JtsCookieManager {
@@ -51,6 +52,7 @@ public class JtsCookieManager {
         editor.putString(COOKIES_KEY, cookieStr);
         editor.apply();
         JtsViewerLog.i(TAG, "save cookie " + cookieStr);
+        MainActivityController.getInstance().loadUserInfo();
     }
 
     public void setCookie(WebView webView, String url) {
@@ -76,6 +78,10 @@ public class JtsCookieManager {
 
     public String getCookie() {
         SharedPreferences preferences = this.context.getSharedPreferences(PREFERENCES_PATH, Context.MODE_PRIVATE);
-        return preferences.getString(COOKIES_KEY, null);
+        String cookieStr = preferences.getString(COOKIES_KEY, null);
+        if (cookieStr == null) {
+            cookieStr = "";
+        }
+        return cookieStr;
     }
 }
