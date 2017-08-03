@@ -1,17 +1,24 @@
 package com.axlecho.jtsviewer.activity.main;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.action.JtsBaseAction;
+import com.axlecho.jtsviewer.action.network.JtsSearchAction;
+import com.axlecho.jtsviewer.action.tab.JtsShowGtpTabAction;
 import com.axlecho.jtsviewer.action.user.JtsLoginAction;
 import com.axlecho.jtsviewer.action.user.JtsParseUserInfoAction;
 import com.axlecho.jtsviewer.activity.cache.CacheActivity;
@@ -133,5 +140,35 @@ public class MainActivityController {
     public void processShowLogin() {
         Snackbar.make(activity.webView, activity.getResources().getString(R.string.unlogin_tip), Snackbar.LENGTH_LONG)
                 .setAction(activity.getResources().getString(R.string.login), new JtsLoginAction()).show();
+    }
+
+    public void processSearchView() {
+        if (activity.searchView == null) {
+            return;
+        }
+
+        activity.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if (!activity.searchView.isIconified()) {
+                    activity.searchView.setIconified(true);
+                }
+                activity.searchItem.collapseActionView();
+                JtsSearchAction action = new JtsSearchAction();
+                action.setKey(JtsSearchAction.SEARCH_CONTENT_KEY, query);
+                action.execute();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                // UserFeedback.show( "SearchOnQueryTextChanged: " + s);
+                return false;
+            }
+        });
+    }
+
+    public void processSearch(String keyword) {
+        activity.webView.loadUrl("http://m.jitashe.org/search/tab/" + keyword);
     }
 }
