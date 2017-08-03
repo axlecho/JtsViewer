@@ -82,6 +82,15 @@ public class CacheManager {
         return moduleList;
     }
 
+    public CacheModule getModule(long gid) {
+        for (CacheModule module : moduleList) {
+            if (Long.parseLong(module.gid) == gid) {
+                return module;
+            }
+        }
+        return null;
+    }
+
     public String getCachePath() {
         return cachePath;
     }
