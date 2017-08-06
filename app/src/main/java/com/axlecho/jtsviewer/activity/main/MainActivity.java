@@ -91,7 +91,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_refresh) {
+            MainActivityController.getInstance().processRefresh();
             return true;
         }
 
@@ -108,7 +109,7 @@ public class MainActivity extends AppCompatActivity
             this.controller.processLoadHome();
         } else if (id == R.id.nav_cache) {
             this.controller.processJumpCache();
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_setting) {
 
         } else if (id == R.id.nav_share) {
 

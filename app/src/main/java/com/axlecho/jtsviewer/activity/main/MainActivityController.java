@@ -138,7 +138,7 @@ public class MainActivityController {
     }
 
     public void processShowLogin() {
-        Snackbar.make(activity.webView, activity.getResources().getString(R.string.unlogin_tip), Snackbar.LENGTH_LONG)
+        Snackbar.make(activity.webView, activity.getResources().getString(R.string.unlogin_tip_long), Snackbar.LENGTH_LONG)
                 .setAction(activity.getResources().getString(R.string.login), new JtsLoginAction()).show();
     }
 
@@ -170,5 +170,9 @@ public class MainActivityController {
 
     public void processSearch(String keyword) {
         activity.webView.loadUrl("http://m.jitashe.org/search/tab/" + keyword);
+    }
+
+    public void processRefresh() {
+        activity.webView.reload();
     }
 }

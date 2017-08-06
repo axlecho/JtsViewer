@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">JtsViewer</string>
+
+    <string name="navigation_drawer_open">打开侧边栏</string>
+    <string name="navigation_drawer_close">关闭侧边栏</string>
+    <string name="action_settings">设置</string>
+    <string name="action_refresh">刷新</string>
+    <string name="title_cache">缓存</string>
+    <string name="title_home">主页</string>
+    <string name="title_communicate">社交</string>
+    <string name="action_share">分享</string>
+    <string name="unlogin_tip">请登录</string>
+    <string name="unlogin_tip_long">下载gtp需要登录</string>
+    <string name="search">搜索</string>
+    <string name="login">登录</string>
+</resources>
