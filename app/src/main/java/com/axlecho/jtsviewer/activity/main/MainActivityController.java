@@ -17,7 +17,9 @@ import android.widget.TextView;
 
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.action.JtsBaseAction;
+import com.axlecho.jtsviewer.action.JtsParseHomePageAction;
 import com.axlecho.jtsviewer.action.network.JtsSearchAction;
+import com.axlecho.jtsviewer.action.tab.JtsParseTabAction;
 import com.axlecho.jtsviewer.action.tab.JtsShowGtpTabAction;
 import com.axlecho.jtsviewer.action.user.JtsLoginAction;
 import com.axlecho.jtsviewer.action.user.JtsParseUserInfoAction;
@@ -135,6 +137,10 @@ public class MainActivityController {
 
     public void processLoadHome() {
         activity.webView.loadUrl(JtsConf.HOST_URL);
+
+        JtsParseHomePageAction action = new JtsParseHomePageAction();
+        action.setKey(JtsBaseAction.CONTEXT_KEY, activity);
+        JtsNetworkManager.getInstance(activity).get(JtsConf.DESKTOP_NEW_URL, action);
     }
 
     public void processShowLogin() {
