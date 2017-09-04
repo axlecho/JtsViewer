@@ -1,16 +1,14 @@
 package com.axlecho.jtsviewer.activity.main;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,21 +17,23 @@ import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.action.JtsParseHomePageAction;
 import com.axlecho.jtsviewer.action.network.JtsSearchAction;
-import com.axlecho.jtsviewer.action.tab.JtsParseTabAction;
-import com.axlecho.jtsviewer.action.tab.JtsShowGtpTabAction;
 import com.axlecho.jtsviewer.action.user.JtsLoginAction;
 import com.axlecho.jtsviewer.action.user.JtsParseUserInfoAction;
 import com.axlecho.jtsviewer.activity.cache.CacheActivity;
+import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.UserModule;
 import com.axlecho.jtsviewer.network.JtsConf;
 import com.axlecho.jtsviewer.network.JtsNetworkManager;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 public class MainActivityController {
     private static final String TAG = MainActivityController.class.getSimpleName();
     private static MainActivityController instance;
     private MainActivity activity;
+    private JtsTabListAdapter adapter;
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
@@ -130,22 +130,35 @@ public class MainActivityController {
     }
 
     public void processLogin() {
-        activity.webView.loadUrl(JtsConf.LOGIN_URL);
+        // activity.webView.loadUrl(JtsConf.LOGIN_URL);
         DrawerLayout drawer = (DrawerLayout) activity.findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
     }
 
     public void processLoadHome() {
-        activity.webView.loadUrl(JtsConf.HOST_URL);
-
         JtsParseHomePageAction action = new JtsParseHomePageAction();
         action.setKey(JtsBaseAction.CONTEXT_KEY, activity);
         JtsNetworkManager.getInstance(activity).get(JtsConf.DESKTOP_NEW_URL, action);
     }
 
     public void processShowLogin() {
-        Snackbar.make(activity.webView, activity.getResources().getString(R.string.unlogin_tip_long), Snackbar.LENGTH_LONG)
+        Snackbar.make(activity.recyclerView, activity.getResources().getString(R.string.unlogin_tip_long), Snackbar.LENGTH_LONG)
                 .setAction(activity.getResources().getString(R.string.login), new JtsLoginAction()).show();
+    }
+
+    public void processShowHome(final List<JtsTabInfoModel> content) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (adapter == null) {
+                    adapter = new JtsTabListAdapter(activity, content);
+                }
+
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false);
+                activity.recyclerView.setLayoutManager(layoutManager);
+                activity.recyclerView.setAdapter(adapter);
+            }
+        });
     }
 
     public void processSearchView() {
@@ -175,10 +188,10 @@ public class MainActivityController {
     }
 
     public void processSearch(String keyword) {
-        activity.webView.loadUrl("http://m.jitashe.org/search/tab/" + keyword);
+        // TODO
     }
 
     public void processRefresh() {
-        activity.webView.reload();
+        // TODO
     }
 }

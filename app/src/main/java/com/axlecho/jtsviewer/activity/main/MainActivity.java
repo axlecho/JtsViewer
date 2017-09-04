@@ -7,6 +7,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -20,12 +21,12 @@ import com.axlecho.jtsviewer.R;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private String TAG = MainActivity.class.getSimpleName();
-    public WebView webView;
     public FloatingActionButton floatingActionButton;
     public ProgressBar progressBar;
     public NavigationView navigationView;
     public SearchView searchView;
     public MenuItem searchItem;
+    public RecyclerView recyclerView;
 
     private MainActivityController controller;
 
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity
         this.navigationView = (NavigationView) findViewById(R.id.nav_view);
         this.navigationView.setNavigationItemSelectedListener(this);
 
-        webView = (WebView) findViewById(R.id.main_content_webview);
+        recyclerView = (RecyclerView) findViewById(R.id.main_content_recyclerview);
         progressBar = (ProgressBar) findViewById(R.id.main_content_progressbar);
 
         this.controller.processLoadHome();
@@ -119,16 +120,4 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if ((keyCode == KeyEvent.KEYCODE_BACK) && webView.canGoBack()) {
-            webView.goBack();
-            return true;
-        }
-
-        return super.onKeyDown(keyCode, event);
-    }
-
-
 }

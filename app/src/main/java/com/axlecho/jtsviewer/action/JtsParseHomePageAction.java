@@ -2,8 +2,12 @@ package com.axlecho.jtsviewer.action;
 
 import android.content.Context;
 
+import com.axlecho.jtsviewer.activity.main.MainActivityController;
+import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.network.JtsNetworkManager;
 import com.axlecho.jtsviewer.network.JtsPageParser;
+
+import java.util.List;
 
 public class JtsParseHomePageAction extends JtsBaseAction {
 
@@ -16,6 +20,7 @@ public class JtsParseHomePageAction extends JtsBaseAction {
         String html = (String) getKey(JtsNetworkManager.WEBPAGE_CONTENT_KEY);
 
         JtsPageParser.getInstance().setContent(html);
-        JtsPageParser.getInstance().parserTabList();
+        List<JtsTabInfoModel> content = JtsPageParser.getInstance().parserTabList();
+        MainActivityController.getInstance().processShowHome(content);
     }
 }
