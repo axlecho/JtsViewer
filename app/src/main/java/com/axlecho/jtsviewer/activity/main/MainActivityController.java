@@ -15,11 +15,11 @@ import android.widget.TextView;
 
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.action.JtsBaseAction;
-import com.axlecho.jtsviewer.action.JtsParseHomePageAction;
+import com.axlecho.jtsviewer.action.tab.JtsParseTabListAction;
 import com.axlecho.jtsviewer.action.network.JtsSearchAction;
 import com.axlecho.jtsviewer.action.user.JtsLoginAction;
 import com.axlecho.jtsviewer.action.user.JtsParseUserInfoAction;
-import com.axlecho.jtsviewer.activity.cache.CacheActivity;
+import com.axlecho.jtsviewer.activity.cache.HistoryActivity;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.UserModule;
 import com.axlecho.jtsviewer.network.JtsConf;
@@ -80,9 +80,9 @@ public class MainActivityController {
         }
     }
 
-    public void processJumpCache() {
+    public void processJumpHistory() {
         Intent intent = new Intent();
-        intent.setClass(activity, CacheActivity.class);
+        intent.setClass(activity, HistoryActivity.class);
         activity.startActivity(intent);
     }
 
@@ -136,7 +136,7 @@ public class MainActivityController {
     }
 
     public void processLoadHome() {
-        JtsParseHomePageAction action = new JtsParseHomePageAction();
+        JtsParseTabListAction action = new JtsParseTabListAction();
         action.setKey(JtsBaseAction.CONTEXT_KEY, activity);
         JtsNetworkManager.getInstance(activity).get(JtsConf.DESKTOP_NEW_URL, action);
     }

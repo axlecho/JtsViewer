@@ -4,10 +4,10 @@ import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.network.JtsNetworkManager;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 
-public class JtsParseTabAction extends JtsBaseAction {
+public class JtsParseTabTypeAction extends JtsBaseAction {
     private static final int TAB_TYPE_IMAGE = 1;
     private static final int TAB_TYPE_GTP = 2;
-    private static final String TAG = JtsParseTabAction.class.getSimpleName();
+    private static final String TAG = JtsParseTabTypeAction.class.getSimpleName();
     public static final String GID_KEY = "tab_action_gid";
 
     @Override
@@ -17,13 +17,13 @@ public class JtsParseTabAction extends JtsBaseAction {
 
         JtsViewerLog.i(TAG, "tab type " + type);
         if (type == TAB_TYPE_GTP) {
-            JtsGtpTabAction action = new JtsGtpTabAction();
+            JtsGetGtpTabAction action = new JtsGetGtpTabAction();
             action.setKey(CONTEXT_KEY, getKey(CONTEXT_KEY));
             action.setKey(GID_KEY, getKey(GID_KEY));
             action.setKey(JtsNetworkManager.WEBPAGE_CONTENT_KEY, getKey(JtsNetworkManager.WEBPAGE_CONTENT_KEY));
             action.execute();
         } else if (type == TAB_TYPE_IMAGE) {
-            JtsImageTabAction action = new JtsImageTabAction();
+            JtsGetImageTabAction action = new JtsGetImageTabAction();
             action.setKey(CONTEXT_KEY, getKey(CONTEXT_KEY));
             action.setKey(GID_KEY, getKey(GID_KEY));
             action.setKey(JtsNetworkManager.WEBPAGE_CONTENT_KEY, getKey(JtsNetworkManager.WEBPAGE_CONTENT_KEY));

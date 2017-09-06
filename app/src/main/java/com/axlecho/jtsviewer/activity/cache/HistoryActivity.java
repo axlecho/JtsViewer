@@ -14,8 +14,8 @@ import com.axlecho.jtsviewer.untils.JtsViewerLog;
 
 import java.util.List;
 
-public class CacheActivity extends AppCompatActivity {
-    private static final String TAG = CacheActivity.class.getSimpleName();
+public class HistoryActivity extends AppCompatActivity {
+    private static final String TAG = HistoryActivity.class.getSimpleName();
     private List<CacheModule> modules;
     private RecyclerView cacheView;
     private RecyclerView.LayoutManager layoutManager;

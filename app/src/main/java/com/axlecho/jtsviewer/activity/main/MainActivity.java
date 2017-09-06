@@ -10,10 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.webkit.WebView;
 import android.widget.ProgressBar;
 
 import com.axlecho.jtsviewer.R;
@@ -108,8 +106,8 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             this.controller.processLoadHome();
-        } else if (id == R.id.nav_cache) {
-            this.controller.processJumpCache();
+        } else if (id == R.id.nav_history) {
+            this.controller.processJumpHistory();
         } else if (id == R.id.nav_setting) {
 
         } else if (id == R.id.nav_share) {

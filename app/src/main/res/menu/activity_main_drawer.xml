@@ -6,10 +6,7 @@
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_menu_home"
             android:title="@string/title_home" />
-        <item
-            android:id="@+id/nav_cache"
-            android:icon="@drawable/ic_menu_cache"
-            android:title="@string/title_cache" />
+
         <item
             android:id="@+id/nav_setting"
             android:icon="@drawable/ic_menu_manage"
@@ -22,6 +19,15 @@
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
                 android:title="@string/action_share" />
+        </menu>
+    </item>
+
+    <item android:title="工具">
+        <menu>
+            <item
+                android:id="@+id/nav_history"
+                android:icon="@drawable/ic_menu_cache"
+                android:title="@string/title_history" />
         </menu>
     </item>
 </menu>

@@ -1,7 +1,8 @@
-package com.axlecho.jtsviewer.action;
+package com.axlecho.jtsviewer.action.tab;
 
 import android.content.Context;
 
+import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.activity.main.MainActivityController;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.network.JtsNetworkManager;
@@ -9,9 +10,9 @@ import com.axlecho.jtsviewer.network.JtsPageParser;
 
 import java.util.List;
 
-public class JtsParseHomePageAction extends JtsBaseAction {
+public class JtsParseTabListAction extends JtsBaseAction {
 
-    private static final String TAG = JtsParseHomePageAction.class.getSimpleName();
+    private static final String TAG = JtsParseTabListAction.class.getSimpleName();
 
     @Override
     public void execute() {

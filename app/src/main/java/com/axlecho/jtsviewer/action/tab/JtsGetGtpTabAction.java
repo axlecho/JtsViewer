@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.action.download.DownloadAction;
-import com.axlecho.jtsviewer.activity.main.MainActivity;
 import com.axlecho.jtsviewer.activity.main.MainActivityController;
 import com.axlecho.jtsviewer.network.JtsConf;
 import com.axlecho.jtsviewer.network.JtsCookieManager;
@@ -13,21 +12,20 @@ import com.axlecho.jtsviewer.network.download.DownloadListener;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 
-import java.net.CookieManager;
 import java.util.List;
 
 
-public class JtsGtpTabAction extends JtsBaseAction {
+public class JtsGetGtpTabAction extends JtsBaseAction {
 
     private static final String GTP_PATTERN = "dlink=\"/forum.php\\?mod=attachment.*?\"";
-    private static final String TAG = JtsGtpTabAction.class.getSimpleName();
+    private static final String TAG = JtsGetGtpTabAction.class.getSimpleName();
 
 
     @Override
     public void execute() {
         String webpageContent = (String) getKey(JtsNetworkManager.WEBPAGE_CONTENT_KEY);
         Context context = (Context) getKey(CONTEXT_KEY);
-        long gid = (long) getKey(JtsParseTabAction.GID_KEY);
+        long gid = (long) getKey(JtsParseTabTypeAction.GID_KEY);
 
         JtsViewerLog.appendToFile(context, webpageContent);
         JtsViewerLog.d(TAG, "gid " + gid);
@@ -65,7 +63,7 @@ public class JtsGtpTabAction extends JtsBaseAction {
         DownloadAction action = new DownloadAction();
         action.setKey(CONTEXT_KEY, getKey(CONTEXT_KEY));
         action.setKey(DownloadAction.URL_KEY, url);
-        action.setKey(JtsParseTabAction.GID_KEY, getKey(JtsParseTabAction.GID_KEY));
+        action.setKey(JtsParseTabTypeAction.GID_KEY, getKey(JtsParseTabTypeAction.GID_KEY));
 
         action.setDownloadHandler(new DownloadListener() {
             @Override

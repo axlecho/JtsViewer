@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.action.tab.JtsGetTabAction;
-import com.axlecho.jtsviewer.action.tab.JtsParseTabAction;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 

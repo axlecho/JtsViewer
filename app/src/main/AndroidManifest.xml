@@ -30,8 +30,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.cache.CacheActivity"
-            android:label="@string/title_cache"
+            android:name=".activity.cache.HistoryActivity"
+            android:label="@string/title_history"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>

@@ -3,7 +3,7 @@ package com.axlecho.jtsviewer.action.download;
 import android.content.Context;
 
 import com.axlecho.jtsviewer.action.JtsBaseAction;
-import com.axlecho.jtsviewer.action.tab.JtsParseTabAction;
+import com.axlecho.jtsviewer.action.tab.JtsParseTabTypeAction;
 import com.axlecho.jtsviewer.action.tab.JtsShowGtpTabAction;
 import com.axlecho.jtsviewer.cache.CacheManager;
 import com.axlecho.jtsviewer.module.CacheModule;
@@ -34,7 +34,7 @@ public class DownloadAction extends JtsBaseAction {
     public void execute() {
         this.context = (Context) getKey(CONTEXT_KEY);
         this.url = (String) getKey(URL_KEY);
-        this.gid = (long) getKey(JtsParseTabAction.GID_KEY);
+        this.gid = (long) getKey(JtsParseTabTypeAction.GID_KEY);
 
         JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, "[download url] " + url);
         JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, "[download gid] " + gid);

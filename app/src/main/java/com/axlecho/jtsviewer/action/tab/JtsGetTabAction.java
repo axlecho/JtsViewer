@@ -15,9 +15,9 @@ public class JtsGetTabAction extends JtsBaseAction {
         Context context = (Context) getKey(CONTEXT_KEY);
         String url = (String) getKey(URL_KEY);
 
-        JtsParseTabAction action = new JtsParseTabAction();
+        JtsParseTabTypeAction action = new JtsParseTabTypeAction();
         action.setKey(CONTEXT_KEY, context);
-        action.setKey(JtsParseTabAction.GID_KEY, JtsTextUnitls.getTabKeyFromUrl(url));
+        action.setKey(JtsParseTabTypeAction.GID_KEY, JtsTextUnitls.getTabKeyFromUrl(url));
         JtsNetworkManager.getInstance(context).get(JtsConf.HOST_URL + url, action);
     }
 }
