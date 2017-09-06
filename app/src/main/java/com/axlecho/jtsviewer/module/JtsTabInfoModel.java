@@ -9,9 +9,10 @@ public class JtsTabInfoModel {
     public String type;
     public String uper;
     public String avatar;
+    public String url;
 
     @Override
     public String toString() {
-        return "[title " + title + " author " + author + " time " + time + " reply " + reply + " watch " + watch + " type " + type + " uper " + uper + " avatar " + avatar + "]";
+        return "[title " + title + " author " + author + " time " + time + " reply " + reply + " watch " + watch + " type " + type + " uper " + uper + " avatar " + avatar + " url " + url + "]";
     }
 }

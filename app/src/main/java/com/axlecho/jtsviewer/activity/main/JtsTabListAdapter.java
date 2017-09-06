@@ -9,15 +9,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.axlecho.jtsviewer.R;
+import com.axlecho.jtsviewer.action.JtsBaseAction;
+import com.axlecho.jtsviewer.action.tab.JtsGetTabAction;
+import com.axlecho.jtsviewer.action.tab.JtsParseTabAction;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
+import com.axlecho.jtsviewer.untils.JtsViewerLog;
 
 import java.util.List;
 
 public class JtsTabListAdapter extends RecyclerView.Adapter<JtsTabListAdapter.TabViewHolder> {
 
+    private static final String TAG = JtsTabListAdapter.class.getSimpleName();
     private List<JtsTabInfoModel> content;
     private Context context;
-    private JtsTabListAdapter adapter;
 
     public JtsTabListAdapter(Context context, List<JtsTabInfoModel> content) {
         this.context = context;
@@ -28,9 +32,7 @@ public class JtsTabListAdapter extends RecyclerView.Adapter<JtsTabListAdapter.Ta
     public TabViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(context).inflate(R.layout.item_tab, parent, false);
-        TabViewHolder holder = new TabViewHolder(view);
-
-        return holder;
+        return new TabViewHolder(view);
     }
 
     @Override
@@ -48,7 +50,9 @@ public class JtsTabListAdapter extends RecyclerView.Adapter<JtsTabListAdapter.Ta
         return content.size();
     }
 
-    class TabViewHolder extends RecyclerView.ViewHolder {
+
+    class TabViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
         private TextView title;
         private TextView author;
         private TextView time;
@@ -68,6 +72,9 @@ public class JtsTabListAdapter extends RecyclerView.Adapter<JtsTabListAdapter.Ta
             type = (TextView) view.findViewById(R.id.tab_item_type);
             uper = (TextView) view.findViewById(R.id.tab_item_uper);
             avatar = (TextView) view.findViewById(R.id.tab_item_avatar);
+
+            View cardView = view.findViewById(R.id.tab_item_cardview);
+            cardView.setOnClickListener(this);
         }
 
         public void setData(JtsTabInfoModel model) {
@@ -79,6 +86,18 @@ public class JtsTabListAdapter extends RecyclerView.Adapter<JtsTabListAdapter.Ta
             type.setText(model.type);
             uper.setText(model.uper);
             avatar.setText(model.avatar);
+        }
+
+        @Override
+        public void onClick(View v) {
+
+
+            JtsTabInfoModel model = content.get(getAdapterPosition());
+            JtsViewerLog.d(TAG, model.url);
+            JtsGetTabAction action = new JtsGetTabAction();
+            action.setKey(JtsBaseAction.CONTEXT_KEY, context);
+            action.setKey(JtsGetTabAction.URL_KEY, model.url);
+            action.execute();
         }
     }
 }

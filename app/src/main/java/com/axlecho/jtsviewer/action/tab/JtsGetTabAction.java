@@ -3,6 +3,7 @@ package com.axlecho.jtsviewer.action.tab;
 import android.content.Context;
 
 import com.axlecho.jtsviewer.action.JtsBaseAction;
+import com.axlecho.jtsviewer.network.JtsConf;
 import com.axlecho.jtsviewer.network.JtsNetworkManager;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 
@@ -17,6 +18,6 @@ public class JtsGetTabAction extends JtsBaseAction {
         JtsParseTabAction action = new JtsParseTabAction();
         action.setKey(CONTEXT_KEY, context);
         action.setKey(JtsParseTabAction.GID_KEY, JtsTextUnitls.getTabKeyFromUrl(url));
-        JtsNetworkManager.getInstance(context).get(url, action);
+        JtsNetworkManager.getInstance(context).get(JtsConf.HOST_URL + url, action);
     }
 }

@@ -63,6 +63,7 @@ public class JtsPageParser {
         model.avatar = e.select("img[src*=avatar.php]").attr("src");
         model.author = e.select("a[href*=/artist/]").first().text();
         model.title = e.select("a[href*=/tab/]").first().text();
+        model.url = e.select("a[href*=/tab/]").first().attr("href");
         model.type = e.select("img[src*=/static/image/filetype/]").first().attr("title");
 
         Iterator i = e.select("a[href*=/space/]").iterator();
