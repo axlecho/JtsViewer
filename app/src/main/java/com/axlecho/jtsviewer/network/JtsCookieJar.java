@@ -1,7 +1,9 @@
 package com.axlecho.jtsviewer.network;
 
+import android.content.Context;
+
 import java.util.ArrayList;
-import java.util.HashMap;
+
 import java.util.List;
 
 import okhttp3.Cookie;
@@ -9,11 +11,17 @@ import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
 
 public class JtsCookieJar implements CookieJar {
-    private final HashMap<HttpUrl, List<Cookie>> cookieStore = new HashMap<>();
+    private JtsPersistentCookieStore cookieStore;
+
+    public JtsCookieJar(Context context) {
+        cookieStore = new JtsPersistentCookieStore(context);
+    }
 
     @Override
     public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
-        cookieStore.put(url, cookies);
+        for (Cookie cookie : cookies) {
+            cookieStore.put(url, cookie);
+        }
     }
 
     @Override

@@ -1,7 +1,5 @@
 package com.axlecho.jtsviewer.action.user;
 
-import android.app.Activity;
-
 import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.activity.main.MainActivityController;
 import com.axlecho.jtsviewer.module.UserModule;

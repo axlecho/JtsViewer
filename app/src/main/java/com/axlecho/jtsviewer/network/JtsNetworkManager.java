@@ -47,7 +47,7 @@ public class JtsNetworkManager {
         clientBuilder.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
         clientBuilder.addInterceptor(new LoggingInterceptor());
         clientBuilder.networkInterceptors().add(new ProgressInterceptor());
-        clientBuilder.cookieJar(new JtsCookieJar());
+        clientBuilder.cookieJar(new JtsCookieJar(this.context));
         client = clientBuilder.build();
 
     }
