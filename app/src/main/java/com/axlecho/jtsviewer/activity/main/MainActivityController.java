@@ -19,6 +19,7 @@ import com.axlecho.jtsviewer.action.tab.JtsParseTabListAction;
 import com.axlecho.jtsviewer.action.network.JtsSearchAction;
 import com.axlecho.jtsviewer.action.user.JtsLoginAction;
 import com.axlecho.jtsviewer.action.user.JtsParseUserInfoAction;
+import com.axlecho.jtsviewer.action.user.JtsShowLoginAction;
 import com.axlecho.jtsviewer.activity.cache.HistoryActivity;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.UserModule;
@@ -59,15 +60,6 @@ public class MainActivityController {
         return this.activity;
     }
 
-    public void enableFloatingActionButton(JtsBaseAction action) {
-        activity.floatingActionButton.setVisibility(View.VISIBLE);
-        activity.floatingActionButton.setOnClickListener(action);
-    }
-
-    public void disableFloatingActionButton() {
-        activity.floatingActionButton.setVisibility(View.GONE);
-        activity.floatingActionButton.setOnClickListener(null);
-    }
 
     public void processProgressChanged(int progress) {
         if (progress == 100) {
@@ -122,7 +114,9 @@ public class MainActivityController {
                 }
 
                 if (user.uid <= 0) {
-                    drawerUserInfoImageView.setOnClickListener(new JtsLoginAction());
+                    JtsShowLoginAction action = new JtsShowLoginAction();
+                    action.setKey(JtsBaseAction.CONTEXT_KEY,activity);
+                    drawerUserInfoImageView.setOnClickListener(action);
                 }
             }
         });
@@ -130,9 +124,11 @@ public class MainActivityController {
     }
 
     public void processLogin() {
-        // activity.webView.loadUrl(JtsConf.LOGIN_URL);
         DrawerLayout drawer = (DrawerLayout) activity.findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+        JtsShowLoginAction action = new JtsShowLoginAction();
+        action.setKey(JtsBaseAction.CONTEXT_KEY, activity);
+        action.execute();
     }
 
     public void processLoadHome() {
@@ -143,8 +139,10 @@ public class MainActivityController {
     }
 
     public void processShowLogin() {
+        JtsShowLoginAction action = new JtsShowLoginAction();
+        action.setKey(JtsBaseAction.CONTEXT_KEY, activity);
         Snackbar.make(activity.recyclerView, activity.getResources().getString(R.string.unlogin_tip_long), Snackbar.LENGTH_LONG)
-                .setAction(activity.getResources().getString(R.string.login), new JtsLoginAction()).show();
+                .setAction(activity.getResources().getString(R.string.login), action).show();
     }
 
     public void processShowHome(final List<JtsTabInfoModel> content) {

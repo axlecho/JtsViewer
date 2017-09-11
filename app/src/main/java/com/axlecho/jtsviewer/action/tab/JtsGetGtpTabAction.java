@@ -39,11 +39,11 @@ public class JtsGetGtpTabAction extends JtsBaseAction {
             JtsViewerLog.e(TAG, "execute failed - context is null");
             return;
         }
-        if (JtsCookieManager.getInstance(context).getCookie().equals("") ||
-                JtsCookieManager.getInstance(context).getCookie() == null) {
-            MainActivityController.getInstance().processShowLogin();
-            return;
-        }
+//        if (JtsCookieManager.getInstance(context).getCookie().equals("") ||
+//                JtsCookieManager.getInstance(context).getCookie() == null) {
+//            MainActivityController.getInstance().processShowLogin();
+//            return;
+//        }
 
         List<String> gtpUrls = JtsTextUnitls.findByPattern(webpageContent, GTP_PATTERN);
         JtsViewerLog.i(TAG, gtpUrls.toString());

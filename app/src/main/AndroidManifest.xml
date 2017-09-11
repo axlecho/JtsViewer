@@ -24,7 +24,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -34,6 +33,7 @@
             android:label="@string/title_history"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activity.login.LoginActivity"></activity>
     </application>
 
 </manifest>

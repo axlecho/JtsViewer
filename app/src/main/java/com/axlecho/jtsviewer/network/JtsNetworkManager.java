@@ -22,6 +22,7 @@ import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import okhttp3.internal.http2.Header;
@@ -46,7 +47,9 @@ public class JtsNetworkManager {
         clientBuilder.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
         clientBuilder.addInterceptor(new LoggingInterceptor());
         clientBuilder.networkInterceptors().add(new ProgressInterceptor());
+        clientBuilder.cookieJar(new JtsCookieJar());
         client = clientBuilder.build();
+
     }
 
     public static JtsNetworkManager getInstance(Context context) {
@@ -62,8 +65,17 @@ public class JtsNetworkManager {
 
     public void get(String url, JtsBaseAction action) {
         Request request = new Request.Builder()
-                .addHeader("Cookie", JtsCookieManager.getInstance(context).getCookie())
                 .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new JtsNetworkCallback(action));
+    }
+
+    public void post(String url, RequestBody data, JtsBaseAction action) {
+        Request request = new Request.Builder()
+                .url(url)
+                .method("POST", RequestBody.create(null, new byte[0]))
+                .post(data)
                 .build();
 
         client.newCall(request).enqueue(new JtsNetworkCallback(action));
@@ -72,7 +84,6 @@ public class JtsNetworkManager {
     public String download(String url, String path) throws Exception {
         Request request = new Request.Builder()
                 .url(url)
-                .addHeader("Cookie", JtsCookieManager.getInstance(context).getCookie())
                 .build();
         Response response = client.newCall(request).execute();
 

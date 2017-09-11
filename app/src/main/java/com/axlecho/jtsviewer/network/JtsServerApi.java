@@ -32,20 +32,4 @@ public class JtsServerApi {
 
     public void checkLogin() {
     }
-
-    public void processUrlChange(final String url) {
-        if (url == null) {
-            JtsViewerLog.e(TAG, "process url change failed -- url is null");
-            return;
-        }
-
-        if (Uri.parse(url).getPath().matches(TAB_URL_PATTERN)) {
-            JtsGetTabAction action = new JtsGetTabAction();
-            action.setKey(JtsBaseAction.CONTEXT_KEY, context);
-            action.setKey(JtsGetTabAction.URL_KEY, url);
-            MainActivityController.getInstance().enableFloatingActionButton(action);
-        } else {
-            MainActivityController.getInstance().disableFloatingActionButton();
-        }
-    }
 }
