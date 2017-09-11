@@ -138,6 +138,7 @@ public class MainActivityController {
     public void processLoadHome() {
         JtsParseTabListAction action = new JtsParseTabListAction();
         action.setKey(JtsBaseAction.CONTEXT_KEY, activity);
+        action.setKey(JtsParseTabListAction.SRC_FROM_KEY, JtsParseTabListAction.SRC_FROM_DIALY);
         JtsNetworkManager.getInstance(activity).get(JtsConf.DESKTOP_NEW_URL, action);
     }
 
@@ -152,11 +153,14 @@ public class MainActivityController {
             public void run() {
                 if (adapter == null) {
                     adapter = new JtsTabListAdapter(activity, content);
+                } else {
+                    adapter.setData(content);
                 }
 
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false);
                 activity.recyclerView.setLayoutManager(layoutManager);
                 activity.recyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
             }
         });
     }
@@ -175,6 +179,7 @@ public class MainActivityController {
                 activity.searchItem.collapseActionView();
                 JtsSearchAction action = new JtsSearchAction();
                 action.setKey(JtsSearchAction.SEARCH_CONTENT_KEY, query);
+                action.setKey(JtsBaseAction.CONTEXT_KEY, activity);
                 action.execute();
                 return false;
             }
@@ -187,9 +192,6 @@ public class MainActivityController {
         });
     }
 
-    public void processSearch(String keyword) {
-        // TODO
-    }
 
     public void processRefresh() {
         // TODO

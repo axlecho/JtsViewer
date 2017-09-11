@@ -1,5 +1,6 @@
 package com.axlecho.jtsviewer.network;
 
+import com.axlecho.jtsviewer.action.tab.JtsParseTabListAction;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
@@ -36,7 +37,50 @@ public class JtsPageParser {
         this.html = html;
     }
 
-    public List<JtsTabInfoModel> parserTabList() {
+    public List<JtsTabInfoModel> parserTabList(String srcFrom) {
+        if (srcFrom.equals(JtsParseTabListAction.SRC_FROM_DIALY)) {
+            return parserTabListFromDaily();
+        } else if (srcFrom.equals(JtsParseTabListAction.SRC_FROM_SEARCH)) {
+            return parserTabListFromSearch();
+        }
+        return null;
+    }
+
+    public List<JtsTabInfoModel> parserTabListFromSearch() {
+        JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, "parser from search");
+
+        if (html == null) return null;
+        Document doc = Jsoup.parse(html);
+        Elements tbodys = doc.select("li.pbw");
+        Iterator it = tbodys.iterator();
+
+        List<JtsTabInfoModel> models = new ArrayList<>();
+        while (it.hasNext()) {
+            Element element = (Element) it.next();
+            if (element.id().matches("\\d+")) {
+                JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, element.toString());
+                JtsTabInfoModel model = parserTabByElementFromSearch(element);
+                models.add(model);
+            }
+        }
+        return models;
+    }
+
+    private JtsTabInfoModel parserTabByElementFromSearch(Element e) {
+        if (e == null) return null;
+        JtsTabInfoModel model = new JtsTabInfoModel();
+        model.author = e.select("a[href*=/artist/]").first().text();
+        model.title = e.select("a[href*=/tab/]").first().text();
+        model.url = e.select("a[href*=/tab/]").first().attr("href");
+        model.type = e.select("img[src*=/static/image/filetype/]").first().attr("title");
+
+//        String info = e.select(".search_tab_info").text();
+//        model.watch = JtsTextUnitls.findByPatternOnce(info, "（-）\\s*\\d+\\s*(?<=次查看)").trim();
+//        model.time = JtsTextUnitls.findByPatternOnce(info,"(?<=发表于:).*(?=\\s\\s\\s").trim();
+        return model;
+    }
+
+    public List<JtsTabInfoModel> parserTabListFromDaily() {
         if (html == null) return null;
         Document doc = Jsoup.parse(html);
         Elements tbodys = doc.select("tbody");
@@ -47,7 +91,7 @@ public class JtsPageParser {
             Element element = (Element) it.next();
             if (element.id().matches("normalthread_\\d+")) {
                 JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, element.toString());
-                JtsTabInfoModel model = parserTabByElement(element);
+                JtsTabInfoModel model = parserTabByElementFromDaily(element);
                 JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, model.toString());
                 models.add(model);
             }
@@ -56,7 +100,7 @@ public class JtsPageParser {
         return models;
     }
 
-    private JtsTabInfoModel parserTabByElement(Element e) {
+    private JtsTabInfoModel parserTabByElementFromDaily(Element e) {
         if (e == null) return null;
         JtsTabInfoModel model = new JtsTabInfoModel();
 

@@ -12,16 +12,19 @@ import java.util.List;
 
 public class JtsParseTabListAction extends JtsBaseAction {
 
+    public static final String SRC_FROM_KEY = "tablist_form";
+    public static final String SRC_FROM_SEARCH = "tablist_from_search";
+    public static final String SRC_FROM_DIALY = "tablist_from_daily";
+
     private static final String TAG = JtsParseTabListAction.class.getSimpleName();
 
     @Override
     public void execute() {
-
         Context context = (Context) getKey(JtsBaseAction.CONTEXT_KEY);
+        String srcFrom = (String) getKey(SRC_FROM_KEY);
         String html = (String) getKey(JtsNetworkManager.WEBPAGE_CONTENT_KEY);
-
         JtsPageParser.getInstance().setContent(html);
-        List<JtsTabInfoModel> content = JtsPageParser.getInstance().parserTabList();
+        List<JtsTabInfoModel> content = JtsPageParser.getInstance().parserTabList(srcFrom);
         MainActivityController.getInstance().processShowHome(content);
     }
 }

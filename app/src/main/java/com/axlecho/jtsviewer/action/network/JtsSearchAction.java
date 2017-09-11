@@ -1,7 +1,12 @@
 package com.axlecho.jtsviewer.action.network;
 
+import android.content.Context;
+
 import com.axlecho.jtsviewer.action.JtsBaseAction;
+import com.axlecho.jtsviewer.action.tab.JtsParseTabListAction;
 import com.axlecho.jtsviewer.activity.main.MainActivityController;
+import com.axlecho.jtsviewer.network.JtsConf;
+import com.axlecho.jtsviewer.network.JtsNetworkManager;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 
 public class JtsSearchAction extends JtsBaseAction {
@@ -10,8 +15,13 @@ public class JtsSearchAction extends JtsBaseAction {
 
     @Override
     public void execute() {
-        String searchKey = (String) getKey(SEARCH_CONTENT_KEY);
-        JtsViewerLog.d(TAG, "search key:" + searchKey);
-        MainActivityController.getInstance().processSearch(searchKey);
+        String keyword = (String) getKey(SEARCH_CONTENT_KEY);
+        Context context = (Context) getKey(JtsBaseAction.CONTEXT_KEY);
+
+        JtsViewerLog.d(TAG, "search key:" + keyword);
+        JtsParseTabListAction action = new JtsParseTabListAction();
+        action.setKey(JtsBaseAction.CONTEXT_KEY, context);
+        action.setKey(JtsParseTabListAction.SRC_FROM_KEY, JtsParseTabListAction.SRC_FROM_SEARCH);
+        JtsNetworkManager.getInstance(context).get(JtsConf.DESKTOP_SREACH_URL + keyword, action);
     }
 }
