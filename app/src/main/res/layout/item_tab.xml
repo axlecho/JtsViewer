@@ -13,12 +13,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="true"
-        android:foreground="?android:attr/selectableItemBackgroundBorderless"
-        android:padding="4dp">
+        android:foreground="?android:attr/selectableItemBackgroundBorderless">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:padding="4dp">
 
             <TextView
                 android:id="@+id/tab_item_title"
@@ -48,7 +48,7 @@
                 android:id="@+id/tab_item_divid"
                 android:layout_width="336dp"
                 android:layout_height="1dp"
-                android:background="#000"
+                android:background="#0000"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tab_item_time" />
 
