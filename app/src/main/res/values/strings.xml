@@ -13,4 +13,6 @@
     <string name="unlogin_tip_long">Please login if download gtp tab</string>
     <string name="search">search</string>
     <string name="login">login</string>
+    <string name="reply">回复</string>
+    <string name="watch">查看</string>
 </resources>

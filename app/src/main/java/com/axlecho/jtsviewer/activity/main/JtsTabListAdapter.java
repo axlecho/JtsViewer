@@ -62,7 +62,7 @@ public class JtsTabListAdapter extends RecyclerView.Adapter<JtsTabListAdapter.Ta
         private TextView time;
         private TextView reply;
         private TextView watch;
-        private TextView type;
+        private ImageView type;
         private TextView uper;
         private ImageView avatar;
 
@@ -73,7 +73,7 @@ public class JtsTabListAdapter extends RecyclerView.Adapter<JtsTabListAdapter.Ta
             time = (TextView) view.findViewById(R.id.tab_item_time);
             reply = (TextView) view.findViewById(R.id.tab_item_reply);
             watch = (TextView) view.findViewById(R.id.tab_item_watch);
-            type = (TextView) view.findViewById(R.id.tab_item_type);
+            type = (ImageView) view.findViewById(R.id.tab_item_type);
             uper = (TextView) view.findViewById(R.id.tab_item_uper);
             avatar = (ImageView) view.findViewById(R.id.tab_item_avatar);
 
@@ -85,11 +85,24 @@ public class JtsTabListAdapter extends RecyclerView.Adapter<JtsTabListAdapter.Ta
             title.setText(model.title);
             author.setText(model.author);
             time.setText(model.time);
-            reply.setText(model.reply);
-            watch.setText(model.watch);
-            type.setText(model.type);
+            reply.setText(context.getResources().getString(R.string.reply) + ":" + model.reply);
+            watch.setText(context.getResources().getString(R.string.watch) + ":" + model.watch);
             uper.setText(model.uper);
+            this.setType(model.type);
             Picasso.with(context).load(model.avatar).into(avatar);
+        }
+
+        private void setType(String tabType) {
+            if (tabType.equals("GTP谱")) {
+                type.setImageResource(R.mipmap.ic_gtp);
+            } else if (tabType.equals("和弦谱")) {
+                type.setImageResource(R.mipmap.ic_chord);
+            } else if (tabType.equals("图片谱")) {
+                type.setImageResource(R.mipmap.ic_img);
+            } else if (tabType.equals("PDF谱")) {
+                type.setImageResource(R.mipmap.ic_pdf);
+            }
+
         }
 
         @Override

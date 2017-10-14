@@ -13,4 +13,5 @@
     <dimen name="card_horizontal_margin">8dp</dimen>
 
     <dimen name="item_icon_size">64dp</dimen>
+    <dimen name="item_icon_small_size">24dp</dimen>
 </resources>
