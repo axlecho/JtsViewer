@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.axlecho.jtsviewer.R;
@@ -13,6 +14,7 @@ import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.action.tab.JtsGetTabAction;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -33,7 +35,6 @@ public class JtsTabListAdapter extends RecyclerView.Adapter<JtsTabListAdapter.Ta
 
     @Override
     public TabViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         View view = LayoutInflater.from(context).inflate(R.layout.item_tab, parent, false);
         return new TabViewHolder(view);
     }
@@ -63,7 +64,7 @@ public class JtsTabListAdapter extends RecyclerView.Adapter<JtsTabListAdapter.Ta
         private TextView watch;
         private TextView type;
         private TextView uper;
-        private TextView avatar;
+        private ImageView avatar;
 
         public TabViewHolder(View view) {
             super(view);
@@ -74,9 +75,9 @@ public class JtsTabListAdapter extends RecyclerView.Adapter<JtsTabListAdapter.Ta
             watch = (TextView) view.findViewById(R.id.tab_item_watch);
             type = (TextView) view.findViewById(R.id.tab_item_type);
             uper = (TextView) view.findViewById(R.id.tab_item_uper);
-            avatar = (TextView) view.findViewById(R.id.tab_item_avatar);
+            avatar = (ImageView) view.findViewById(R.id.tab_item_avatar);
 
-            View cardView = view.findViewById(R.id.tab_item_cardview);
+            View cardView = view.findViewById(R.id.tab_item_view);
             cardView.setOnClickListener(this);
         }
 
@@ -88,7 +89,7 @@ public class JtsTabListAdapter extends RecyclerView.Adapter<JtsTabListAdapter.Ta
             watch.setText(model.watch);
             type.setText(model.type);
             uper.setText(model.uper);
-            avatar.setText(model.avatar);
+            Picasso.with(context).load(model.avatar).into(avatar);
         }
 
         @Override

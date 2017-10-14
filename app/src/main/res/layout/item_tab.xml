@@ -1,99 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    android:id="@+id/tab_item_view"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="true"
     android:paddingEnd="@dimen/activity_horizontal_margin"
     android:paddingStart="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/item_cache_vertical_margin">
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/tab_item_cardview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clickable="true"
-        android:foreground="?android:attr/selectableItemBackgroundBorderless">
-
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="4dp">
-
-            <TextView
-                android:id="@+id/tab_item_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="~title"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tab_item_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="~yyyy-mm-dd"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tab_item_title" />
-
-            <TextView
-                android:id="@+id/tab_item_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="~type"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tab_item_title" />
-
-            <View
-                android:id="@+id/tab_item_divid"
-                android:layout_width="336dp"
-                android:layout_height="1dp"
-                android:background="#0000"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tab_item_time" />
-
-            <TextView
-                android:id="@+id/tab_item_author"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="~author"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tab_item_divid" />
+    <ImageView
+        android:id="@+id/tab_item_avatar"
+        android:layout_width="@dimen/item_icon_size"
+        android:layout_height="@dimen/item_icon_size"
+        android:contentDescription="icon of avatar"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
+        android:src="@drawable/ic_launcher"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
-            <TextView
-                android:id="@+id/tab_item_reply"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="~reply"
-                app:layout_constraintLeft_toRightOf="@+id/tab_item_author"
-                app:layout_constraintTop_toBottomOf="@+id/tab_item_divid" />
+    <TextView
+        android:id="@+id/tab_item_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:ellipsize="end"
+        android:maxLength="1"
+        android:padding="4dp"
+        android:text="~title"
+        android:textColor="@color/title_black"
+        android:textSize="14sp"
+        app:layout_constraintLeft_toRightOf="@id/tab_item_avatar"
+        app:layout_constraintTop_toTopOf="@id/tab_item_avatar" />
 
-            <TextView
-                android:id="@+id/tab_item_watch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="~watch"
-                app:layout_constraintLeft_toRightOf="@+id/tab_item_reply"
-                app:layout_constraintTop_toBottomOf="@+id/tab_item_divid" />
+    <TextView
+        android:id="@+id/tab_item_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:text="~yyyy-mm-dd"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tab_item_title" />
+
+    <TextView
+        android:id="@+id/tab_item_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:text="~type"
+        app:layout_constraintRight_toLeftOf="@+id/tab_item_uper"
+        app:layout_constraintTop_toBottomOf="@+id/tab_item_title" />
 
 
-            <TextView
-                android:id="@+id/tab_item_uper"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="~uper"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tab_item_divid" />
+    <TextView
+        android:id="@+id/tab_item_author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:text="~author"
+        android:textColor="@color/subtitle_black"
+        android:textSize="12sp"
+        app:layout_constraintLeft_toRightOf="@id/tab_item_avatar"
+        app:layout_constraintTop_toBottomOf="@+id/tab_item_title" />
 
-            <TextView
-                android:id="@+id/tab_item_avatar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tab_item_divid" />
-        </android.support.constraint.ConstraintLayout>
-    </android.support.v7.widget.CardView>
-</RelativeLayout>
+
+    <TextView
+        android:id="@+id/tab_item_reply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:text="~reply"
+        android:textColor="@color/subtitle_black"
+        android:textSize="12sp"
+        app:layout_constraintLeft_toRightOf="@+id/tab_item_author"
+        app:layout_constraintTop_toBottomOf="@+id/tab_item_title" />
+
+    <TextView
+        android:id="@+id/tab_item_watch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:text="~watch"
+        android:textColor="@color/subtitle_black"
+        android:textSize="12sp"
+        app:layout_constraintLeft_toRightOf="@+id/tab_item_reply"
+        app:layout_constraintTop_toBottomOf="@+id/tab_item_title" />
+
+
+    <TextView
+        android:id="@+id/tab_item_uper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:text="~uper"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tab_item_title" />
+
+
+</android.support.constraint.ConstraintLayout>

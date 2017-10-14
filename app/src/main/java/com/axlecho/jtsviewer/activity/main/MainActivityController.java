@@ -60,18 +60,6 @@ public class MainActivityController {
         return this.activity;
     }
 
-
-    public void processProgressChanged(int progress) {
-        if (progress == 100) {
-            activity.progressBar.setVisibility(View.INVISIBLE);
-        } else {
-            if (View.INVISIBLE == activity.progressBar.getVisibility()) {
-                activity.progressBar.setVisibility(View.VISIBLE);
-            }
-            activity.progressBar.setProgress(progress);
-        }
-    }
-
     public void processJumpHistory() {
         Intent intent = new Intent();
         intent.setClass(activity, HistoryActivity.class);

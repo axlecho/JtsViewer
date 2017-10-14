@@ -1,25 +1,24 @@
 package com.axlecho.jtsviewer.activity.main;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ProgressBar;
 
 import com.axlecho.jtsviewer.R;
+import com.axlecho.jtsviewer.widget.RecycleViewDivider;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private String TAG = MainActivity.class.getSimpleName();
-    public ProgressBar progressBar;
     public NavigationView navigationView;
     public SearchView searchView;
     public MenuItem searchItem;
@@ -50,7 +49,7 @@ public class MainActivity extends AppCompatActivity
         this.navigationView.setNavigationItemSelectedListener(this);
 
         recyclerView = (RecyclerView) findViewById(R.id.main_content_recyclerview);
-        progressBar = (ProgressBar) findViewById(R.id.main_content_progressbar);
+        recyclerView.addItemDecoration(new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL));
 
         this.controller.processLoadHome();
         this.controller.loadUserInfo();
