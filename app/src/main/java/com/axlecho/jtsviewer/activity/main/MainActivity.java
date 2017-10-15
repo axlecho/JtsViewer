@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,12 +18,13 @@ import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.widget.RecycleViewDivider;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener {
     private String TAG = MainActivity.class.getSimpleName();
     public NavigationView navigationView;
     public SearchView searchView;
     public MenuItem searchItem;
     public RecyclerView recyclerView;
+    public SwipeRefreshLayout swipeRefreshLayout;
 
     private MainActivityController controller;
 
@@ -50,6 +52,11 @@ public class MainActivity extends AppCompatActivity
 
         recyclerView = (RecyclerView) findViewById(R.id.main_content_recyclerview);
         recyclerView.addItemDecoration(new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL));
+
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.main_swip_refresh_layout);
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
+                android.R.color.holo_orange_light, android.R.color.holo_red_light);
+        swipeRefreshLayout.setOnRefreshListener(this);
 
         this.controller.processLoadHome();
         this.controller.loadUserInfo();
@@ -113,5 +120,10 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onRefresh() {
+        this.controller.processLoadHome();
     }
 }

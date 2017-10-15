@@ -78,6 +78,14 @@ public class MainActivityController {
         }
     }
 
+    public void stopRefreshing() {
+        activity.swipeRefreshLayout.setRefreshing(false);
+    }
+
+    public void startRefreshing() {
+        activity.swipeRefreshLayout.setRefreshing(true);
+    }
+
     public void loadUserInfo() {
         JtsParseUserInfoAction action = new JtsParseUserInfoAction();
         JtsNetworkManager.getInstance(activity).get(JtsConf.HOST_URL, action);
@@ -103,7 +111,7 @@ public class MainActivityController {
 
                 if (user.uid <= 0) {
                     JtsShowLoginAction action = new JtsShowLoginAction();
-                    action.setKey(JtsBaseAction.CONTEXT_KEY,activity);
+                    action.setKey(JtsBaseAction.CONTEXT_KEY, activity);
                     drawerUserInfoImageView.setOnClickListener(action);
                 }
             }
@@ -120,6 +128,7 @@ public class MainActivityController {
     }
 
     public void processLoadHome() {
+        startRefreshing();
         JtsParseTabListAction action = new JtsParseTabListAction();
         action.setKey(JtsBaseAction.CONTEXT_KEY, activity);
         action.setKey(JtsParseTabListAction.SRC_FROM_KEY, JtsParseTabListAction.SRC_FROM_DIALY);
@@ -147,6 +156,7 @@ public class MainActivityController {
                 activity.recyclerView.setLayoutManager(layoutManager);
                 activity.recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
+                stopRefreshing();
             }
         });
     }
