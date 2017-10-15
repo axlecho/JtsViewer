@@ -39,6 +39,8 @@
         android:layout_height="wrap_content"
         android:padding="4dp"
         android:text="~yyyy-mm-dd"
+        android:textColor="@color/subtitle_black"
+        android:textSize="12sp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tab_item_title" />
 
@@ -60,8 +62,6 @@
         app:layout_constraintLeft_toRightOf="@id/tab_item_type"
         app:layout_constraintRight_toLeftOf="@id/tab_item_time"
         app:layout_constraintTop_toTopOf="@id/tab_item_type" />
-
-
 
 
     <TextView

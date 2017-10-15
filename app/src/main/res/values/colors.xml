@@ -4,6 +4,6 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="title_black">#222222</color>
-    <color name="subtitle_black">#666666</color>
+    <color name="title_black">#333333</color>
+    <color name="subtitle_black">#888888</color>
 </resources>

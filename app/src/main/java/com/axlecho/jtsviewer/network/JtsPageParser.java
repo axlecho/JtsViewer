@@ -109,7 +109,7 @@ public class JtsPageParser {
         model.title = e.select("a[href*=/tab/]").first().text();
         model.url = e.select("a[href*=/tab/]").first().attr("href");
         model.type = e.select("img[src*=/static/image/filetype/]").first().attr("title");
-
+        model.time = e.select("span[title~=^\\d{4}(\\-|\\/|\\.)\\d{1,2}\\1\\d{1,2}.*$]").first().text();
         Iterator i = e.select("a[href*=/space/]").iterator();
 
         while (i.hasNext()) {
