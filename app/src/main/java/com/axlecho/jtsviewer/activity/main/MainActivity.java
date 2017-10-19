@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.axlecho.jtsviewer.R;
+import com.axlecho.jtsviewer.untils.JtsViewerLog;
 import com.axlecho.jtsviewer.widget.RecycleViewDivider;
 
 public class MainActivity extends AppCompatActivity
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity
 
         recyclerView = (RecyclerView) findViewById(R.id.main_content_recyclerview);
         recyclerView.addItemDecoration(new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL));
+        recyclerView.addOnScrollListener(new EndlessScrollListener());
 
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.main_swip_refresh_layout);
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
@@ -119,5 +121,26 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onRefresh() {
         this.controller.processLoadHome();
+    }
+
+    private class EndlessScrollListener extends RecyclerView.OnScrollListener {
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+        }
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+
+            LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
+            int itemCount = manager.getItemCount();
+            int lastPosition = manager.findLastVisibleItemPosition();
+
+            if (lastPosition == itemCount - 1) {
+                JtsViewerLog.d(TAG, "trgger to load more");
+                controller.processLoadMore();
+            }
+        }
     }
 }

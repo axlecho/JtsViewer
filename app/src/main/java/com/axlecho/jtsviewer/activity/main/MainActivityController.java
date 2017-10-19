@@ -17,7 +17,6 @@ import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.action.tab.JtsParseTabListAction;
 import com.axlecho.jtsviewer.action.network.JtsSearchAction;
-import com.axlecho.jtsviewer.action.user.JtsLoginAction;
 import com.axlecho.jtsviewer.action.user.JtsParseUserInfoAction;
 import com.axlecho.jtsviewer.action.user.JtsShowLoginAction;
 import com.axlecho.jtsviewer.activity.cache.HistoryActivity;
@@ -35,6 +34,8 @@ public class MainActivityController {
     private static MainActivityController instance;
     private MainActivity activity;
     private JtsTabListAdapter adapter;
+    private int currentPage = 1;
+    private boolean isLoading = false;
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
@@ -132,7 +133,18 @@ public class MainActivityController {
         JtsParseTabListAction action = new JtsParseTabListAction();
         action.setKey(JtsBaseAction.CONTEXT_KEY, activity);
         action.setKey(JtsParseTabListAction.SRC_FROM_KEY, JtsParseTabListAction.SRC_FROM_DIALY);
-        JtsNetworkManager.getInstance(activity).get(JtsConf.DESKTOP_NEW_URL, action);
+        JtsNetworkManager.getInstance(activity).get(JtsConf.DESKTOP_NEW_URL + currentPage, action);
+    }
+
+    public void processLoadMore() {
+        if(isLoading) {
+            JtsViewerLog.d(TAG,"loading more");
+            return;
+        }
+
+        this.currentPage ++;
+        isLoading = true;
+        processLoadHome();
     }
 
     public void processShowLogin() {
@@ -149,7 +161,7 @@ public class MainActivityController {
                 if (adapter == null) {
                     adapter = new JtsTabListAdapter(activity, content);
                 } else {
-                    adapter.setData(content);
+                    adapter.addData(content);
                 }
 
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false);
@@ -157,6 +169,7 @@ public class MainActivityController {
                 activity.recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
                 stopRefreshing();
+                isLoading = false;
             }
         });
     }

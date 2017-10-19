@@ -29,8 +29,8 @@ public class JtsTabListAdapter extends RecyclerView.Adapter<JtsTabListAdapter.Ta
         this.content = content;
     }
 
-    public void setData(List<JtsTabInfoModel> content) {
-        this.content = content;
+    public void addData(List<JtsTabInfoModel> content) {
+        this.content.addAll(content);
     }
 
     @Override
