@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,17 +14,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.axlecho.jtsviewer.R;
-import com.axlecho.jtsviewer.untils.JtsViewerLog;
 import com.axlecho.jtsviewer.widget.RecycleViewDivider;
+import com.hippo.refreshlayout.RefreshLayout;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener {
+        implements NavigationView.OnNavigationItemSelectedListener, RefreshLayout.OnRefreshListener {
     private String TAG = MainActivity.class.getSimpleName();
     public NavigationView navigationView;
     public SearchView searchView;
     public MenuItem searchItem;
     public RecyclerView recyclerView;
-    public SwipeRefreshLayout swipeRefreshLayout;
+    public RefreshLayout refreshLayout;
 
     private MainActivityController controller;
 
@@ -53,14 +52,17 @@ public class MainActivity extends AppCompatActivity
 
         recyclerView = (RecyclerView) findViewById(R.id.main_content_recyclerview);
         recyclerView.addItemDecoration(new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL));
-        recyclerView.addOnScrollListener(new EndlessScrollListener());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManager);
 
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.main_swip_refresh_layout);
-        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
+        refreshLayout = (RefreshLayout) findViewById(R.id.main_swip_refresh_layout);
+        refreshLayout.setFooterColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
                 android.R.color.holo_orange_light, android.R.color.holo_red_light);
-        swipeRefreshLayout.setOnRefreshListener(this);
+        refreshLayout.setHeaderColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
+                android.R.color.holo_orange_light, android.R.color.holo_red_light);
+        refreshLayout.setOnRefreshListener(this);
 
-        this.controller.processLoadHome();
+        this.controller.processRefresh();
         this.controller.loadUserInfo();
     }
 
@@ -92,8 +94,6 @@ public class MainActivity extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            this.controller.processLoadHome();
+            this.controller.processRefresh();
         } else if (id == R.id.nav_history) {
             this.controller.processJumpHistory();
         } else if (id == R.id.nav_setting) {
@@ -119,28 +119,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onRefresh() {
-        this.controller.processLoadHome();
+    public void onHeaderRefresh() {
+        this.controller.processRefresh();
     }
 
-    private class EndlessScrollListener extends RecyclerView.OnScrollListener {
-        @Override
-        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-            super.onScrollStateChanged(recyclerView, newState);
-        }
-
-        @Override
-        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-            super.onScrolled(recyclerView, dx, dy);
-
-            LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
-            int itemCount = manager.getItemCount();
-            int lastPosition = manager.findLastVisibleItemPosition();
-
-            if (lastPosition == itemCount - 1) {
-                JtsViewerLog.d(TAG, "trgger to load more");
-                controller.processLoadMore();
-            }
-        }
+    @Override
+    public void onFooterRefresh() {
+        controller.processLoadMore();
     }
 }

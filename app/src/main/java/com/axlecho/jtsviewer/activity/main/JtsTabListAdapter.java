@@ -33,6 +33,10 @@ public class JtsTabListAdapter extends RecyclerView.Adapter<JtsTabListAdapter.Ta
         this.content.addAll(content);
     }
 
+    public void clearData() {
+        this.content.clear();
+    }
+
     @Override
     public TabViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_tab, parent, false);

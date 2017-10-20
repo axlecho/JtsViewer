@@ -35,7 +35,6 @@ public class MainActivityController {
     private MainActivity activity;
     private JtsTabListAdapter adapter;
     private int currentPage = 1;
-    private boolean isLoading = false;
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
@@ -79,12 +78,20 @@ public class MainActivityController {
         }
     }
 
-    public void stopRefreshing() {
-        activity.swipeRefreshLayout.setRefreshing(false);
+    public void stopHeaderRefreshing() {
+        activity.refreshLayout.setHeaderRefreshing(false);
     }
 
-    public void startRefreshing() {
-        activity.swipeRefreshLayout.setRefreshing(true);
+    public void startHeaderRefreshing() {
+        activity.refreshLayout.setHeaderRefreshing(true);
+    }
+
+    public void startFooterRefreshing() {
+        activity.refreshLayout.setFooterRefreshing(true);
+    }
+
+    public void stopFooterRefreshing() {
+        activity.refreshLayout.setFooterRefreshing(false);
     }
 
     public void loadUserInfo() {
@@ -128,23 +135,18 @@ public class MainActivityController {
         action.execute();
     }
 
-    public void processLoadHome() {
-        startRefreshing();
+    public void processLoadDialy(boolean isClear) {
         JtsParseTabListAction action = new JtsParseTabListAction();
         action.setKey(JtsBaseAction.CONTEXT_KEY, activity);
         action.setKey(JtsParseTabListAction.SRC_FROM_KEY, JtsParseTabListAction.SRC_FROM_DIALY);
+        action.setKey(JtsParseTabListAction.CLEAR_FLAG, isClear);
         JtsNetworkManager.getInstance(activity).get(JtsConf.DESKTOP_NEW_URL + currentPage, action);
     }
 
     public void processLoadMore() {
-        if(isLoading) {
-            JtsViewerLog.d(TAG,"loading more");
-            return;
-        }
-
-        this.currentPage ++;
-        isLoading = true;
-        processLoadHome();
+        startFooterRefreshing();
+        this.currentPage++;
+        processLoadDialy(false);
     }
 
     public void processShowLogin() {
@@ -154,22 +156,34 @@ public class MainActivityController {
                 .setAction(activity.getResources().getString(R.string.login), action).show();
     }
 
-    public void processShowHome(final List<JtsTabInfoModel> content) {
+    public void processShowHome(final List<JtsTabInfoModel> content, final boolean clear) {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if (adapter == null) {
                     adapter = new JtsTabListAdapter(activity, content);
+                    activity.recyclerView.setAdapter(adapter);
                 } else {
+                    if (clear) {
+                        adapter.clearData();
+                    }
                     adapter.addData(content);
                 }
 
-                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false);
-                activity.recyclerView.setLayoutManager(layoutManager);
-                activity.recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
-                stopRefreshing();
-                isLoading = false;
+
+                // TODO remove clear by other way
+                if (clear) {
+                    stopHeaderRefreshing();
+                } else {
+                    stopFooterRefreshing();
+                    LinearLayoutManager layoutManager = (LinearLayoutManager) activity.recyclerView.getLayoutManager();
+                    int total = layoutManager.getItemCount();
+                    int current = layoutManager.findLastVisibleItemPosition();
+                    if (current < total) {
+                        activity.recyclerView.smoothScrollToPosition(current + 2);
+                    }
+                }
             }
         });
     }
@@ -203,6 +217,8 @@ public class MainActivityController {
 
 
     public void processRefresh() {
-        // TODO
+        startHeaderRefreshing();
+        currentPage = 1;
+        processLoadDialy(true);
     }
 }
