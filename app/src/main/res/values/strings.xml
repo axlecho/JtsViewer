@@ -15,4 +15,6 @@
     <string name="login">login</string>
     <string name="reply">回复</string>
     <string name="watch">查看</string>
+    <string name="title_hot">热门</string>
+    <string name="title_new">最新</string>
 </resources>

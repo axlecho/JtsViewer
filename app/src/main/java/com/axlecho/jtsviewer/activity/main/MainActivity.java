@@ -104,7 +104,9 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            this.controller.processRefresh();
+            this.controller.processLoadDialy(true);
+        } else if (id == R.id.nav_hot) {
+            this.controller.processLoadHot(true);
         } else if (id == R.id.nav_history) {
             this.controller.processJumpHistory();
         } else if (id == R.id.nav_setting) {

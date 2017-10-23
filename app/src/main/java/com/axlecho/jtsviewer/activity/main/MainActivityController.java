@@ -136,11 +136,21 @@ public class MainActivityController {
     }
 
     public void processLoadDialy(boolean isClear) {
+        startHeaderRefreshing();
         JtsParseTabListAction action = new JtsParseTabListAction();
         action.setKey(JtsBaseAction.CONTEXT_KEY, activity);
         action.setKey(JtsParseTabListAction.SRC_FROM_KEY, JtsParseTabListAction.SRC_FROM_DIALY);
         action.setKey(JtsParseTabListAction.CLEAR_FLAG, isClear);
         JtsNetworkManager.getInstance(activity).get(JtsConf.DESKTOP_NEW_URL + currentPage, action);
+    }
+
+    public void processLoadHot(boolean isClear) {
+        startHeaderRefreshing();
+        JtsParseTabListAction action = new JtsParseTabListAction();
+        action.setKey(JtsBaseAction.CONTEXT_KEY, activity);
+        action.setKey(JtsParseTabListAction.SRC_FROM_KEY, JtsParseTabListAction.SRC_FROM_DIALY);
+        action.setKey(JtsParseTabListAction.CLEAR_FLAG, isClear);
+        JtsNetworkManager.getInstance(activity).get(JtsConf.DESKTOP_HOT_URL + currentPage, action);
     }
 
     public void processLoadMore() {
@@ -165,6 +175,7 @@ public class MainActivityController {
                     activity.recyclerView.setAdapter(adapter);
                 } else {
                     if (clear) {
+                        currentPage = 1;
                         adapter.clearData();
                     }
                     adapter.addData(content);
