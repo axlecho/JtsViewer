@@ -93,7 +93,8 @@ public class JtsTabListAdapter extends RecyclerView.Adapter<JtsTabListAdapter.Ta
             watch.setText(context.getResources().getString(R.string.watch) + ":" + model.watch);
             uper.setText(model.uper);
             this.setType(model.type);
-            Picasso.with(context).load(model.avatar).into(avatar);
+
+            Picasso.with(context).load(model.avatar).error(R.drawable.ic_launcher).into(avatar);
         }
 
         private void setType(String tabType) {

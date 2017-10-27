@@ -28,8 +28,8 @@ public class JtsParseTabListAction extends JtsBaseAction {
         if(clearFlag == null) {
             clearFlag = true;
         }
-        JtsPageParser.getInstance().setContent(html);
-        List<JtsTabInfoModel> content = JtsPageParser.getInstance().parserTabList(srcFrom);
+        JtsPageParser.getInstance(context).setContent(html);
+        List<JtsTabInfoModel> content = JtsPageParser.getInstance(context).parserTabList(srcFrom);
         MainActivityController.getInstance().processShowHome(content, clearFlag);
     }
 }

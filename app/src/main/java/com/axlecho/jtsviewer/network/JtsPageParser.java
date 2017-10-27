@@ -1,5 +1,9 @@
 package com.axlecho.jtsviewer.network;
 
+import android.content.Context;
+import android.text.TextUtils;
+
+import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.action.tab.JtsParseTabListAction;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
@@ -17,16 +21,18 @@ import java.util.List;
 public class JtsPageParser {
     private static final String TAG = JtsPageParser.class.getSimpleName();
     private String html;
+    private Context context;
     private static JtsPageParser instance;
 
-    private JtsPageParser() {
+    private JtsPageParser(Context context) {
+        this.context = context.getApplicationContext();
     }
 
-    public static JtsPageParser getInstance() {
+    public static JtsPageParser getInstance(Context context) {
         if (instance == null) {
             synchronized (JtsPageParser.class) {
                 if (instance == null) {
-                    instance = new JtsPageParser();
+                    instance = new JtsPageParser(context);
                 }
             }
         }
@@ -111,7 +117,7 @@ public class JtsPageParser {
         model.type = e.select("img[src*=/static/image/filetype/]").first().attr("title");
         Element time = e.select("span[title~=^\\d{4}(\\-|\\/|\\.)\\d{1,2}\\1\\d{1,2}.*$]").first();
         if (time == null) {
-            time = e.select(   "span:matches(^\\d{4}(\\-|\\/|\\.)\\d{1,2}\\1\\d{1,2}.*$)").first();
+            time = e.select("span:matches(^\\d{4}(\\-|\\/|\\.)\\d{1,2}\\1\\d{1,2}.*$)").first();
         }
         model.time = time.text();
 
@@ -134,7 +140,14 @@ public class JtsPageParser {
 
         String info = e.select(".mtn").text();
         model.watch = JtsTextUnitls.findByPatternOnce(info, "(?<=查看:)\\s*\\d+").trim();
-//        model.time = JtsTextUnitls.findByPatternOnce(info,"(?<=发表于:).*(?=\\s\\s\\s").trim();
+
+        if (TextUtils.isEmpty(model.avatar)) {
+            model.avatar = "@" + model.title;
+        }
+
+        if (TextUtils.isEmpty(model.uper)) {
+            model.uper = context.getString(R.string.unknown_uper);
+        }
         return model;
     }
 }
