@@ -172,10 +172,7 @@ public class MainActivityController {
                     activity.searchView.setIconified(true);
                 }
                 activity.searchItem.collapseActionView();
-                JtsSearchAction action = new JtsSearchAction();
-                action.setKey(JtsSearchAction.SEARCH_CONTENT_KEY, query);
-                action.setKey(JtsBaseAction.CONTEXT_KEY, activity);
-                action.execute();
+                switchSenceToSearch(query);
                 return false;
             }
 
@@ -203,6 +200,11 @@ public class MainActivityController {
 
     public void switchSenceToHot() {
         this.currentScene = new JtsHotScence(activity);
+        this.currentScene.refresh();
+    }
+
+    public void switchSenceToSearch(String keyword) {
+        this.currentScene = new JtsSearchScene(activity, keyword);
         this.currentScene.refresh();
     }
 }
