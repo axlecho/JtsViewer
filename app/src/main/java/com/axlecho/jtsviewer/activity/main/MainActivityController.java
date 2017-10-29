@@ -34,7 +34,7 @@ public class MainActivityController {
     private static MainActivityController instance;
     private MainActivity activity;
     private JtsTabListAdapter adapter;
-    private int currentPage = 1;
+    private BaseScene currentScene;
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
@@ -135,30 +135,6 @@ public class MainActivityController {
         action.execute();
     }
 
-    public void processLoadDialy(boolean isClear) {
-        startHeaderRefreshing();
-        JtsParseTabListAction action = new JtsParseTabListAction();
-        action.setKey(JtsBaseAction.CONTEXT_KEY, activity);
-        action.setKey(JtsParseTabListAction.SRC_FROM_KEY, JtsParseTabListAction.SRC_FROM_DIALY);
-        action.setKey(JtsParseTabListAction.CLEAR_FLAG, isClear);
-        JtsNetworkManager.getInstance(activity).get(JtsConf.DESKTOP_NEW_URL + currentPage, action);
-    }
-
-    public void processLoadHot(boolean isClear) {
-        startHeaderRefreshing();
-        JtsParseTabListAction action = new JtsParseTabListAction();
-        action.setKey(JtsBaseAction.CONTEXT_KEY, activity);
-        action.setKey(JtsParseTabListAction.SRC_FROM_KEY, JtsParseTabListAction.SRC_FROM_DIALY);
-        action.setKey(JtsParseTabListAction.CLEAR_FLAG, isClear);
-        JtsNetworkManager.getInstance(activity).get(JtsConf.DESKTOP_HOT_URL + currentPage, action);
-    }
-
-    public void processLoadMore() {
-        startFooterRefreshing();
-        this.currentPage++;
-        processLoadDialy(false);
-    }
-
     public void processShowLogin() {
         JtsShowLoginAction action = new JtsShowLoginAction();
         action.setKey(JtsBaseAction.CONTEXT_KEY, activity);
@@ -166,37 +142,22 @@ public class MainActivityController {
                 .setAction(activity.getResources().getString(R.string.login), action).show();
     }
 
-    public void processShowHome(final List<JtsTabInfoModel> content, final boolean clear) {
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (adapter == null) {
-                    adapter = new JtsTabListAdapter(activity, content);
-                    activity.recyclerView.setAdapter(adapter);
-                } else {
-                    if (clear) {
-                        currentPage = 1;
-                        adapter.clearData();
-                    }
-                    adapter.addData(content);
-                }
+    public void clearData() {
+        if (adapter == null) {
+            return;
+        }
+        adapter.clearData();
+    }
 
-                adapter.notifyDataSetChanged();
+    public void processShowHome(final List<JtsTabInfoModel> content) {
+        if (adapter == null) {
+            adapter = new JtsTabListAdapter(activity, content);
+            activity.recyclerView.setAdapter(adapter);
+        } else {
+            adapter.addData(content);
+        }
 
-                // TODO remove clear by other way
-                if (clear) {
-                    stopHeaderRefreshing();
-                } else {
-                    stopFooterRefreshing();
-                    LinearLayoutManager layoutManager = (LinearLayoutManager) activity.recyclerView.getLayoutManager();
-                    int total = layoutManager.getItemCount();
-                    int current = layoutManager.findLastVisibleItemPosition();
-                    if (current < total) {
-                        activity.recyclerView.smoothScrollToPosition(current + 2);
-                    }
-                }
-            }
-        });
+        adapter.notifyDataSetChanged();
     }
 
     public void processSearchView() {
@@ -226,10 +187,22 @@ public class MainActivityController {
         });
     }
 
+    public void loadDefaultScene() {
+        this.currentScene = new JtsDailyScence(activity);
+        this.currentScene.refresh();
+    }
 
-    public void processRefresh() {
-        startHeaderRefreshing();
-        currentPage = 1;
-        processLoadDialy(true);
+    public BaseScene getScene() {
+        return currentScene;
+    }
+
+    public void switchSenceToDaily() {
+        this.currentScene = new JtsDailyScence(activity);
+        this.currentScene.refresh();
+    }
+
+    public void switchSenceToHot() {
+        this.currentScene = new JtsHotScence(activity);
+        this.currentScene.refresh();
     }
 }

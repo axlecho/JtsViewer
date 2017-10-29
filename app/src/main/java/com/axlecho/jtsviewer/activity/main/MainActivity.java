@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity
                 android.R.color.holo_orange_light, android.R.color.holo_red_light);
         refreshLayout.setOnRefreshListener(this);
 
-        this.controller.processRefresh();
+        this.controller.loadDefaultScene();
         this.controller.loadUserInfo();
     }
 
@@ -104,9 +104,9 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            this.controller.processLoadDialy(true);
+            this.controller.switchSenceToDaily();
         } else if (id == R.id.nav_hot) {
-            this.controller.processLoadHot(true);
+            this.controller.switchSenceToHot();
         } else if (id == R.id.nav_history) {
             this.controller.processJumpHistory();
         } else if (id == R.id.nav_setting) {
@@ -122,11 +122,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onHeaderRefresh() {
-        this.controller.processRefresh();
+        this.controller.getScene().refresh();
     }
 
     @Override
     public void onFooterRefresh() {
-        controller.processLoadMore();
+        controller.getScene().loadMore();
     }
 }

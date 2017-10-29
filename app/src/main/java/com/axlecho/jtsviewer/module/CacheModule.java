@@ -11,7 +11,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class CacheModule {
+public class CacheModule extends JtsTabInfoModel{
     private final static String TAG = CacheModule.class.getSimpleName();
     private final static String INFO_FILE_NAME = "info.json";
     public String path;

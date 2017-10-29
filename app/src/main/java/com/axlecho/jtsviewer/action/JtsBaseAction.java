@@ -4,7 +4,7 @@ import android.view.View;
 
 import java.util.HashMap;
 
-public abstract class JtsBaseAction implements View.OnClickListener {
+public abstract class JtsBaseAction implements View.OnClickListener, Runnable {
     public static final String CONTEXT_KEY = "action_context";
 
     private HashMap<String, Object> param = new HashMap<>();
@@ -15,6 +15,7 @@ public abstract class JtsBaseAction implements View.OnClickListener {
         param.put(key, o);
     }
 
+
     public Object getKey(String key) {
         return param.get(key);
     }
@@ -23,4 +24,10 @@ public abstract class JtsBaseAction implements View.OnClickListener {
     public void onClick(View v) {
         execute();
     }
+
+    @Override
+    public void run() {
+        execute();
+    }
+
 }
