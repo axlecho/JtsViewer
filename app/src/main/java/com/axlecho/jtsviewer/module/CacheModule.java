@@ -1,6 +1,9 @@
 package com.axlecho.jtsviewer.module;
 
+import android.support.annotation.NonNull;
+
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,30 +14,26 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class CacheModule extends JtsTabInfoModel{
+public class CacheModule implements Comparable<CacheModule> {
     private final static String TAG = CacheModule.class.getSimpleName();
     private final static String INFO_FILE_NAME = "info.json";
     public String path;
     public String fileName;
     public String type;
     public String gid;
+    public int frequency = 0;
 
-    public String toJson() throws JSONException {
-        JSONObject json = new JSONObject();
-        json.put("path", path);
-        json.put("fileName", fileName);
-        json.put("type", type);
-        json.put("gid", gid);
-        return json.toString();
+    public JtsTabInfoModel tabInfo;
+
+    public String toJson() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
     }
 
     public void writeToFile() throws IOException {
-        String infoString = null;
-        try {
-            infoString = this.toJson();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        String infoString = this.toJson();
+
+        JtsViewerLog.d(TAG, "cache to json " + infoString);
 
         if (infoString == null) {
             JtsViewerLog.e(TAG, "prase info to json failed");
@@ -64,18 +63,19 @@ public class CacheModule extends JtsTabInfoModel{
         String jsonStr = reader.readLine();
         reader.close();
         JtsViewerLog.d(JtsViewerLog.CACHE_MODULE, TAG, jsonStr);
-        JSONObject json = new JSONObject(jsonStr);
 
-        CacheModule module = new CacheModule();
-        module.path = json.getString("path");
-        module.fileName = json.getString("fileName");
-        module.type = json.getString("type");
-        module.gid = json.getString("gid");
+        Gson gson = new Gson();
+        CacheModule module = gson.fromJson(jsonStr, CacheModule.class);
         return module;
     }
 
     @Override
     public String toString() {
-        return "[path " + path + " fileName " + fileName + " type " + type + " gid " + gid + "]\n";
+        return toJson() + "\n";
+    }
+
+    @Override
+    public int compareTo(@NonNull CacheModule o) {
+        return o.frequency - this.frequency;
     }
 }

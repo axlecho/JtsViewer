@@ -13,6 +13,7 @@ import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.action.tab.JtsGetTabAction;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
+import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 import com.squareup.picasso.Picasso;
 
@@ -56,6 +57,17 @@ public class JtsTabListAdapter extends RecyclerView.Adapter<JtsTabListAdapter.Ta
         }
 
         return content.size();
+    }
+
+    public JtsTabInfoModel findTabInfoByGid(long gid) {
+        for (JtsTabInfoModel model : content) {
+            long modelGid = JtsTextUnitls.getTabKeyFromUrl(model.url);
+            if (gid == modelGid) {
+                return model;
+            }
+        }
+
+        return null;
     }
 
 
@@ -107,7 +119,6 @@ public class JtsTabListAdapter extends RecyclerView.Adapter<JtsTabListAdapter.Ta
             } else if (tabType.equals("PDF谱")) {
                 type.setImageResource(R.mipmap.ic_pdf);
             }
-
         }
 
         @Override

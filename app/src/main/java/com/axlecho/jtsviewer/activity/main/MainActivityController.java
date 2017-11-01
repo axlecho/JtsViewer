@@ -207,4 +207,8 @@ public class MainActivityController {
         this.currentScene = new JtsSearchScene(activity, keyword);
         this.currentScene.refresh();
     }
+
+    public JtsTabInfoModel findTabInfoByGid(long gid) {
+        return adapter.findTabInfoByGid(gid);
+    }
 }

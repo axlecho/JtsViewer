@@ -1,5 +1,7 @@
 package com.axlecho.jtsviewer.module;
 
+import com.google.gson.Gson;
+
 public class JtsTabInfoModel {
     public String title;
     public String author;
@@ -13,6 +15,11 @@ public class JtsTabInfoModel {
 
     @Override
     public String toString() {
-        return "[title " + title + " author " + author + " time " + time + " reply " + reply + " watch " + watch + " type " + type + " uper " + uper + " avatar " + avatar + " url " + url + "]";
+        return toJson();
+    }
+
+    public String toJson() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
     }
 }

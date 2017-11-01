@@ -11,7 +11,11 @@ import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.cache.CacheManager;
 import com.axlecho.jtsviewer.module.CacheModule;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
+import com.axlecho.jtsviewer.widget.RecycleViewDivider;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class HistoryActivity extends AppCompatActivity {
@@ -38,6 +42,7 @@ public class HistoryActivity extends AppCompatActivity {
         cacheView = (RecyclerView) findViewById(R.id.cache_recycler_view);
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         cacheView.setLayoutManager(layoutManager);
+        cacheView.addItemDecoration(new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL));
 
         CacheManager.getInstance(this).reloadModule();
         this.modules = CacheManager.getInstance(this).getModule();
@@ -45,6 +50,12 @@ public class HistoryActivity extends AppCompatActivity {
 
         cacheViewAdapter = new CacheViewAdapter(this, modules);
         cacheView.setAdapter(cacheViewAdapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Collections.sort(modules);
         cacheViewAdapter.notifyDataSetChanged();
     }
 }

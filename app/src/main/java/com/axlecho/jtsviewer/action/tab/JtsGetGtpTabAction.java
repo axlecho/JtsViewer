@@ -15,7 +15,7 @@ import com.axlecho.jtsviewer.untils.JtsViewerLog;
 import java.util.List;
 
 
-public class JtsGetGtpTabAction extends JtsBaseAction {
+public class JtsGetGtpTabAction extends JtsBaseAction implements DownloadListener {
 
     private static final String GTP_PATTERN = "dlink=\"/forum.php\\?mod=attachment.*?\"";
     private static final String TAG = JtsGetGtpTabAction.class.getSimpleName();
@@ -64,32 +64,35 @@ public class JtsGetGtpTabAction extends JtsBaseAction {
         action.setKey(CONTEXT_KEY, getKey(CONTEXT_KEY));
         action.setKey(DownloadAction.URL_KEY, url);
         action.setKey(JtsParseTabTypeAction.GID_KEY, getKey(JtsParseTabTypeAction.GID_KEY));
+        action.setDownloadHandler(this);
+        action.execute();
+    }
 
-        action.setDownloadHandler(new DownloadListener() {
-            @Override
-            public void onStart(long size) {
-                JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, "[download] size " + size);
-            }
+    @Override
+    public void onStart(long size) {
+        JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, "[download] size " + size);
+    }
 
-            @Override
-            public void onFinish(String result) {
-                JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, "[download] result " + result);
-                JtsShowGtpTabAction action = new JtsShowGtpTabAction();
-                action.setKey(CONTEXT_KEY, getKey(CONTEXT_KEY));
-                action.setKey(JtsShowGtpTabAction.GTP_FILE_PATH, result);
-                action.execute();
-            }
+    @Override
+    public void onFinish(String result) {
+        this.processDownloadFinish(result);
+    }
 
-            @Override
-            public void onError(String msg) {
-                JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, "[download] error " + msg);
-            }
+    @Override
+    public void onError(String msg) {
+        JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, "[download] error " + msg);
+    }
 
-            @Override
-            public void onProgress(long progress) {
-                JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, "[download] progress " + progress);
-            }
-        });
+    @Override
+    public void onProgress(long progress) {
+        JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, "[download] progress " + progress);
+    }
+
+    public void processDownloadFinish(String result) {
+        JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, "[download] result " + result);
+        JtsShowGtpTabAction action = new JtsShowGtpTabAction();
+        action.setKey(CONTEXT_KEY, getKey(CONTEXT_KEY));
+        action.setKey(JtsShowGtpTabAction.GTP_FILE_PATH, result);
         action.execute();
     }
 }

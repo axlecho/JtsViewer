@@ -3,6 +3,8 @@ package com.axlecho.jtsviewer.network.download;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import com.axlecho.jtsviewer.activity.main.MainActivity;
+import com.axlecho.jtsviewer.activity.main.MainActivityController;
 import com.axlecho.jtsviewer.cache.CacheManager;
 import com.axlecho.jtsviewer.module.CacheModule;
 import com.axlecho.jtsviewer.network.JtsNetworkManager;
@@ -100,6 +102,8 @@ public class DownloadTask extends AsyncTask<Void, Long, String> {
         cacheInfo.fileName = fileName;
         cacheInfo.gid = String.valueOf(gid);
         cacheInfo.type = "gtp";
+        cacheInfo.frequency = 0;
+        cacheInfo.tabInfo = MainActivityController.getInstance().findTabInfoByGid(gid);
         try {
             cacheInfo.writeToFile();
         } catch (IOException e) {
