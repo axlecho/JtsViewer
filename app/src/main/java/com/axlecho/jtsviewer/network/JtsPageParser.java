@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.action.tab.JtsParseTabListAction;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
+import com.axlecho.jtsviewer.module.JtsThreadModule;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 
@@ -149,5 +150,36 @@ public class JtsPageParser {
             model.uper = context.getString(R.string.unknown_uper);
         }
         return model;
+    }
+
+    public List<JtsThreadModule> parserThread() {
+        if (html == null) return null;
+
+        Document doc = Jsoup.parse(html);
+        Elements tbodys = doc.select("table.plhin");
+        List<JtsThreadModule> moduleList = new ArrayList<>();
+
+        Iterator it = tbodys.iterator();
+        while (it.hasNext()) {
+            Element c = (Element) it.next();
+            JtsThreadModule module = parserThraed(c);
+            JtsViewerLog.d(TAG, "[parserThread]" + module);
+            moduleList.add(module);
+        }
+        return moduleList;
+    }
+
+    private JtsThreadModule parserThraed(Element e) {
+        if (e == null) return null;
+        JtsThreadModule module = new JtsThreadModule();
+        module.authi = e.select("div.authi").first().text();
+        module.avatar = e.select("img[src*=avatar.php]").attr("src");
+        Element time = e.select("span[title~=^\\d{4}(\\-|\\/|\\.)\\d{1,2}\\1\\d{1,2}.*$]").first();
+        if (time == null) {
+            time = e.select("span:matches(^\\d{4}(\\-|\\/|\\.)\\d{1,2}\\1\\d{1,2}.*$)").first();
+        }
+        module.time = time.text();
+        module.message = e.select("td.t_f").first().text();
+        return module;
     }
 }

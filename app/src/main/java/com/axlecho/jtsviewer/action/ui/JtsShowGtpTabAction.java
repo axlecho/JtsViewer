@@ -1,4 +1,4 @@
-package com.axlecho.jtsviewer.action.tab;
+package com.axlecho.jtsviewer.action.ui;
 
 import android.content.Context;
 import android.content.Intent;

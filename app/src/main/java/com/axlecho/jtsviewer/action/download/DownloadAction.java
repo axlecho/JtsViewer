@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.action.tab.JtsParseTabTypeAction;
-import com.axlecho.jtsviewer.action.tab.JtsShowGtpTabAction;
+import com.axlecho.jtsviewer.action.ui.JtsShowGtpTabAction;
 import com.axlecho.jtsviewer.cache.CacheManager;
 import com.axlecho.jtsviewer.module.CacheModule;
 import com.axlecho.jtsviewer.network.download.DownloadListener;
