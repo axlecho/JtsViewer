@@ -174,11 +174,7 @@ public class JtsPageParser {
         JtsThreadModule module = new JtsThreadModule();
         module.authi = e.select("div.authi").first().text();
         module.avatar = e.select("img[src*=avatar.php]").attr("src");
-        Element time = e.select("span[title~=^\\d{4}(\\-|\\/|\\.)\\d{1,2}\\1\\d{1,2}.*$]").first();
-        if (time == null) {
-            time = e.select("span:matches(^\\d{4}(\\-|\\/|\\.)\\d{1,2}\\1\\d{1,2}.*$)").first();
-        }
-        module.time = time.text();
+        module.time = e.select("em").first().text();
         module.message = e.select("td.t_f").first().text();
         return module;
     }

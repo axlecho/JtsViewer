@@ -35,7 +35,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activity.login.LoginActivity" />
         <activity
-            android:name=".activity.DetailActivity"
+            android:name=".activity.JtsDetailActivity"
             android:label="@string/title_activity_detail"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>

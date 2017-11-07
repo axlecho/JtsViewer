@@ -32,7 +32,7 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.8.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'org.jsoup:jsoup:1.10.3'
-
+    compile 'com.google.code.gson:gson:2.8.2'
 
     compile 'com.github.seven332:refreshlayout:0.1.0'
     compile 'com.github.axlecho.tuxguitar:tuxguitar-widget:v0.0.2'

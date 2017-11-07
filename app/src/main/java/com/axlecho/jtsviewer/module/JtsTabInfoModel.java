@@ -2,7 +2,9 @@ package com.axlecho.jtsviewer.module;
 
 import com.google.gson.Gson;
 
-public class JtsTabInfoModel {
+import java.io.Serializable;
+
+public class JtsTabInfoModel implements Serializable{
     public String title;
     public String author;
     public String time;
