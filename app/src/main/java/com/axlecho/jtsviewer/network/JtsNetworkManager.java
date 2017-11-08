@@ -1,13 +1,10 @@
 package com.axlecho.jtsviewer.network;
 
 import android.content.Context;
-import android.text.TextUtils;
 
 import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
-
-import org.w3c.dom.Text;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -25,7 +22,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
-import okhttp3.internal.http2.Header;
 import okio.Buffer;
 import okio.BufferedSource;
 import okio.ForwardingSource;
@@ -39,17 +35,14 @@ public class JtsNetworkManager {
 
     private static JtsNetworkManager instance;
     private OkHttpClient client;
-    private Context context;
 
     private JtsNetworkManager(Context context) {
-        this.context = context;
         OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
         clientBuilder.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
         clientBuilder.addInterceptor(new LoggingInterceptor());
         clientBuilder.networkInterceptors().add(new ProgressInterceptor());
-        clientBuilder.cookieJar(new JtsCookieJar(this.context));
+        clientBuilder.cookieJar(new JtsCookieJar(context.getApplicationContext()));
         client = clientBuilder.build();
-
     }
 
     public static JtsNetworkManager getInstance(Context context) {

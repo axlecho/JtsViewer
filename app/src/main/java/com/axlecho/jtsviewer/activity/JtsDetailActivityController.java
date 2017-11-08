@@ -7,6 +7,7 @@ import com.axlecho.jtsviewer.module.JtsThreadModule;
 import com.axlecho.jtsviewer.network.JtsConf;
 import com.axlecho.jtsviewer.network.JtsNetworkManager;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -30,9 +31,6 @@ public class JtsDetailActivityController {
         return instance;
     }
 
-    private JtsDetailActivityController() {
-
-    }
 
     public void setActivity(JtsDetailActivity activity) {
         this.activity = activity;
@@ -56,5 +54,18 @@ public class JtsDetailActivityController {
         }
 
         adapter.addData(threads);
+    }
+
+    public void bindTabInfo() {
+        JtsTabInfoModel model = (JtsTabInfoModel) activity.getIntent().getSerializableExtra("tabinfo");
+        Picasso.with(activity).load(model.avatar).into(activity.avatar);
+        activity.title.setText(model.title);
+        activity.watch.setText(model.watch);
+        activity.reply.setText(model.reply);
+    }
+
+    public void clearData() {
+        this.activity = null;
+        this.adapter = null;
     }
 }

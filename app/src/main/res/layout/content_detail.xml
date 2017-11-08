@@ -8,9 +8,52 @@
     tools:context="com.axlecho.jtsviewer.activity.JtsDetailActivity"
     tools:showIn="@layout/activity_detail">
 
+
+    <ImageView
+        android:id="@+id/tab_detail_avatar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_launcher"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tab_detail_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:maxLines="5"
+        android:text="~title"
+        app:layout_constraintLeft_toRightOf="@+id/tab_detail_avatar"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tab_detail_avatar" />
+
+
+    <TextView
+        android:id="@+id/tab_detail_reply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="~reply"
+        app:layout_constraintLeft_toLeftOf="@+id/tab_detail_title"
+        app:layout_constraintTop_toBottomOf="@+id/tab_detail_title" />
+
+    <TextView
+        android:id="@+id/tab_detail_watch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="~watch"
+        app:layout_constraintLeft_toRightOf="@+id/tab_detail_reply"
+        app:layout_constraintTop_toTopOf="@+id/tab_detail_reply" />
+
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/comment_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical" />
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tab_detail_avatar"
+        app:layout_constraintVertical_bias="0.0" />
 </android.support.constraint.ConstraintLayout>
