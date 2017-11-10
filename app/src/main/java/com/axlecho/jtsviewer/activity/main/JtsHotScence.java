@@ -22,6 +22,7 @@ public class JtsHotScence extends BaseScene {
 
     public JtsHotScence(Context context) {
         this.context = context;
+        MainActivityController.getInstance().getActivity().setTitle("热门");
     }
 
     @Override

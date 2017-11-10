@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity
     public MenuItem searchItem;
     public RecyclerView recyclerView;
     public RefreshLayout refreshLayout;
-
+    public Toolbar toolbar;
     private MainActivityController controller;
 
 
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity
         this.controller.setActivity(this);
         this.controller.verifyStoragePermissions();
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -128,5 +128,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onFooterRefresh() {
         controller.getScene().loadMore();
+    }
+
+    public void setTitle(String title) {
+        toolbar.setTitle(title);
     }
 }

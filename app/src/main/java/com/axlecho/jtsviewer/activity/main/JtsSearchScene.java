@@ -25,6 +25,7 @@ public class JtsSearchScene extends BaseScene {
     public JtsSearchScene(Context context, String keyword) {
         this.context = context;
         this.keyword = keyword;
+        MainActivityController.getInstance().getActivity().setTitle("搜索:" + keyword);
     }
 
     @Override

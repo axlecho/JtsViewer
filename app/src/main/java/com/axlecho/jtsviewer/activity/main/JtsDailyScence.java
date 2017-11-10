@@ -22,6 +22,7 @@ public class JtsDailyScence extends BaseScene {
 
     public JtsDailyScence(Context context) {
         this.context = context;
+        MainActivityController.getInstance().getActivity().setTitle("最新");
     }
 
     @Override
