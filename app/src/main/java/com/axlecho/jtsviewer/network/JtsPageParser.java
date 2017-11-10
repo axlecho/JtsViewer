@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.action.tab.JtsParseTabListAction;
+import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.JtsThreadModule;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
@@ -45,7 +46,7 @@ public class JtsPageParser {
     }
 
     public List<JtsTabInfoModel> parserTabList() {
-            return parserTabListFromDaily();
+        return parserTabListFromDaily();
     }
 
     public List<JtsTabInfoModel> parserTabListFromDaily() {
@@ -82,7 +83,7 @@ public class JtsPageParser {
         // search mode has no time attr
         try {
             model.time = e.select("span[title*=发布时间]").first().nextElementSibling().text();
-        }catch (NullPointerException ex) {
+        } catch (NullPointerException ex) {
             // ex.printStackTrace();
             model.time = context.getResources().getString(R.string.unknown_time);
         }
@@ -95,6 +96,13 @@ public class JtsPageParser {
             model.uper = context.getString(R.string.unknown_uper);
         }
         return model;
+    }
+
+    public JtsTabDetailModule parserTabDetail() {
+        JtsTabDetailModule detail = new JtsTabDetailModule();
+        detail.raw = html;
+        detail.threadList = parserThread();
+        return detail;
     }
 
     public List<JtsThreadModule> parserThread() {

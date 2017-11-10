@@ -11,8 +11,9 @@
 
     <ImageView
         android:id="@+id/tab_detail_avatar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/item_icon_size"
+        android:layout_height="@dimen/item_icon_size"
+        android:layout_margin="@dimen/activity_margin"
         android:src="@drawable/ic_launcher"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -21,6 +22,10 @@
         android:id="@+id/tab_detail_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:maxLines="5"
         android:text="~title"
         app:layout_constraintLeft_toRightOf="@+id/tab_detail_avatar"
@@ -32,6 +37,7 @@
         android:id="@+id/tab_detail_reply"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:text="~reply"
         app:layout_constraintLeft_toLeftOf="@+id/tab_detail_title"
         app:layout_constraintTop_toBottomOf="@+id/tab_detail_title" />
@@ -40,10 +46,20 @@
         android:id="@+id/tab_detail_watch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:text="~watch"
         app:layout_constraintLeft_toRightOf="@+id/tab_detail_reply"
         app:layout_constraintTop_toTopOf="@+id/tab_detail_reply" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/tab_detail_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_dialog_email"
+        app:layout_constraintBottom_toBottomOf="@+id/tab_detail_avatar"
+        app:layout_constraintRight_toRightOf="@+id/tab_detail_title"
+        app:layout_constraintTop_toBottomOf="@+id/tab_detail_avatar" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/comment_recycler_view"

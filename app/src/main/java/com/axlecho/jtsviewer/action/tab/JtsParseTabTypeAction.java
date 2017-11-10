@@ -7,6 +7,7 @@ import com.axlecho.jtsviewer.untils.JtsViewerLog;
 public class JtsParseTabTypeAction extends JtsBaseAction {
     private static final int TAB_TYPE_IMAGE = 1;
     private static final int TAB_TYPE_GTP = 2;
+
     private static final String TAG = JtsParseTabTypeAction.class.getSimpleName();
     public static final String GID_KEY = "tab_action_gid";
 

@@ -9,12 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.axlecho.jtsviewer.R;
-import com.axlecho.jtsviewer.action.tab.JtsParseTabTypeAction;
-import com.axlecho.jtsviewer.action.tab.JtsParseThreadAction;
-import com.axlecho.jtsviewer.module.JtsTabInfoModel;
-import com.axlecho.jtsviewer.network.JtsConf;
-import com.axlecho.jtsviewer.network.JtsNetworkManager;
-import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 
 public class JtsDetailActivity extends AppCompatActivity {
 
@@ -41,14 +35,14 @@ public class JtsDetailActivity extends AppCompatActivity {
         reply = (TextView) findViewById(R.id.tab_detail_reply);
         watch = (TextView) findViewById(R.id.tab_detail_watch);
 
-        JtsDetailActivityController.getInstance().setActivity(this);
-        JtsDetailActivityController.getInstance().bindTabInfo();
+        JtsDetailActivityController.getInstance().attachToActivity(this);
         JtsDetailActivityController.getInstance().getTabDetail();
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        JtsDetailActivityController.getInstance().clearData();
+        JtsDetailActivityController.getInstance().detachToActivity();
     }
 }

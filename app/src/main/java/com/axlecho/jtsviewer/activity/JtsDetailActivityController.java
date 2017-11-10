@@ -1,15 +1,16 @@
 package com.axlecho.jtsviewer.activity;
 
+import com.axlecho.jtsviewer.R;
+import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.action.tab.JtsParseTabTypeAction;
 import com.axlecho.jtsviewer.action.tab.JtsParseThreadAction;
+import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
-import com.axlecho.jtsviewer.module.JtsThreadModule;
 import com.axlecho.jtsviewer.network.JtsConf;
 import com.axlecho.jtsviewer.network.JtsNetworkManager;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
+import com.axlecho.jtsviewer.untils.JtsViewerLog;
 import com.squareup.picasso.Picasso;
-
-import java.util.List;
 
 /**
  * Created by Administrator on 2017/11/7.
@@ -18,6 +19,9 @@ import java.util.List;
 public class JtsDetailActivityController {
     private JtsDetailActivity activity;
     private JtsThreadListAdapter adapter;
+    private JtsTabDetailModule detail;
+    private JtsTabInfoModel info;
+
     private static JtsDetailActivityController instance;
 
     public static JtsDetailActivityController getInstance() {
@@ -32,28 +36,26 @@ public class JtsDetailActivityController {
     }
 
 
-    public void setActivity(JtsDetailActivity activity) {
+    public void attachToActivity(JtsDetailActivity activity) {
         this.activity = activity;
+        this.bindTabInfo();
     }
 
     public void getTabDetail() {
-        JtsTabInfoModel model = (JtsTabInfoModel) activity.getIntent().getSerializableExtra("tabinfo");
-        // JtsParseTabTypeAction action = new JtsParseTabTypeAction();
-        // action.setKey(CONTEXT_KEY, context);
-        // action.setKey(JtsParseTabTypeAction.GID_KEY, JtsTextUnitls.getTabKeyFromUrl(url));
-
-        JtsParseThreadAction action = new JtsParseThreadAction(activity);
-        action.setKey(JtsParseTabTypeAction.GID_KEY, JtsTextUnitls.getTabKeyFromUrl(model.url));
-        JtsNetworkManager.getInstance(activity).get(JtsConf.DESKTOP_HOST_URL + model.url, action);
+        this.info = (JtsTabInfoModel) activity.getIntent().getSerializableExtra("tabinfo");
+        JtsNetworkManager.getInstance(activity).get(JtsConf.DESKTOP_HOST_URL + info.url, createDetailInfoProcessor());
     }
 
-    public void processThreadData(List<JtsThreadModule> threads) {
+    public void processDetail(JtsTabDetailModule detail) {
+        this.detail = detail;
+
+        this.registerListener();
         if (adapter == null) {
             adapter = new JtsThreadListAdapter(activity);
             activity.recyclerView.setAdapter(adapter);
         }
 
-        adapter.addData(threads);
+        adapter.addData(detail.threadList);
     }
 
     public void bindTabInfo() {
@@ -64,8 +66,27 @@ public class JtsDetailActivityController {
         activity.reply.setText(model.reply);
     }
 
-    public void clearData() {
+    public void detachToActivity() {
         this.activity = null;
         this.adapter = null;
+    }
+
+    public void registerListener() {
+        activity.findViewById(R.id.tab_detail_play).setOnClickListener(createPlayProcessor());
+    }
+
+    public JtsBaseAction createPlayProcessor() {
+        JtsViewerLog.appendToFile(activity,detail.raw);
+        JtsParseTabTypeAction action = new JtsParseTabTypeAction();
+        action.setKey(JtsNetworkManager.WEBPAGE_CONTENT_KEY, detail.raw);
+        action.setKey(JtsBaseAction.CONTEXT_KEY, activity);
+        action.setKey(JtsParseTabTypeAction.GID_KEY, JtsTextUnitls.getTabKeyFromUrl(info.url));
+        return action;
+    }
+
+    public JtsBaseAction createDetailInfoProcessor() {
+        JtsParseThreadAction action = new JtsParseThreadAction(activity);
+        action.setKey(JtsBaseAction.CONTEXT_KEY, activity);
+        return action;
     }
 }

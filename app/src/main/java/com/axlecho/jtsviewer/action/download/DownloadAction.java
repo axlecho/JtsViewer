@@ -61,6 +61,6 @@ public class DownloadAction extends JtsBaseAction {
         JtsShowGtpTabAction action = new JtsShowGtpTabAction();
         action.setKey(JtsBaseAction.CONTEXT_KEY, getKey(JtsBaseAction.CONTEXT_KEY));
         action.setKey(JtsShowGtpTabAction.GTP_FILE_PATH, module.path + File.separator + module.fileName);
-        action.processAction();
+        action.executeOnUiThread();
     }
 }
