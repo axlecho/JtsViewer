@@ -39,7 +39,6 @@ public class JtsSearchScene extends BaseScene {
         JtsRefreshAction refreshAction = new JtsRefreshAction();
         JtsParseTabListAction action = new JtsParseTabListAction();
         action.setKey(JtsBaseAction.CONTEXT_KEY, context);
-        action.setKey(JtsParseTabListAction.SRC_FROM_KEY, JtsParseTabListAction.SRC_FROM_SEARCH);
         action.setKey("after_action", refreshAction);
         JtsNetworkManager.getInstance(context).get(JtsConf.DESKTOP_SREACH_URL + keyword, action);
     }

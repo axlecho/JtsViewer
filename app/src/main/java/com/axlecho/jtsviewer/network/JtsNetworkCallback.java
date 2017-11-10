@@ -25,7 +25,6 @@ public class JtsNetworkCallback implements Callback {
     @Override
     public void onResponse(Call call, Response response) throws IOException {
         String ret = response.body().string();
-
         if (action == null) {
             JtsViewerLog.e(TAG, "action is null");
             return;

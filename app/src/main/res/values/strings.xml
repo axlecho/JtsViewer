@@ -18,5 +18,6 @@
     <string name="title_hot">热门</string>
     <string name="title_new">最新</string>
     <string name="unknown_uper">吉他爱好者</string>
+    <string name="unknown_time">未知</string>
     <string name="title_activity_detail">DetailActivity</string>
 </resources>

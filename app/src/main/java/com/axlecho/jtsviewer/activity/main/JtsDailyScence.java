@@ -32,7 +32,6 @@ public class JtsDailyScence extends BaseScene {
         JtsParseTabListAction action = new JtsParseTabListAction();
         JtsLoadMoreAction loadMoreAction = new JtsLoadMoreAction();
         action.setKey(JtsBaseAction.CONTEXT_KEY, context);
-        action.setKey(JtsParseTabListAction.SRC_FROM_KEY, JtsParseTabListAction.SRC_FROM_DIALY);
         action.setKey("after_action", loadMoreAction);
         JtsNetworkManager.getInstance(context).get(JtsConf.DESKTOP_NEW_URL + currentPage, action);
     }
@@ -44,7 +43,6 @@ public class JtsDailyScence extends BaseScene {
         JtsRefreshAction refreshAction = new JtsRefreshAction();
         JtsParseTabListAction action = new JtsParseTabListAction();
         action.setKey(JtsBaseAction.CONTEXT_KEY, context);
-        action.setKey(JtsParseTabListAction.SRC_FROM_KEY, JtsParseTabListAction.SRC_FROM_DIALY);
         action.setKey("after_action", refreshAction);
         JtsNetworkManager.getInstance(context).get(JtsConf.DESKTOP_NEW_URL + currentPage, action);
     }

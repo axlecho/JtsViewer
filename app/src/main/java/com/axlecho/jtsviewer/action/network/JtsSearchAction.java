@@ -21,7 +21,6 @@ public class JtsSearchAction extends JtsBaseAction {
         JtsViewerLog.d(TAG, "search key:" + keyword);
         JtsParseTabListAction action = new JtsParseTabListAction();
         action.setKey(JtsBaseAction.CONTEXT_KEY, context);
-        action.setKey(JtsParseTabListAction.SRC_FROM_KEY, JtsParseTabListAction.SRC_FROM_SEARCH);
         JtsNetworkManager.getInstance(context).get(JtsConf.DESKTOP_SREACH_URL + keyword, action);
     }
 }
