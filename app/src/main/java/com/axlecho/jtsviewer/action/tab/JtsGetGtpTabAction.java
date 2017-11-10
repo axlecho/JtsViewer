@@ -21,7 +21,7 @@ public class JtsGetGtpTabAction extends JtsBaseAction implements DownloadListene
 
 
     @Override
-    public void execute() {
+    public void processAction() {
         String webpageContent = (String) getKey(JtsNetworkManager.WEBPAGE_CONTENT_KEY);
         Context context = (Context) getKey(CONTEXT_KEY);
         long gid = (long) getKey(JtsParseTabTypeAction.GID_KEY);
@@ -30,12 +30,12 @@ public class JtsGetGtpTabAction extends JtsBaseAction implements DownloadListene
         JtsViewerLog.d(TAG, "gid " + gid);
 
         if (webpageContent == null) {
-            JtsViewerLog.e(TAG, "execute failed - webpage content is null");
+            JtsViewerLog.e(TAG, "processAction failed - webpage content is null");
             return;
         }
 
         if (context == null) {
-            JtsViewerLog.e(TAG, "execute failed - context is null");
+            JtsViewerLog.e(TAG, "processAction failed - context is null");
             return;
         }
 //        if (JtsCookieManager.getInstance(context).getCookie().equals("") ||
@@ -64,7 +64,7 @@ public class JtsGetGtpTabAction extends JtsBaseAction implements DownloadListene
         action.setKey(DownloadAction.URL_KEY, url);
         action.setKey(JtsParseTabTypeAction.GID_KEY, getKey(JtsParseTabTypeAction.GID_KEY));
         action.setDownloadHandler(this);
-        action.execute();
+        action.processAction();
     }
 
     @Override
@@ -92,6 +92,6 @@ public class JtsGetGtpTabAction extends JtsBaseAction implements DownloadListene
         JtsShowGtpTabAction action = new JtsShowGtpTabAction();
         action.setKey(CONTEXT_KEY, getKey(CONTEXT_KEY));
         action.setKey(JtsShowGtpTabAction.GTP_FILE_PATH, result);
-        action.execute();
+        action.processAction();
     }
 }

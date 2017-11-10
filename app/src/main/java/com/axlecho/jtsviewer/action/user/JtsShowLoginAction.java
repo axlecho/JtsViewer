@@ -10,7 +10,7 @@ import com.axlecho.jtsviewer.activity.login.LoginActivity;
 public class JtsShowLoginAction extends JtsBaseAction {
 
     @Override
-    public void execute() {
+    public void processAction() {
         Context context = (Context) getKey(JtsBaseAction.CONTEXT_KEY);
         Intent intent = new Intent();
         intent.setClass(context, LoginActivity.class);

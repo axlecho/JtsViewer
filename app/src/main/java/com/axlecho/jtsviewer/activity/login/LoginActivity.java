@@ -34,7 +34,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             action.setKey(JtsBaseAction.CONTEXT_KEY, this.getApplicationContext());
             action.setKey(JtsLoginAction.USERNAME_KEY, username);
             action.setKey(JtsLoginAction.KEYWORD_KEY, keyword);
-            action.execute();
+            action.processAction();
         }
     }
 }

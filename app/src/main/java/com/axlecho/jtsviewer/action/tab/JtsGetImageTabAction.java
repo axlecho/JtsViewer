@@ -22,7 +22,7 @@ public class JtsGetImageTabAction extends JtsBaseAction {
 
 
     @Override
-    public void execute() {
+    public void processAction() {
         String webpageContent = (String) getKey(JtsNetworkManager.WEBPAGE_CONTENT_KEY);
         Context context = (Context) getKey(CONTEXT_KEY);
         long gid = (long) getKey(JtsParseTabTypeAction.GID_KEY);
@@ -30,12 +30,12 @@ public class JtsGetImageTabAction extends JtsBaseAction {
         JtsViewerLog.d(TAG, "gid " + gid);
 
         if (webpageContent == null) {
-            JtsViewerLog.e(TAG, "execute failed - webpage content is null");
+            JtsViewerLog.e(TAG, "processAction failed - webpage content is null");
             return;
         }
 
         if (context == null) {
-            JtsViewerLog.e(TAG, "execute failed - context is null");
+            JtsViewerLog.e(TAG, "processAction failed - context is null");
             return;
         }
 
@@ -47,7 +47,7 @@ public class JtsGetImageTabAction extends JtsBaseAction {
 
         ImageTabInfo info = new ImageTabInfo();
         if (imageUrl.size() == 0 && imageUrl2.size() == 0) {
-            JtsViewerLog.e(TAG, "execute failed - image url is null");
+            JtsViewerLog.e(TAG, "processAction failed - image url is null");
             return;
         }
 

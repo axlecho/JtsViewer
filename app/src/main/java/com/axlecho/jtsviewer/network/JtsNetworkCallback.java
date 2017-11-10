@@ -30,7 +30,7 @@ public class JtsNetworkCallback implements Callback {
             return;
         }
         action.setKey(JtsNetworkManager.WEBPAGE_CONTENT_KEY, ret);
-        action.execute();
+        action.executeOnUiThread();
     }
 
 

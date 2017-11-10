@@ -13,7 +13,7 @@ public class JtsParseUserInfoAction extends JtsBaseAction {
     private String USER_IMAGE_PREFIX = "http://www.jitashe.org/uc_server/avatar.php?uid=";
 
     @Override
-    public void execute() {
+    public void processAction() {
         String webpageContent = (String) getKey(JtsNetworkManager.WEBPAGE_CONTENT_KEY);
         UserModule user = new UserModule();
         String uidStr = JtsTextUnitls.findByPatternOnce(webpageContent, UID_URL_PATTERN);

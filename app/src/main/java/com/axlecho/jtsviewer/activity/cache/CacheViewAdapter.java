@@ -74,7 +74,7 @@ public class CacheViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         JtsShowGtpTabAction action = new JtsShowGtpTabAction();
         action.setKey(JtsBaseAction.CONTEXT_KEY, this.context.getApplicationContext());
         action.setKey(JtsShowGtpTabAction.GTP_FILE_PATH, module.path + File.separator + module.fileName);
-        action.execute();
+        action.processAction();
     }
 
     private class CacheViewHolder extends RecyclerView.ViewHolder {

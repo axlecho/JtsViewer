@@ -16,7 +16,7 @@ public class JtsParseTabListAction extends JtsBaseAction {
     private static final String TAG = JtsParseTabListAction.class.getSimpleName();
 
     @Override
-    public void execute() {
+    public void processAction() {
         Context context = (Context) getKey(JtsBaseAction.CONTEXT_KEY);
         String html = (String) getKey(JtsNetworkManager.WEBPAGE_CONTENT_KEY);
         JtsPageParser.getInstance(context).setContent(html);
@@ -28,6 +28,6 @@ public class JtsParseTabListAction extends JtsBaseAction {
     public void processAfterAction(List<JtsTabInfoModel> data) {
         JtsBaseAction action = (JtsBaseAction) getKey("after_action");
         action.setKey(JtsRefreshAction.DATA_KEY, data);
-        MainActivityController.getInstance().getActivity().runOnUiThread(action);
+        action.execute();
     }
 }

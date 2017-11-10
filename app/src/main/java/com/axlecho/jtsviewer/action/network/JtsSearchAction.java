@@ -14,7 +14,7 @@ public class JtsSearchAction extends JtsBaseAction {
     public static final String SEARCH_CONTENT_KEY = "jts-search-content";
 
     @Override
-    public void execute() {
+    public void processAction() {
         String keyword = (String) getKey(SEARCH_CONTENT_KEY);
         Context context = (Context) getKey(JtsBaseAction.CONTEXT_KEY);
 

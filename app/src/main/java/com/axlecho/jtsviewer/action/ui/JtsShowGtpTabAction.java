@@ -16,7 +16,7 @@ public class JtsShowGtpTabAction extends JtsBaseAction {
     public static final String GTP_FILE_PATH = "show_gtp_file_path";
 
     @Override
-    public void execute() {
+    public void processAction() {
         Context context = (Context) getKey(CONTEXT_KEY);
         String filePath = (String) getKey(JtsShowGtpTabAction.GTP_FILE_PATH);
         if (filePath == null) {

@@ -6,8 +6,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,8 +13,6 @@ import android.widget.TextView;
 
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.action.JtsBaseAction;
-import com.axlecho.jtsviewer.action.tab.JtsParseTabListAction;
-import com.axlecho.jtsviewer.action.network.JtsSearchAction;
 import com.axlecho.jtsviewer.action.user.JtsParseUserInfoAction;
 import com.axlecho.jtsviewer.action.user.JtsShowLoginAction;
 import com.axlecho.jtsviewer.activity.cache.HistoryActivity;
@@ -132,7 +128,7 @@ public class MainActivityController {
         drawer.closeDrawer(GravityCompat.START);
         JtsShowLoginAction action = new JtsShowLoginAction();
         action.setKey(JtsBaseAction.CONTEXT_KEY, activity);
-        action.execute();
+        action.processAction();
     }
 
     public void processShowLogin() {

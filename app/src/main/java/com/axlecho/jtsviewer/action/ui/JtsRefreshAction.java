@@ -12,7 +12,7 @@ public class JtsRefreshAction extends JtsBaseAction {
     public static final String DATA_KEY = "data_key";
 
     @Override
-    public void execute() {
+    public void processAction() {
         List<JtsTabInfoModel> data = (ArrayList<JtsTabInfoModel>) getKey(DATA_KEY);
         MainActivityController.getInstance().getScene().processRefreah(data);
     }

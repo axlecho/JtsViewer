@@ -11,7 +11,7 @@ public class JtsParseTabTypeAction extends JtsBaseAction {
     public static final String GID_KEY = "tab_action_gid";
 
     @Override
-    public void execute() {
+    public void processAction() {
         String webpageContent = (String) getKey(JtsNetworkManager.WEBPAGE_CONTENT_KEY);
         int type = praseTabType(webpageContent);
 
@@ -21,13 +21,13 @@ public class JtsParseTabTypeAction extends JtsBaseAction {
             action.setKey(CONTEXT_KEY, getKey(CONTEXT_KEY));
             action.setKey(GID_KEY, getKey(GID_KEY));
             action.setKey(JtsNetworkManager.WEBPAGE_CONTENT_KEY, getKey(JtsNetworkManager.WEBPAGE_CONTENT_KEY));
-            action.execute();
+            action.processAction();
         } else if (type == TAB_TYPE_IMAGE) {
             JtsGetImageTabAction action = new JtsGetImageTabAction();
             action.setKey(CONTEXT_KEY, getKey(CONTEXT_KEY));
             action.setKey(GID_KEY, getKey(GID_KEY));
             action.setKey(JtsNetworkManager.WEBPAGE_CONTENT_KEY, getKey(JtsNetworkManager.WEBPAGE_CONTENT_KEY));
-            action.execute();
+            action.processAction();
         }
     }
 

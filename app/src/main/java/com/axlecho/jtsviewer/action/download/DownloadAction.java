@@ -31,7 +31,7 @@ public class DownloadAction extends JtsBaseAction {
     }
 
     @Override
-    public void execute() {
+    public void processAction() {
         this.context = (Context) getKey(CONTEXT_KEY);
         this.url = (String) getKey(URL_KEY);
         this.gid = (long) getKey(JtsParseTabTypeAction.GID_KEY);
@@ -61,6 +61,6 @@ public class DownloadAction extends JtsBaseAction {
         JtsShowGtpTabAction action = new JtsShowGtpTabAction();
         action.setKey(JtsBaseAction.CONTEXT_KEY, getKey(JtsBaseAction.CONTEXT_KEY));
         action.setKey(JtsShowGtpTabAction.GTP_FILE_PATH, module.path + File.separator + module.fileName);
-        action.execute();
+        action.processAction();
     }
 }

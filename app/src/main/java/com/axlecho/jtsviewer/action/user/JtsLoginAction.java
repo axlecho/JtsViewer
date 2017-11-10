@@ -17,7 +17,7 @@ public class JtsLoginAction extends JtsBaseAction {
     public static final String KEYWORD_KEY = "keyword";
 
     @Override
-    public void execute() {
+    public void processAction() {
         Context context = (Context) getKey(JtsBaseAction.CONTEXT_KEY);
         String username = (String) getKey(USERNAME_KEY);
         String keyword = (String) getKey(KEYWORD_KEY);

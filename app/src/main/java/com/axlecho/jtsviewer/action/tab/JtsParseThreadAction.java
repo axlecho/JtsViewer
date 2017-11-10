@@ -28,7 +28,7 @@ public class JtsParseThreadAction extends JtsBaseAction {
     }
 
     @Override
-    public void execute() {
+    public void processAction() {
         JtsViewerLog.d(JtsViewerLog.TRACE_MODULE, TAG, TAG);
         this.html = (String) getKey(JtsNetworkManager.WEBPAGE_CONTENT_KEY);
 
