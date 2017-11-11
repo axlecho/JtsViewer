@@ -81,4 +81,10 @@ public class JtsTextUnitls {
 
         return fileName.substring(0, end);
     }
+
+    public static String getResizePicUrl(String url, int width, int height) {
+        String target = url.replace("w_100", "w_" + width);
+        target = target.replace("h_100", "h_" + height);
+        return target;
+    }
 }

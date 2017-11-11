@@ -60,10 +60,9 @@ public class JtsDetailActivityController {
 
     public void bindTabInfo() {
         JtsTabInfoModel model = (JtsTabInfoModel) activity.getIntent().getSerializableExtra("tabinfo");
-        Picasso.with(activity).load(model.avatar).into(activity.avatar);
+        Picasso.with(activity).load(JtsTextUnitls.getResizePicUrl(model.avatar,200,300)).into(activity.avatar);
         activity.title.setText(model.title);
-        activity.watch.setText(model.watch);
-        activity.reply.setText(model.reply);
+        activity.author.setText(model.author);
     }
 
     public void detachToActivity() {

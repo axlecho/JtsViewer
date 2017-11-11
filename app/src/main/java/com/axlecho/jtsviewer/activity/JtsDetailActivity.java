@@ -16,24 +16,19 @@ public class JtsDetailActivity extends AppCompatActivity {
 
     public ImageView avatar;
     public TextView title;
-    public TextView reply;
-    public TextView watch;
+    public TextView author;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         recyclerView = (RecyclerView) findViewById(R.id.comment_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         avatar = (ImageView) findViewById(R.id.tab_detail_avatar);
         title = (TextView) findViewById(R.id.tab_detail_title);
-        reply = (TextView) findViewById(R.id.tab_detail_reply);
-        watch = (TextView) findViewById(R.id.tab_detail_watch);
+        author = (TextView) findViewById(R.id.tab_detail_author);
 
         JtsDetailActivityController.getInstance().attachToActivity(this);
         JtsDetailActivityController.getInstance().getTabDetail();

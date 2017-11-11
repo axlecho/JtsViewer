@@ -9,67 +9,78 @@
     tools:showIn="@layout/activity_detail">
 
 
-    <ImageView
-        android:id="@+id/tab_detail_avatar"
-        android:layout_width="@dimen/item_icon_size"
-        android:layout_height="@dimen/item_icon_size"
-        android:layout_margin="@dimen/activity_margin"
-        android:src="@drawable/ic_launcher"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tab_detail_title"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/tab_detail_info_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:maxLines="5"
-        android:text="~title"
-        app:layout_constraintLeft_toRightOf="@+id/tab_detail_avatar"
+        android:paddingBottom="32dp"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tab_detail_avatar" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/colorPrimary">
+
+        <ImageView
+            android:id="@+id/tab_detail_avatar"
+            android:layout_width="96dp"
+            android:layout_height="144dp"
+            android:layout_margin="@dimen/activity_margin"
+            android:src="@drawable/ic_launcher"
+            android:scaleType="fitXY"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tab_detail_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:maxLines="5"
+            android:text="~title"
+            android:textSize="22sp"
+            app:layout_constraintLeft_toRightOf="@+id/tab_detail_avatar"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tab_detail_avatar"
+            android:textColor="@color/white"/>
 
 
-    <TextView
-        android:id="@+id/tab_detail_reply"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:text="~reply"
-        app:layout_constraintLeft_toLeftOf="@+id/tab_detail_title"
-        app:layout_constraintTop_toBottomOf="@+id/tab_detail_title" />
-
-    <TextView
-        android:id="@+id/tab_detail_watch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:text="~watch"
-        app:layout_constraintLeft_toRightOf="@+id/tab_detail_reply"
-        app:layout_constraintTop_toTopOf="@+id/tab_detail_reply" />
+        <TextView
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:id="@+id/tab_detail_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="~author"
+            app:layout_constraintLeft_toLeftOf="@+id/tab_detail_title"
+            app:layout_constraintTop_toBottomOf="@+id/tab_detail_title" />
+    </android.support.constraint.ConstraintLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/tab_detail_play"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
         android:src="@android:drawable/ic_dialog_email"
-        app:layout_constraintBottom_toBottomOf="@+id/tab_detail_avatar"
-        app:layout_constraintRight_toRightOf="@+id/tab_detail_title"
-        app:layout_constraintTop_toBottomOf="@+id/tab_detail_avatar" />
+        app:layout_constraintBottom_toBottomOf="@+id/tab_detail_info_layout"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tab_detail_info_layout" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/comment_recycler_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tab_detail_avatar"
+        app:layout_constraintTop_toBottomOf="@+id/tab_detail_play"
         app:layout_constraintVertical_bias="0.0" />
 </android.support.constraint.ConstraintLayout>

@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">@color/kohbai</color>
+    <color name="colorPrimaryDark">@color/imayoh</color>
+    <color name="colorAccent">#1E9473</color>
 
     <color name="title_black">#333333</color>
     <color name="subtitle_black">#888888</color>
+
+    <color name="sakura">#FEDFE1</color>
+    <color name="taikon">#F8C3CD</color>
+    <color name="ikkonzome">#F4A7B9</color>
+    <color name="momo">#F596AA</color>
+    <color name="usubeni">#E87A90</color>
+    <color name="kohbai">#E16B8C</color>
+    <color name="imayoh">#D05A6E</color>
+    <color name="nakabeni">#DB4D6D</color>
+    <color name="karakurenai">#D0104C</color>
 </resources>
