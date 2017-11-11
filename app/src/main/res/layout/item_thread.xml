@@ -1,30 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:padding="@dimen/activity_margin">
 
     <ImageView
         android:id="@+id/thread_item_avatar"
         android:layout_width="@dimen/item_icon_size"
         android:layout_height="@dimen/item_icon_size"
-        android:src="@drawable/ic_launcher" />
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_launcher"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/thread_item_auth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="~auth" />
+        android:layout_marginStart="@dimen/space_horizontal_margin"
+        android:text="~auth"
+        android:textSize="12sp"
+        app:layout_constraintLeft_toRightOf="@+id/thread_item_avatar"
+        app:layout_constraintTop_toTopOf="@+id/thread_item_avatar" />
 
     <TextView
         android:id="@+id/thread_item_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="~message" />
+        android:layout_marginTop="@dimen/space_vertical_margin"
+        android:text="~message"
+        android:textSize="14sp"
+
+        app:layout_constraintLeft_toLeftOf="@+id/thread_item_auth"
+        app:layout_constraintTop_toBottomOf="@+id/thread_item_auth" />
 
     <TextView
         android:id="@+id/thread_item_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="~time" />
-</LinearLayout>
+        android:text="~time"
+        android:textSize="12sp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/thread_item_auth" />
+</android.support.constraint.ConstraintLayout>
