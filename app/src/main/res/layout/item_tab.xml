@@ -12,6 +12,7 @@
     android:paddingTop="@dimen/item_cache_vertical_margin">
 
     <ImageView
+        android:transitionName="@string/detail_transition"
         android:id="@+id/tab_item_avatar"
         android:layout_width="@dimen/item_icon_size"
         android:layout_height="@dimen/item_icon_size"

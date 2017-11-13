@@ -2,7 +2,6 @@ package com.axlecho.jtsviewer.activity.main;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.axlecho.jtsviewer.R;
-import com.axlecho.jtsviewer.activity.JtsDetailActivity;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
@@ -125,14 +123,7 @@ public class JtsTabListAdapter extends RecyclerView.Adapter<JtsTabListAdapter.Ta
         public void onClick(View v) {
             JtsTabInfoModel model = content.get(getAdapterPosition());
             JtsViewerLog.d(TAG, model.url);
-            this.startDetailActivity(model);
-        }
-
-        public void startDetailActivity(JtsTabInfoModel model) {
-            Intent intent = new Intent();
-            intent.setClass(context, JtsDetailActivity.class);
-            intent.putExtra("tabinfo", model);
-            context.startActivity(intent);
+            MainActivityController.getInstance().startDetailActivity(model,avatar);
         }
     }
 }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.SearchView;
@@ -15,6 +16,7 @@ import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.action.user.JtsParseUserInfoAction;
 import com.axlecho.jtsviewer.action.user.JtsShowLoginAction;
+import com.axlecho.jtsviewer.activity.JtsDetailActivity;
 import com.axlecho.jtsviewer.activity.cache.HistoryActivity;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.UserModule;
@@ -206,5 +208,16 @@ public class MainActivityController {
 
     public JtsTabInfoModel findTabInfoByGid(long gid) {
         return adapter.findTabInfoByGid(gid);
+    }
+
+    public void startDetailActivity(JtsTabInfoModel model,View shareView) {
+
+        String transition_name = activity.getResources().getString(R.string.detail_transition);
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity,shareView, transition_name);
+
+        Intent intent = new Intent();
+        intent.putExtra("tabinfo", model);
+        intent.setClass(activity, JtsDetailActivity.class);
+        ActivityCompat.startActivity(activity, intent, options.toBundle());
     }
 }

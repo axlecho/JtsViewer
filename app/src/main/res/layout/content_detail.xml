@@ -23,6 +23,7 @@
         android:background="@color/colorPrimary">
 
         <ImageView
+            android:transitionName="@string/detail_transition"
             android:id="@+id/tab_detail_avatar"
             android:layout_width="96dp"
             android:layout_height="144dp"
