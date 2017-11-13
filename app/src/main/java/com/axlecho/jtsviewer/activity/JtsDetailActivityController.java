@@ -1,5 +1,9 @@
 package com.axlecho.jtsviewer.activity;
 
+import android.support.v7.widget.PopupMenu;
+import android.view.MenuItem;
+import android.view.View;
+
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.action.tab.JtsParseTabTypeAction;
@@ -60,9 +64,17 @@ public class JtsDetailActivityController {
 
     public void bindTabInfo() {
         JtsTabInfoModel model = (JtsTabInfoModel) activity.getIntent().getSerializableExtra("tabinfo");
-        Picasso.with(activity).load(JtsTextUnitls.getResizePicUrl(model.avatar,200,300)).into(activity.avatar);
+        Picasso.with(activity).load(JtsTextUnitls.getResizePicUrl(model.avatar, 200, 300)).into(activity.avatar);
         activity.title.setText(model.title);
         activity.author.setText(model.author);
+        activity.otherActions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.initPopMenu();
+                initPopMenuAction();
+                activity.popMenu();
+            }
+        });
     }
 
     public void detachToActivity() {
@@ -74,8 +86,23 @@ public class JtsDetailActivityController {
         activity.findViewById(R.id.tab_detail_play).setOnClickListener(createPlayProcessor());
     }
 
+    public void initPopMenuAction() {
+        activity.popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_open_in_other_app:
+                        break;
+                    case R.id.action_refresh:
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+
     public JtsBaseAction createPlayProcessor() {
-        JtsViewerLog.appendToFile(activity,detail.raw);
+        JtsViewerLog.appendToFile(activity, detail.raw);
         JtsParseTabTypeAction action = new JtsParseTabTypeAction();
         action.setKey(JtsNetworkManager.WEBPAGE_CONTENT_KEY, detail.raw);
         action.setKey(JtsBaseAction.CONTEXT_KEY, activity);
@@ -88,4 +115,6 @@ public class JtsDetailActivityController {
         action.setKey(JtsBaseAction.CONTEXT_KEY, activity);
         return action;
     }
+
+
 }

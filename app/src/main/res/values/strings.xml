@@ -21,4 +21,6 @@
     <string name="unknown_uper">吉他爱好者</string>
     <string name="unknown_time">未知</string>
     <string name="title_activity_detail">DetailActivity</string>
+    <string name="refresh">刷新</string>
+    <string name="open_in_other_app">在其他应用打开</string>
 </resources>

@@ -127,7 +127,7 @@ public class JtsPageParser {
         JtsThreadModule module = new JtsThreadModule();
         module.authi = e.select("div.authi").first().text();
         module.avatar = e.select("img[src*=avatar.php]").attr("src");
-        module.time = e.select("em").first().text();
+        module.time = e.select("em:contains(发表于)").first().text();
         module.message = e.select("td.t_f").first().text();
         return module;
     }
