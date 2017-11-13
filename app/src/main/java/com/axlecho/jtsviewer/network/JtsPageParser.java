@@ -115,8 +115,9 @@ public class JtsPageParser {
         Iterator it = tbodys.iterator();
         while (it.hasNext()) {
             Element c = (Element) it.next();
+            JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, c.toString());
             JtsThreadModule module = parserThraed(c);
-            JtsViewerLog.d(TAG, "[parserThread]" + module);
+            JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, "[parserThread]" + module);
             moduleList.add(module);
         }
         return moduleList;
