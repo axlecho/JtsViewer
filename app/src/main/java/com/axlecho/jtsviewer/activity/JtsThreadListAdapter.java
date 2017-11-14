@@ -7,9 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.axlecho.jtsviewer.R;
+import com.axlecho.jtsviewer.module.JtsThreadCommentModule;
 import com.axlecho.jtsviewer.module.JtsThreadModule;
 import com.squareup.picasso.Picasso;
 
@@ -53,6 +55,8 @@ public class JtsThreadListAdapter extends RecyclerView.Adapter<JtsThreadListAdap
         public TextView auth;
         public TextView time;
         public TextView message;
+        public TextView floor;
+        public LinearLayout comments;
 
         public ThreadViewHolder(View itemView) {
             super(itemView);
@@ -61,9 +65,35 @@ public class JtsThreadListAdapter extends RecyclerView.Adapter<JtsThreadListAdap
             auth = (TextView) itemView.findViewById(R.id.thread_item_auth);
             time = (TextView) itemView.findViewById(R.id.thread_item_time);
             message = (TextView) itemView.findViewById(R.id.thread_item_message);
+            floor = (TextView) itemView.findViewById(R.id.thread_item_floor);
+            comments = (LinearLayout) itemView.findViewById(R.id.thread_item_comment_layout);
         }
 
         public void bindData(JtsThreadModule model) {
+            Picasso.with(context).load(model.avatar).into(avatar);
+            auth.setText(model.authi);
+            time.setText(model.time);
+            message.setText(model.message);
+            floor.setText(model.floor);
+            if (model.comments.size() > 0) {
+                comments.removeAllViews();
+                for (JtsThreadCommentModule commentModel : model.comments) {
+                    bindComment(comments, commentModel);
+                }
+            } else {
+                comments.setVisibility(View.GONE);
+            }
+        }
+
+        public void bindComment(LinearLayout layout, JtsThreadCommentModule model) {
+            View view = LayoutInflater.from(context).inflate(R.layout.item_thread, layout, false);
+            layout.addView(view);
+            ImageView avatar = (ImageView) view.findViewById(R.id.thread_item_avatar);
+            TextView auth = (TextView) view.findViewById(R.id.thread_item_auth);
+            TextView time = (TextView) view.findViewById(R.id.thread_item_time);
+            TextView message = (TextView) view.findViewById(R.id.thread_item_message);
+            view.findViewById(R.id.thread_item_floor).setVisibility(View.GONE);
+
             Picasso.with(context).load(model.avatar).into(avatar);
             auth.setText(model.authi);
             time.setText(model.time);

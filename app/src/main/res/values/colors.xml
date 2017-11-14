@@ -18,6 +18,8 @@
 
     <color name="title_black">#333333</color>
     <color name="subtitle_black">#888888</color>
+    <color name="floor_black">#cccccc</color>
+    <color name="sub_grey">#e8e8e8</color>
     <color name="primary_drawable_light">#8a000000</color>
     <color name="secondary_drawable_light">#42000000</color>
     <color name="primary_drawable_dark">#ffffffff</color>

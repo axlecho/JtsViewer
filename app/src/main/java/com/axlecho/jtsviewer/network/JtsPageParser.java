@@ -131,7 +131,7 @@ public class JtsPageParser {
         module.avatar = e.select("img[src*=avatar.php]").attr("src");
         module.time = e.select("em:contains(发表于)").first().text();
         module.message = e.select("td.t_f").first().text();
-
+        module.floor = e.select("a[onclick*=setCopy]").first().text();
         Elements comments = e.select("dl.cl");
         Iterator it = comments.iterator();
         while (it.hasNext()) {

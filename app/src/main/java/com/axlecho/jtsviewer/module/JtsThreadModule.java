@@ -15,7 +15,7 @@ public class JtsThreadModule implements Serializable {
     public String authi;
     public String message;
     public String time;
-
+    public String floor;
     public List<JtsThreadCommentModule> comments = new ArrayList<>();
 
     @Override
