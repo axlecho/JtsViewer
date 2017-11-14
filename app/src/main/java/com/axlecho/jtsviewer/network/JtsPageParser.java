@@ -7,6 +7,7 @@ import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.action.tab.JtsParseTabListAction;
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
+import com.axlecho.jtsviewer.module.JtsThreadCommentModule;
 import com.axlecho.jtsviewer.module.JtsThreadModule;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
@@ -130,6 +131,21 @@ public class JtsPageParser {
         module.avatar = e.select("img[src*=avatar.php]").attr("src");
         module.time = e.select("em:contains(发表于)").first().text();
         module.message = e.select("td.t_f").first().text();
+
+        Elements comments = e.select("dl.cl");
+        Iterator it = comments.iterator();
+        while (it.hasNext()) {
+            Element c = (Element) it.next();
+            JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, "[parserComment]" + c.toString());
+            JtsThreadCommentModule comment = new JtsThreadCommentModule();
+            comment.time = c.select("span.xg1").first().text();
+            comment.avatar = c.select("img[src*=avatar.php]").attr("src");
+            comment.authi = c.select("a.xi2").first().text();
+            comment.message = c.select("dd:not(.m)").first().text();
+            JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, "[parserComment]" + comment.toString());
+            module.comments.add(comment);
+
+        }
         return module;
     }
 }
