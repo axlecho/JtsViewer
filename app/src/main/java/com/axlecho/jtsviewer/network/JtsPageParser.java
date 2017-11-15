@@ -77,7 +77,7 @@ public class JtsPageParser {
         model.author = e.select("a[href*=/artist/]").first().text();
         model.title = e.select("a[href*=/tab/]").first().text();
         model.url = e.select("a[href*=/tab/]").first().attr("href");
-        model.type = e.select("span.tabtype").first().attr("title");
+        model.type = e.select("span.tabtype").first().text();
         model.uper = e.select("span[title*=发布者]").first().nextElementSibling().text();
         model.watch = e.select("span[title*=查看]").first().nextElementSibling().text();
         model.reply = e.select("span[title*=回复]").first().nextElementSibling().text();
@@ -95,6 +95,14 @@ public class JtsPageParser {
 
         if (TextUtils.isEmpty(model.uper)) {
             model.uper = context.getString(R.string.unknown_uper);
+        }
+
+        Elements tagElemnets = e.select("a.tag");
+        Iterator it = tagElemnets.iterator();
+        while (it.hasNext()) {
+            Element element = (Element) it.next();
+            String tag = element.text();
+            model.tags.add(tag);
         }
         return model;
     }
@@ -130,7 +138,7 @@ public class JtsPageParser {
         module.authi = e.select("div.authi").first().text();
         module.avatar = e.select("img[src*=avatar.php]").attr("src");
         module.time = e.select("em:contains(发表于)").first().text();
-        module.message = e.select("td.t_f").first().text();
+        module.message = e.select("td.t_f").first().html();
         module.floor = e.select("a[onclick*=setCopy]").first().text();
         Elements comments = e.select("dl.cl");
         Iterator it = comments.iterator();

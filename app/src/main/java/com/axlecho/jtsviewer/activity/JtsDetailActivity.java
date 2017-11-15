@@ -6,9 +6,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.axlecho.jtsviewer.R;
@@ -21,6 +21,8 @@ public class JtsDetailActivity extends AppCompatActivity {
     public ImageView avatar;
     public TextView title;
     public TextView author;
+    public TextView type;
+
     public PopupMenu popupMenu;
     public View otherActions;
 
@@ -36,6 +38,7 @@ public class JtsDetailActivity extends AppCompatActivity {
         avatar = (ImageView) findViewById(R.id.tab_detail_avatar);
         title = (TextView) findViewById(R.id.tab_detail_title);
         author = (TextView) findViewById(R.id.tab_detail_author);
+        type = (TextView) findViewById(R.id.tab_detail_type);
         otherActions = findViewById(R.id.tab_detail_other_actions);
 
         JtsDetailActivityController.getInstance().attachToActivity(this);

@@ -3,8 +3,10 @@ package com.axlecho.jtsviewer.module;
 import com.google.gson.Gson;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-public class JtsTabInfoModel implements Serializable{
+public class JtsTabInfoModel implements Serializable {
     public String title;
     public String author;
     public String time;
@@ -14,6 +16,7 @@ public class JtsTabInfoModel implements Serializable{
     public String uper;
     public String avatar;
     public String url;
+    public List<String> tags = new ArrayList<>();
 
     @Override
     public String toString() {

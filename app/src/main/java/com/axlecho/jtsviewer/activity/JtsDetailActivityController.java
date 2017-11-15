@@ -21,6 +21,7 @@ import com.squareup.picasso.Picasso;
  */
 
 public class JtsDetailActivityController {
+    private static final String TAG = "detail";
     private JtsDetailActivity activity;
     private JtsThreadListAdapter adapter;
     private JtsTabDetailModule detail;
@@ -64,9 +65,14 @@ public class JtsDetailActivityController {
 
     public void bindTabInfo() {
         JtsTabInfoModel model = (JtsTabInfoModel) activity.getIntent().getSerializableExtra("tabinfo");
-        Picasso.with(activity).load(JtsTextUnitls.getResizePicUrl(model.avatar, 200, 300)).into(activity.avatar);
+        JtsViewerLog.d(TAG, "[bindTabInfo] " + model);
+        Picasso.with(activity).load(JtsTextUnitls.getResizePicUrl(model.avatar, 200, 300))
+                .error(R.drawable.ic_launcher)
+                .into(activity.avatar);
         activity.title.setText(model.title);
         activity.author.setText(model.author);
+        activity.type.setText(model.type);
+
         activity.otherActions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,6 +121,4 @@ public class JtsDetailActivityController {
         action.setKey(JtsBaseAction.CONTEXT_KEY, activity);
         return action;
     }
-
-
 }
