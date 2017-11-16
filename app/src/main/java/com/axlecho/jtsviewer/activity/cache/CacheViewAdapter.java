@@ -15,7 +15,7 @@ import com.axlecho.jtsviewer.module.CacheModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.io.File;
 import java.io.IOException;
@@ -110,7 +110,7 @@ public class CacheViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             uper.setText(model.uper);
             this.setType(model.type);
 
-            Picasso.with(context).load(model.avatar).error(R.drawable.ic_launcher).into(avatar);
+            Glide.with(context).load(model.avatar).error(R.drawable.ic_launcher).into(avatar);
         }
 
         private void setType(String tabType) {

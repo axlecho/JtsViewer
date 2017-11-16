@@ -3,6 +3,7 @@ package com.axlecho.jtsviewer.activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,8 @@ import android.widget.TextView;
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.module.JtsThreadCommentModule;
 import com.axlecho.jtsviewer.module.JtsThreadModule;
-import com.squareup.picasso.Picasso;
+import com.axlecho.jtsviewer.untils.JtsImageGetter;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -70,10 +72,11 @@ public class JtsThreadListAdapter extends RecyclerView.Adapter<JtsThreadListAdap
         }
 
         public void bindData(JtsThreadModule model) {
-            Picasso.with(context).load(model.avatar).into(avatar);
+            Glide.with(context).load(model.avatar).into(avatar);
             auth.setText(model.authi);
             time.setText(model.time);
-            message.setText(model.message);
+            message.setText(Html.fromHtml(model.message, new JtsImageGetter(context, message), null));
+
             floor.setText(model.floor);
             if (model.comments.size() > 0) {
                 comments.removeAllViews();
@@ -94,7 +97,7 @@ public class JtsThreadListAdapter extends RecyclerView.Adapter<JtsThreadListAdap
             TextView message = (TextView) view.findViewById(R.id.thread_item_message);
             view.findViewById(R.id.thread_item_floor).setVisibility(View.GONE);
 
-            Picasso.with(context).load(model.avatar).into(avatar);
+            Glide.with(context).load(model.avatar).into(avatar);
             auth.setText(model.authi);
             time.setText(model.time);
             message.setText(model.message);

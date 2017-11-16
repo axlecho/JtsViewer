@@ -1,6 +1,9 @@
 package com.axlecho.jtsviewer.untils;
 
+import android.content.Context;
 import android.net.Uri;
+import android.text.Html;
+import android.text.Spanned;
 
 import java.util.ArrayList;
 import java.util.List;

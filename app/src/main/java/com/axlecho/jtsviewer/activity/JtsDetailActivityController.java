@@ -14,7 +14,7 @@ import com.axlecho.jtsviewer.network.JtsConf;
 import com.axlecho.jtsviewer.network.JtsNetworkManager;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 /**
  * Created by Administrator on 2017/11/7.
@@ -66,7 +66,7 @@ public class JtsDetailActivityController {
     public void bindTabInfo() {
         JtsTabInfoModel model = (JtsTabInfoModel) activity.getIntent().getSerializableExtra("tabinfo");
         JtsViewerLog.d(TAG, "[bindTabInfo] " + model);
-        Picasso.with(activity).load(JtsTextUnitls.getResizePicUrl(model.avatar, 200, 300))
+        Glide.with(activity).load(JtsTextUnitls.getResizePicUrl(model.avatar, 200, 300))
                 .error(R.drawable.ic_launcher)
                 .into(activity.avatar);
         activity.title.setText(model.title);

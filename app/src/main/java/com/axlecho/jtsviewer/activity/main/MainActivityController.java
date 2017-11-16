@@ -23,7 +23,7 @@ import com.axlecho.jtsviewer.module.UserModule;
 import com.axlecho.jtsviewer.network.JtsConf;
 import com.axlecho.jtsviewer.network.JtsNetworkManager;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -108,7 +108,7 @@ public class MainActivityController {
                 TextView userNameTextView = (TextView) headerView.findViewById(R.id.nav_user_name);
 
                 if (user.avatarUrl != null) {
-                    Picasso.with(activity).load(user.avatarUrl).into(drawerUserInfoImageView);
+                    Glide.with(activity).load(user.avatarUrl).into(drawerUserInfoImageView);
                 }
 
                 if (user.userName != null) {

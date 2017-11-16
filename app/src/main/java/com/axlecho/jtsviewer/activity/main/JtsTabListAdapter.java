@@ -13,7 +13,7 @@ import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -104,7 +104,7 @@ public class JtsTabListAdapter extends RecyclerView.Adapter<JtsTabListAdapter.Ta
             uper.setText(model.uper);
             this.setType(model.type);
 
-            Picasso.with(context).load(model.avatar).error(R.drawable.ic_launcher).into(avatar);
+            Glide.with(context).load(model.avatar).error(R.drawable.ic_launcher).into(avatar);
         }
 
         private void setType(String tabType) {
