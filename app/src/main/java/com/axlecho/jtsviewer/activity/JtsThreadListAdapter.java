@@ -16,8 +16,11 @@ import com.axlecho.jtsviewer.module.JtsThreadCommentModule;
 import com.axlecho.jtsviewer.module.JtsThreadModule;
 import com.axlecho.jtsviewer.untils.JtsImageGetter;
 import com.bumptech.glide.Glide;
+import com.pixplicity.htmlcompat.HtmlCompat;
 
 import java.util.List;
+
+import static com.pixplicity.htmlcompat.HtmlCompat.FROM_HTML_MODE_LEGACY;
 
 /**
  * Created by Administrator on 2017/11/7.
@@ -75,7 +78,7 @@ public class JtsThreadListAdapter extends RecyclerView.Adapter<JtsThreadListAdap
             Glide.with(context).load(model.avatar).into(avatar);
             auth.setText(model.authi);
             time.setText(model.time);
-            message.setText(Html.fromHtml(model.message, new JtsImageGetter(context, message), null));
+            message.setText(HtmlCompat.fromHtml(context,model.message,FROM_HTML_MODE_LEGACY, new JtsImageGetter(message), null));
 
             floor.setText(model.floor);
             if (model.comments.size() > 0) {
