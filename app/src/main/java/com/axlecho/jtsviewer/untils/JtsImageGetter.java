@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.target.ViewTarget;
 import com.pixplicity.htmlcompat.HtmlCompat;
@@ -45,21 +46,36 @@ public class JtsImageGetter implements HtmlCompat.ImageGetter {
 
         JtsViewerLog.d(TAG, "loading image " + source);
 
-        Glide.with(container.getContext()).load(source).listener(new RequestListener<String, GlideDrawable>() {
+        SimpleTarget<GlideDrawable> target = new SimpleTarget<GlideDrawable>(300,300) {
+
             @Override
-            public boolean onException(Exception e, String s, Target<GlideDrawable> glideDrawableTarget, boolean b) {
-                return false;
+            public void onLoadStarted(Drawable placeholder) {
+                super.onLoadStarted(placeholder);
+                JtsViewerLog.d(TAG,"load start");
             }
 
             @Override
-            public boolean onResourceReady(GlideDrawable d, String s, Target<GlideDrawable> glideDrawableTarget, boolean b, boolean b2) {
+            public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                super.onLoadFailed(e, errorDrawable);
+                JtsViewerLog.d(TAG,"load failed");
+            }
+
+            @Override
+            public void onLoadCleared(Drawable placeholder) {
+                super.onLoadCleared(placeholder);
+                JtsViewerLog.d(TAG,"load cleared");
+            }
+
+
+            @Override
+            public void onResourceReady(GlideDrawable d, GlideAnimation<? super GlideDrawable> glideAnimation) {
                 JtsViewerLog.d(TAG, "get image " + d.getIntrinsicWidth() + " * " + d.getIntrinsicHeight());
 
                 int width = d.getIntrinsicWidth();
                 int height = d.getIntrinsicHeight();
 
                 if (d.getIntrinsicWidth() > MAX_WIDTH) {
-                    height = MAX_WIDTH  * height / width;
+                    height = MAX_WIDTH * height / width;
                     width = MAX_WIDTH;
                 }
 
@@ -68,13 +84,10 @@ public class JtsImageGetter implements HtmlCompat.ImageGetter {
                 urlDrawable.drawable = d;
                 container.invalidate();
                 container.setText(container.getText());
-                return true;
             }
-        }).into(new ViewTarget<TextView, GlideDrawable>(container) {
-            @Override
-            public void onResourceReady(GlideDrawable glideDrawable, GlideAnimation<? super GlideDrawable> glideAnimation) {
-            }
-        });
+        };
+
+        Glide.with(container.getContext()).load(source).into(target);
         return urlDrawable;
     }
 
