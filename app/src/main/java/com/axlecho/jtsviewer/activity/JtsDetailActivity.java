@@ -12,7 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.axlecho.jtsviewer.R;
+import com.axlecho.jtsviewer.activity.main.MainActivityController;
 import com.axlecho.jtsviewer.widget.RecycleViewDivider;
+import com.hippo.refreshlayout.RefreshLayout;
 
 public class JtsDetailActivity extends AppCompatActivity {
 
@@ -25,6 +27,10 @@ public class JtsDetailActivity extends AppCompatActivity {
 
     public PopupMenu popupMenu;
     public View otherActions;
+
+    public RefreshLayout refreshLayout;
+
+    private JtsDetailActivityController controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +47,17 @@ public class JtsDetailActivity extends AppCompatActivity {
         type = (TextView) findViewById(R.id.tab_detail_type);
         otherActions = findViewById(R.id.tab_detail_other_actions);
 
-        JtsDetailActivityController.getInstance().attachToActivity(this);
-        JtsDetailActivityController.getInstance().getTabDetail();
+        this.controller = JtsDetailActivityController.getInstance();
+        this.controller.attachToActivity(this);
+
+        refreshLayout = (RefreshLayout) findViewById(R.id.main_swip_refresh_layout);
+        refreshLayout.setFooterColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
+                android.R.color.holo_orange_light, android.R.color.holo_red_light);
+        refreshLayout.setHeaderColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
+                android.R.color.holo_orange_light, android.R.color.holo_red_light);
+        refreshLayout.setOnRefreshListener(controller);
+
+        this.controller.getTabDetail();
 
     }
 
