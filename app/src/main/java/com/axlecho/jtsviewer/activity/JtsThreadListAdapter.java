@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,6 +80,7 @@ public class JtsThreadListAdapter extends RecyclerView.Adapter<JtsThreadListAdap
             auth.setText(model.authi);
             time.setText(model.time);
             message.setText(HtmlCompat.fromHtml(context,model.message,FROM_HTML_MODE_LEGACY, new JtsImageGetter(message), null));
+            message.setMovementMethod(LinkMovementMethod.getInstance());
 
             floor.setText(model.floor);
             if (model.comments.size() > 0) {
