@@ -163,7 +163,6 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
         adapter.notifyDataSetChanged();
     }
 
-
     @Override
     public void onHeaderRefresh() {
         activity.refreshLayout.setHeaderRefreshing(false);

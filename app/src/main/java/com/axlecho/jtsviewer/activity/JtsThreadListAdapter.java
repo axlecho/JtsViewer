@@ -16,6 +16,7 @@ import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.module.JtsThreadCommentModule;
 import com.axlecho.jtsviewer.module.JtsThreadModule;
 import com.axlecho.jtsviewer.untils.JtsImageGetter;
+import com.axlecho.jtsviewer.untils.JtsTagHandler;
 import com.bumptech.glide.Glide;
 import com.pixplicity.htmlcompat.HtmlCompat;
 
@@ -79,7 +80,7 @@ public class JtsThreadListAdapter extends RecyclerView.Adapter<JtsThreadListAdap
             Glide.with(context).load(model.avatar).into(avatar);
             auth.setText(model.authi);
             time.setText(model.time);
-            message.setText(HtmlCompat.fromHtml(context,model.message,FROM_HTML_MODE_LEGACY, new JtsImageGetter(message), null));
+            message.setText(HtmlCompat.fromHtml(context, model.message, FROM_HTML_MODE_LEGACY, new JtsImageGetter(message), new JtsTagHandler()));
             message.setMovementMethod(LinkMovementMethod.getInstance());
 
             floor.setText(model.floor);
