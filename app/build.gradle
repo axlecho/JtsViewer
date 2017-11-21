@@ -38,5 +38,6 @@ dependencies {
     compile 'com.github.seven332:refreshlayout:0.1.0'
     compile 'com.github.axlecho.tuxguitar:tuxguitar-widget:v0.0.2'
     compile 'com.github.axlecho:ImageTab:v0.0.7'
+    compile 'com.github.axlecho:SakuraPlayer:0.9.0'
     testCompile 'junit:junit:4.12'
 }
