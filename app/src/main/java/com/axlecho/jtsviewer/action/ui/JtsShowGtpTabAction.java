@@ -34,6 +34,7 @@ public class JtsShowGtpTabAction extends JtsBaseAction {
 
         intent.setAction(Intent.ACTION_VIEW);
         intent.setClass(context, TGActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
 }

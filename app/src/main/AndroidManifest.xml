@@ -36,8 +36,9 @@
         <activity android:name=".activity.login.LoginActivity" />
         <activity
             android:name=".activity.JtsDetailActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_detail"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

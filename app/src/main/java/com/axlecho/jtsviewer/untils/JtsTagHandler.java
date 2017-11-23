@@ -1,10 +1,14 @@
 package com.axlecho.jtsviewer.untils;
 
+import android.content.Context;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.style.ClickableSpan;
 import android.view.View;
+import android.widget.TextView;
 
+import com.axlecho.jtsviewer.action.ui.JtsPlayVideoAction;
+import com.axlecho.sakura.PlayerView;
 import com.pixplicity.htmlcompat.HtmlCompat;
 
 import org.xml.sax.Attributes;
@@ -20,6 +24,13 @@ import java.util.regex.Pattern;
 public class JtsTagHandler implements HtmlCompat.TagHandler {
 
     private static final String TAG = "html";
+    private Context context;
+    private TextView parent;
+
+    public JtsTagHandler(Context context, TextView parent) {
+        this.context = context;
+        this.parent = parent;
+    }
 
     @Override
     public void handleTag(boolean opening, String tag, Attributes attributes, Editable output, XMLReader xmlReader) {
@@ -35,11 +46,13 @@ public class JtsTagHandler implements HtmlCompat.TagHandler {
             String aid = this.parserAidForBiliBili(output.toString());
             JtsViewerLog.d(TAG, "[handleTag]  -- parase " + aid);
             output.clear();
-            ClickableSpan s = new ClickableSpan() {
 
+            final String videoUrl = "https://www.bilibili.com/video/av" + aid;
+            ClickableSpan s = new ClickableSpan() {
                 @Override
                 public void onClick(View widget) {
-                    JtsViewerLog.d(TAG,"[handleTag] scirpt clicked");
+                    JtsPlayVideoAction action = new JtsPlayVideoAction(context, videoUrl, parent);
+                    action.execute();
                 }
             };
 
