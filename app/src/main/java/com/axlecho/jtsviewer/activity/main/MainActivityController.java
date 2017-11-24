@@ -17,6 +17,7 @@ import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.action.user.JtsParseUserInfoAction;
 import com.axlecho.jtsviewer.action.user.JtsShowLoginAction;
 import com.axlecho.jtsviewer.activity.JtsDetailActivity;
+import com.axlecho.jtsviewer.activity.JtsSettingsActivity;
 import com.axlecho.jtsviewer.activity.cache.HistoryActivity;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.UserModule;
@@ -58,9 +59,15 @@ public class MainActivityController {
         return this.activity;
     }
 
-    public void processJumpHistory() {
+    public void toHistory() {
         Intent intent = new Intent();
         intent.setClass(activity, HistoryActivity.class);
+        activity.startActivity(intent);
+    }
+
+    public void toSettings() {
+        Intent intent = new Intent();
+        intent.setClass(activity, JtsSettingsActivity.class);
         activity.startActivity(intent);
     }
 
@@ -210,10 +217,10 @@ public class MainActivityController {
         return adapter.findTabInfoByGid(gid);
     }
 
-    public void startDetailActivity(JtsTabInfoModel model,View shareView) {
+    public void startDetailActivity(JtsTabInfoModel model, View shareView) {
 
         String transition_name = activity.getResources().getString(R.string.detail_transition);
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity,shareView, transition_name);
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, shareView, transition_name);
 
         Intent intent = new Intent();
         intent.putExtra("tabinfo", model);

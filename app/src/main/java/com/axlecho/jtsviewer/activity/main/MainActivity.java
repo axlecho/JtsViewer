@@ -108,9 +108,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_hot) {
             this.controller.switchSenceToHot();
         } else if (id == R.id.nav_history) {
-            this.controller.processJumpHistory();
+            this.controller.toHistory();
         } else if (id == R.id.nav_setting) {
-
+            this.controller.toSettings();
         } else if (id == R.id.nav_share) {
 
         }

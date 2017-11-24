@@ -39,6 +39,9 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_detail"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.JtsSettingsActivity"
+            android:label="@string/title_activity_jts_settings"></activity>
     </application>
 
 </manifest>
