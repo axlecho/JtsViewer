@@ -39,5 +39,10 @@ dependencies {
     compile 'com.github.axlecho.tuxguitar:tuxguitar-widget:v0.0.2'
     compile 'com.github.axlecho:ImageTab:v0.0.7'
     compile 'com.github.axlecho:SakuraPlayer:0.9.0'
+    compile 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.4'
+    compile 'tv.danmaku.ijk.media:ijkplayer-armv5:0.8.4'
+    compile 'tv.danmaku.ijk.media:ijkplayer-arm64:0.8.4'
+    compile 'tv.danmaku.ijk.media:ijkplayer-x86:0.8.4'
+    compile 'tv.danmaku.ijk.media:ijkplayer-x86_64:0.8.4'
     testCompile 'junit:junit:4.12'
 }

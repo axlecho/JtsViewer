@@ -9,6 +9,7 @@ import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.action.tab.JtsParseTabTypeAction;
 import com.axlecho.jtsviewer.action.tab.JtsParseThreadAction;
 import com.axlecho.jtsviewer.action.ui.JtsLoadMoreThreadAction;
+import com.axlecho.jtsviewer.action.ui.JtsStopVideoAction;
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.JtsThreadModule;
@@ -91,6 +92,7 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
     }
 
     public void detachToActivity() {
+        this.stopVideoPlayer();
         this.activity = null;
         this.adapter = null;
     }
@@ -172,5 +174,10 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
     public void onFooterRefresh() {
         activity.refreshLayout.setFooterRefreshing(true);
         loadMoreThread();
+    }
+
+    private void stopVideoPlayer() {
+        JtsStopVideoAction action = new JtsStopVideoAction(activity);
+        action.execute();
     }
 }

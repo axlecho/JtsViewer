@@ -15,6 +15,8 @@ import java.io.OutputStream;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -189,6 +191,30 @@ public class JtsNetworkManager {
             okhttp3.Response originalResponse = chain.proceed(chain.request());
             return originalResponse.newBuilder().body(
                     new ProgressResponseBody(originalResponse.body())).build();
+        }
+    }
+
+    private class JtsNetworkCallback implements Callback {
+        private JtsBaseAction action;
+
+        public JtsNetworkCallback(JtsBaseAction action) {
+            this.action = action;
+        }
+
+        @Override
+        public void onFailure(Call call, IOException e) {
+            JtsViewerLog.d(TAG, "network error");
+        }
+
+        @Override
+        public void onResponse(Call call, Response response) throws IOException {
+            String ret = response.body().string();
+            if (action == null) {
+                JtsViewerLog.e(TAG, "action is null");
+                return;
+            }
+            action.setKey(JtsNetworkManager.WEBPAGE_CONTENT_KEY, ret);
+            action.executeOnUiThread();
         }
     }
 }

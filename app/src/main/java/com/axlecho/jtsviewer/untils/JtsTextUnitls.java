@@ -1,9 +1,6 @@
 package com.axlecho.jtsviewer.untils;
 
-import android.content.Context;
 import android.net.Uri;
-import android.text.Html;
-import android.text.Spanned;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +10,7 @@ import java.util.regex.Pattern;
 
 public class JtsTextUnitls {
     private static final String TAG = JtsTextUnitls.class.getSimpleName();
-
+    public static int CONST_PLAYER_ID = 100001;
     public static List<String> findByPattern(String s, String reg) {
         if (s == null || reg == null) {
             return null;

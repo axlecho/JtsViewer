@@ -51,7 +51,7 @@ public class JtsTagHandler implements HtmlCompat.TagHandler {
             ClickableSpan s = new ClickableSpan() {
                 @Override
                 public void onClick(View widget) {
-                    JtsPlayVideoAction action = new JtsPlayVideoAction(context, videoUrl, parent);
+                    JtsPlayVideoAction action = new JtsPlayVideoAction(context, videoUrl);
                     action.execute();
                 }
             };
