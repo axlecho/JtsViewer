@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.axlecho.jtsviewer.action.ui.JtsPlayVideoAction;
 import com.axlecho.sakura.PlayerView;
+import com.axlecho.sakura.utils.SakuraTextUtils;
 import com.pixplicity.htmlcompat.HtmlCompat;
 
 import org.xml.sax.Attributes;
@@ -43,11 +44,14 @@ public class JtsTagHandler implements HtmlCompat.TagHandler {
 
             JtsViewerLog.d(TAG, "[handleTag] -- script");
             JtsViewerLog.d(TAG, "[handleTag] content \n " + output.toString());
-            String aid = this.parserAidForBiliBili(output.toString());
-            JtsViewerLog.d(TAG, "[handleTag]  -- parase " + aid);
-            output.clear();
 
-            final String videoUrl = "https://www.bilibili.com/video/av" + aid;
+            final String videoUrl;
+            if (output.toString().contains("YKU.Player")) {
+                videoUrl = this.parserAidForYouku(SakuraTextUtils.urlDecode(output.toString()));
+            } else {
+                videoUrl = this.parserAidForBiliBili(SakuraTextUtils.urlDecode(output.toString()));
+            }
+
             ClickableSpan s = new ClickableSpan() {
                 @Override
                 public void onClick(View widget) {
@@ -56,9 +60,13 @@ public class JtsTagHandler implements HtmlCompat.TagHandler {
                 }
             };
 
+            output.clear();
+            output.append("[" + videoUrl + "]");
 
-            output.append("video " + aid);
-            output.setSpan(s, 0, ("video " + aid).length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            if(videoUrl == null) {
+                return;
+            }
+            output.setSpan(s, 0, ("[" + videoUrl + "]").length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
     }
 
@@ -66,9 +74,19 @@ public class JtsTagHandler implements HtmlCompat.TagHandler {
         Pattern p = Pattern.compile("aid=(\\d+)");
         Matcher m = p.matcher(content);
         if (m.find()) {
-            return m.group(1);
+            return "https://www.bilibili.com/video/av" + m.group(1);
         }
 
+        return null;
+    }
+
+    private String parserAidForYouku(String context) {
+        JtsViewerLog.d(TAG,context);
+        Pattern p = Pattern.compile("vid:\\s+\"([a-zA-Z0-9=]+)\"");
+        Matcher m = p.matcher(context);
+        if (m.find()) {
+            return "http://v.youku.com/v_show/id_" + m.group(1) + ".html";
+        }
         return null;
     }
 }
