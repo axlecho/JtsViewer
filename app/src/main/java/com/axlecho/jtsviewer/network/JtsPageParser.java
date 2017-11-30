@@ -4,13 +4,12 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.axlecho.jtsviewer.R;
-import com.axlecho.jtsviewer.action.tab.JtsParseTabListAction;
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.JtsThreadCommentModule;
 import com.axlecho.jtsviewer.module.JtsThreadModule;
-import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
+import com.axlecho.sakura.utils.SakuraTextUtils;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -86,7 +85,7 @@ public class JtsPageParser {
             model.time = e.select("span[title*=发布时间]").first().nextElementSibling().text();
         } catch (NullPointerException ex) {
             // ex.printStackTrace();
-            model.time = context.getResources().getString(R.string.unknown_time);
+            model.time = context.getResources().getString( R.string.unknown_time);
         }
 
         if (TextUtils.isEmpty(model.avatar)) {
@@ -155,5 +154,13 @@ public class JtsPageParser {
 
         }
         return module;
+    }
+
+    public int parserSearchId() {
+        if (html == null) return -1;
+        // Document doc = Jsoup.parse(html);
+        // String href = doc.select("a[href*=search.php?mod=tab&searchid]").first().attr("href");
+        String searchId = SakuraTextUtils.search(html, "searchid=(\\d+)");
+        return searchId == null ? -1 : Integer.parseInt(searchId);
     }
 }

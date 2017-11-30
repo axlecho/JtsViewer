@@ -10,6 +10,8 @@ import java.util.List;
 
 public abstract class BaseScene {
 
+    private int searchKey = -1;
+
     public abstract void loadMore();
 
     public abstract void refresh();
@@ -17,4 +19,12 @@ public abstract class BaseScene {
     public abstract void processLoadMore(List<JtsTabInfoModel> data);
 
     public abstract void processRefreah(List<JtsTabInfoModel> data);
+
+    public void setSearchKey(int searchKey) {
+        this.searchKey = searchKey;
+    }
+
+    public int getSearchKey() {
+        return searchKey;
+    }
 }

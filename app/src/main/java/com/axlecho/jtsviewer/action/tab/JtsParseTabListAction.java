@@ -4,11 +4,9 @@ import android.content.Context;
 
 import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.action.ui.JtsRefreshAction;
-import com.axlecho.jtsviewer.activity.main.MainActivityController;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.network.JtsNetworkManager;
 import com.axlecho.jtsviewer.network.JtsPageParser;
-import com.axlecho.jtsviewer.untils.JtsViewerLog;
 
 import java.util.List;
 
@@ -21,13 +19,15 @@ public class JtsParseTabListAction extends JtsBaseAction {
         String html = (String) getKey(JtsNetworkManager.WEBPAGE_CONTENT_KEY);
         JtsPageParser.getInstance(context).setContent(html);
         List<JtsTabInfoModel> data = JtsPageParser.getInstance(context).parserTabList();
-        this.processAfterAction(data);
+        int searchKey = JtsPageParser.getInstance(context).parserSearchId();
+        this.processAfterAction(data,searchKey);
 
     }
 
-    public void processAfterAction(List<JtsTabInfoModel> data) {
+    public void processAfterAction(List<JtsTabInfoModel> data,int search) {
         JtsBaseAction action = (JtsBaseAction) getKey("after_action");
         action.setKey(JtsRefreshAction.DATA_KEY, data);
+        action.setKey(JtsRefreshAction.SEARCH_KEY,search);
         action.execute();
     }
 }

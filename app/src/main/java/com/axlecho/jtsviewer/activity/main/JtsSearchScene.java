@@ -11,6 +11,9 @@ import com.axlecho.jtsviewer.network.JtsConf;
 import com.axlecho.jtsviewer.network.JtsNetworkManager;
 
 import java.util.List;
+import java.util.Locale;
+
+import static com.axlecho.jtsviewer.network.JtsConf.DESKTOP_SEEACH_MORE_URL;
 
 /**
  * Created by Administrator on 2017/10/29.
@@ -30,7 +33,13 @@ public class JtsSearchScene extends BaseScene {
 
     @Override
     public void loadMore() {
-        // TODO
+        this.currentPage++;
+        MainActivityController.getInstance().startFooterRefreshing();
+        JtsParseTabListAction action = new JtsParseTabListAction();
+        JtsLoadMoreAction loadMoreAction = new JtsLoadMoreAction();
+        action.setKey(JtsBaseAction.CONTEXT_KEY, context);
+        action.setKey("after_action", loadMoreAction);
+        JtsNetworkManager.getInstance(context).get(String.format(Locale.CHINA, DESKTOP_SEEACH_MORE_URL, getSearchKey(), currentPage), action);
     }
 
     @Override
