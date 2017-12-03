@@ -12,6 +12,7 @@ import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.module.CacheModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
+import com.axlecho.jtsviewer.untils.JtsViewerLog;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
@@ -40,8 +41,14 @@ public class CacheViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        if(!(holder instanceof CacheViewHolder)) {
+            JtsViewerLog.w(TAG,"holder is not a cache view holder");
+            return;
+        }
+
         final CacheModule module = modules.get(position);
-        ((CacheViewHolder) holder).cardView.setOnClickListener(new View.OnClickListener() {
+        final CacheViewHolder viewHolder = (CacheViewHolder) holder;
+        viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 for(OnItemClickListener listener:clickListenerList) {
@@ -50,13 +57,22 @@ public class CacheViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             }
         });
 
-        ((CacheViewHolder) holder).cardView.setOnLongClickListener(new View.OnLongClickListener() {
+        viewHolder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 for(CacheViewAdapter.OnItemLongClickListener listener:longClickListenerList) {
                     listener.onItemLongClick(module);
                 }
                 return true;
+            }
+        });
+
+        viewHolder.avatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                for(OnItemClickListener listener:clickListenerList) {
+                    listener.onItemAvatarClick(module.tabInfo,viewHolder.avatar);
+                }
             }
         });
 
@@ -136,5 +152,7 @@ public class CacheViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public interface OnItemClickListener {
         void onItemClick(CacheModule module);
+
+        void onItemAvatarClick(JtsTabInfoModel module,View shareView);
     }
 }

@@ -6,6 +6,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,8 +17,10 @@ import android.view.View;
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.action.ui.JtsShowGtpTabAction;
+import com.axlecho.jtsviewer.activity.JtsDetailActivity;
 import com.axlecho.jtsviewer.cache.CacheManager;
 import com.axlecho.jtsviewer.module.CacheModule;
+import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 import com.axlecho.jtsviewer.widget.RecycleViewDivider;
 import com.bumptech.glide.Glide;
@@ -125,7 +129,23 @@ public class HistoryActivity extends AppCompatActivity implements CacheViewAdapt
     }
 
     @Override
+    public void onItemAvatarClick(JtsTabInfoModel module,View shareView) {
+        this.startDetailActivity(module,shareView);
+    }
+
+    @Override
     public void onItemLongClick(CacheModule module) {
         processLongClickAction(module);
+    }
+
+    public void startDetailActivity(JtsTabInfoModel model, View shareView) {
+
+        String transition_name = this.getResources().getString(R.string.detail_transition);
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, shareView, transition_name);
+
+        Intent intent = new Intent();
+        intent.putExtra("tabinfo", model);
+        intent.setClass(this, JtsDetailActivity.class);
+        ActivityCompat.startActivity(this, intent, options.toBundle());
     }
 }
