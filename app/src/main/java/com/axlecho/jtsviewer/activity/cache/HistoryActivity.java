@@ -96,7 +96,7 @@ public class HistoryActivity extends AppCompatActivity implements CacheViewAdapt
         launcherIntent.addCategory("android.intent.category.DEFAULT");
         launcherIntent.setComponent(new ComponentName("com.axlecho.jtsviewer", "org.herac.tuxguitar.android.activity.TGActivity"));
 
-        Intent addShortcutIntent = new Intent();
+        final Intent addShortcutIntent = new Intent();
         addShortcutIntent.putExtra("duplicate", false);
         addShortcutIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, module.tabInfo.title);
         addShortcutIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
@@ -104,16 +104,18 @@ public class HistoryActivity extends AppCompatActivity implements CacheViewAdapt
         addShortcutIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, launcherIntent);
         addShortcutIntent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
 
-        Glide.with(this).load(module.tabInfo.avatar).into(new SimpleTarget<Bitmap>() {
+        Glide.with(this).load(module.tabInfo.avatar).asBitmap().into(new SimpleTarget<Bitmap>() {
 
             @Override
             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                 addShortcutIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON, resource);
-
+                HistoryActivity.this.sendBroadcast(addShortcutIntent);
+                Snackbar.make(HistoryActivity.this.getWindow().getDecorView(),
+                        HistoryActivity.this.getResources().getString(R.string.add_short_cut),
+                        Snackbar.LENGTH_LONG).show();
             }
         });
-        this.sendBroadcast(addShortcutIntent);
-        Snackbar.make(this.getWindow().getDecorView(), this.getResources().getString(R.string.add_short_cut), Snackbar.LENGTH_LONG).show();
+
     }
     
 
