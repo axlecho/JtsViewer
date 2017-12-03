@@ -156,9 +156,14 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
             return;
         }
 
-        if (threads.get(0) != null && threads.get(0).floor.equals("沙发")) {
-            JtsViewerLog.w(TAG, "[processLoadMoreThread] over flow");
-            return;
+        if (threads.get(0) != null) {
+            for(JtsThreadModule module: detail.threadList) {
+                if(module.floor.equals(threads.get(0).floor)) {
+                    JtsViewerLog.w(TAG, "[processLoadMoreThread] over flow");
+                    return;
+                }
+            }
+
         }
 
         detail.threadList.addAll(threads);
