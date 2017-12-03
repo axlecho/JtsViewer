@@ -15,8 +15,8 @@ import java.util.List;
 
 public class JtsGetImageTabAction extends JtsBaseAction {
 
-    private static final String IMAGE_PATTERN = "//att.jitashe.org/.+?.(?:jpg|png|gif)";
-    private static final String IMAGE_PATTERN2 = "/data/attachment/forum/.+?.(?:jpg|png|gif)";
+    private static final String IMAGE_PATTERN = "(?<=src=\"http:)//att.jitashe.org/.+?.(?:jpg|png|gif)@!tab_thumb";
+    private static final String IMAGE_PATTERN2 = "(?<=src=\"http:)/data/attachment/forum/.+?.(?:jpg|png|gif)@!tab_thumb";
 
     private static final String TAG = JtsGetImageTabAction.class.getSimpleName();
 
@@ -55,8 +55,10 @@ public class JtsGetImageTabAction extends JtsBaseAction {
             imageUrl.set(i, "http:" + imageUrl.get(i));
         }
 
-        for (String url : imageUrl2) {
-            imageUrl.add(JtsConf.HOST_URL + url);
+        if(imageUrl.size() == 0) {
+            for (String url : imageUrl2) {
+                imageUrl.add(JtsConf.HOST_URL + url);
+            }
         }
 
         JtsViewerLog.d(TAG, imageUrl.toString());
