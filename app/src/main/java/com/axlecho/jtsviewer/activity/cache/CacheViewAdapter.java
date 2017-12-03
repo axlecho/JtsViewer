@@ -9,16 +9,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.axlecho.jtsviewer.R;
-import com.axlecho.jtsviewer.action.JtsBaseAction;
-import com.axlecho.jtsviewer.action.ui.JtsShowGtpTabAction;
 import com.axlecho.jtsviewer.module.CacheModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
-import com.axlecho.jtsviewer.untils.JtsViewerLog;
 import com.bumptech.glide.Glide;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CacheViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -26,9 +22,14 @@ public class CacheViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private Context context;
     private List<CacheModule> modules;
 
+    private List<OnItemClickListener> clickListenerList;
+    private List<OnItemLongClickListener> longClickListenerList;
+
     public CacheViewAdapter(Context context, List<CacheModule> modules) {
         this.context = context;
         this.modules = modules;
+        clickListenerList = new ArrayList<>();
+        longClickListenerList = new ArrayList<>();
     }
 
     @Override
@@ -39,11 +40,23 @@ public class CacheViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        CacheModule module = modules.get(position);
+        final CacheModule module = modules.get(position);
         ((CacheViewHolder) holder).cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                processClickAction(position);
+                for(OnItemClickListener listener:clickListenerList) {
+                    listener.onItemClick(module);
+                }
+            }
+        });
+
+        ((CacheViewHolder) holder).cardView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                for(CacheViewAdapter.OnItemLongClickListener listener:longClickListenerList) {
+                    listener.onItemLongClick(module);
+                }
+                return true;
             }
         });
 
@@ -58,23 +71,6 @@ public class CacheViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public int getItemCount() {
         return modules.size();
-    }
-
-
-    private void processClickAction(int position) {
-        CacheModule module = modules.get(position);
-
-        module.frequency++;
-        try {
-            module.writeToFile();
-        } catch (IOException e) {
-            JtsViewerLog.e(TAG, "update tab info failed");
-        }
-
-        JtsShowGtpTabAction action = new JtsShowGtpTabAction();
-        action.setKey(JtsBaseAction.CONTEXT_KEY, this.context.getApplicationContext());
-        action.setKey(JtsShowGtpTabAction.GTP_FILE_PATH, module.path + File.separator + module.fileName);
-        action.processAction();
     }
 
     private class CacheViewHolder extends RecyclerView.ViewHolder {
@@ -124,5 +120,21 @@ public class CacheViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 type.setImageResource(R.mipmap.ic_pdf);
             }
         }
+    }
+
+    public void addOnItemLongClickListener(OnItemLongClickListener listener) {
+        this.longClickListenerList.add(listener);
+    }
+
+    public void addOnItemClickListener(OnItemClickListener listener) {
+        this.clickListenerList.add(listener);
+    }
+
+    public interface OnItemLongClickListener {
+        void onItemLongClick(CacheModule module);
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(CacheModule module);
     }
 }
