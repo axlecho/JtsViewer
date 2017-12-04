@@ -22,11 +22,10 @@ import com.axlecho.jtsviewer.cache.CacheManager;
 import com.axlecho.jtsviewer.module.CacheModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
+import com.axlecho.jtsviewer.widget.GlideRoundTransform;
 import com.axlecho.jtsviewer.widget.RecycleViewDivider;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.bumptech.glide.request.target.SimpleTarget;
 
 import java.io.File;
@@ -108,20 +107,23 @@ public class HistoryActivity extends AppCompatActivity implements CacheViewAdapt
         addShortcutIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, launcherIntent);
         addShortcutIntent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
 
-        Glide.with(this).load(module.tabInfo.avatar).asBitmap().into(new SimpleTarget<Bitmap>() {
+        Glide.with(this).load(module.tabInfo.avatar).asBitmap()
+                .transform(new GlideRoundTransform(this))
+                .into(new SimpleTarget<Bitmap>(144, 144) {
 
-            @Override
-            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                addShortcutIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON, resource);
-                HistoryActivity.this.sendBroadcast(addShortcutIntent);
-                Snackbar.make(HistoryActivity.this.getWindow().getDecorView(),
-                        HistoryActivity.this.getResources().getString(R.string.add_short_cut),
-                        Snackbar.LENGTH_LONG).show();
-            }
-        });
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        addShortcutIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON, resource);
+                        HistoryActivity.this.sendBroadcast(addShortcutIntent);
+                        Snackbar.make(HistoryActivity.this.getWindow().getDecorView(),
+                                HistoryActivity.this.getResources().getString(R.string.add_short_cut),
+                                Snackbar.LENGTH_LONG).show();
+                    }
+
+                });
 
     }
-    
+
 
     @Override
     public void onItemClick(CacheModule module) {
@@ -129,8 +131,8 @@ public class HistoryActivity extends AppCompatActivity implements CacheViewAdapt
     }
 
     @Override
-    public void onItemAvatarClick(JtsTabInfoModel module,View shareView) {
-        this.startDetailActivity(module,shareView);
+    public void onItemAvatarClick(JtsTabInfoModel module, View shareView) {
+        this.startDetailActivity(module, shareView);
     }
 
     @Override
