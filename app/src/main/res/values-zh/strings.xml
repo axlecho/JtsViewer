@@ -107,5 +107,5 @@
     <string name="pref_version_code">0.0.0</string>
     <string name="pref_statistics_title">统计</string>
     <string name="pref_statistics">todo</string>
-    <string name="add_short_cut">add short to home screen</string>
+    <string name="add_short_cut">已经添加快捷方式</string>
 </resources>
