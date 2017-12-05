@@ -47,9 +47,9 @@ public class JtsTagHandler implements HtmlCompat.TagHandler {
 
             final String videoUrl;
             if (output.toString().contains("YKU.Player")) {
-                videoUrl = this.parserAidForYouku(SakuraTextUtils.urlDecode(output.toString()));
+                videoUrl = this.parserAidForYouku(output.toString());
             } else {
-                videoUrl = this.parserAidForBiliBili(SakuraTextUtils.urlDecode(output.toString()));
+                videoUrl = this.parserAidForBiliBili(output.toString());
             }
 
             ClickableSpan s = new ClickableSpan() {
