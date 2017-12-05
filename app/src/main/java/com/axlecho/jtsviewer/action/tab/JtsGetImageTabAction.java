@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.axlecho.jtsviewer.action.JtsBaseAction;
-import com.axlecho.jtsviewer.network.JtsConf;
+import com.axlecho.jtsviewer.untils.JtsConf;
 import com.axlecho.jtsviewer.network.JtsNetworkManager;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;

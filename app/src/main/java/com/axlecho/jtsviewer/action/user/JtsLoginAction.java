@@ -3,8 +3,7 @@ package com.axlecho.jtsviewer.action.user;
 import android.content.Context;
 
 import com.axlecho.jtsviewer.action.JtsBaseAction;
-import com.axlecho.jtsviewer.activity.main.MainActivityController;
-import com.axlecho.jtsviewer.network.JtsConf;
+import com.axlecho.jtsviewer.untils.JtsConf;
 import com.axlecho.jtsviewer.network.JtsNetworkManager;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 

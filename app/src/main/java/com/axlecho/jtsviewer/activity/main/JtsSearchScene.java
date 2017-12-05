@@ -7,13 +7,13 @@ import com.axlecho.jtsviewer.action.tab.JtsParseTabListAction;
 import com.axlecho.jtsviewer.action.ui.JtsLoadMoreAction;
 import com.axlecho.jtsviewer.action.ui.JtsRefreshAction;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
-import com.axlecho.jtsviewer.network.JtsConf;
+import com.axlecho.jtsviewer.untils.JtsConf;
 import com.axlecho.jtsviewer.network.JtsNetworkManager;
 
 import java.util.List;
 import java.util.Locale;
 
-import static com.axlecho.jtsviewer.network.JtsConf.DESKTOP_SEEACH_MORE_URL;
+import static com.axlecho.jtsviewer.untils.JtsConf.DESKTOP_SEEACH_MORE_URL;
 
 /**
  * Created by Administrator on 2017/10/29.
