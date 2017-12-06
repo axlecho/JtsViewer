@@ -3,6 +3,8 @@ package com.axlecho.jtsviewer.activity;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -19,6 +21,7 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 
 import com.axlecho.jtsviewer.R;
+import com.axlecho.jtsviewer.untils.JtsDeviceUnitls;
 
 import java.util.List;
 
@@ -123,6 +126,43 @@ public class JtsSettingsActivity extends AppCompatPreferenceActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_about);
             setHasOptionsMenu(true);
+            Preference versionPreference = getPreferenceManager().findPreference(getString(R.string.pref_version_key));
+            try {
+                if (versionPreference != null) {
+                    String version = JtsDeviceUnitls.getVersionName(this.getActivity());
+                    versionPreference.setSummary(version);
+                }
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            Preference authorPreference = getPreferenceManager().findPreference(getString(R.string.pref_aboutme_key));
+            if (authorPreference != null) {
+                authorPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        Intent data = new Intent(Intent.ACTION_SENDTO);
+                        data.setData(Uri.parse("mailto:axlecho@gmail.com"));
+                        startActivity(data);
+                        return false;
+                    }
+                });
+            }
+
+            Preference codePreference = getPreferenceManager().findPreference(getString(R.string.pref_code_key));
+            if (codePreference != null) {
+                codePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        Intent intent = new Intent();
+                        intent.setAction("android.intent.action.VIEW");
+                        Uri content_url = Uri.parse("https://github.com/axlecho/JtsViewer");
+                        intent.setData(content_url);
+                        startActivity(intent);
+                        return false;
+                    }
+                });
+            }
         }
 
         @Override
@@ -143,26 +183,5 @@ public class JtsSettingsActivity extends AppCompatPreferenceActivity {
     private static boolean isXLargeTablet(Context context) {
         return (context.getResources().getConfiguration().screenLayout
                 & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
-    }
-
-    /**
-     * Binds a preference's summary to its value. More specifically, when the
-     * preference's value is changed, its summary (line of text below the
-     * preference title) is updated to reflect the value. The summary is also
-     * immediately updated upon calling this method. The exact display format is
-     * dependent on the type of preference.
-     *
-     * @see #sBindPreferenceSummaryToValueListener
-     */
-    private static void bindPreferenceSummaryToValue(Preference preference) {
-        // Set the listener to watch for value changes.
-        preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
-
-        // Trigger the listener immediately with the preference's
-        // current value.
-        sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
-                PreferenceManager
-                        .getDefaultSharedPreferences(preference.getContext())
-                        .getString(preference.getKey(), ""));
     }
 }

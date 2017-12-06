@@ -97,15 +97,19 @@
     <string name="pref_ringtone_silent">Silent</string>
     <string name="pref_title_vibrate">Vibrate</string>
 
+    <string name="pref_aboutme_key">author</string>
     <string name="pref_aboutme_title">Aauthor</string>
     <string name="pref_about_me">Axlecho &lt;axlecho@gmail.com&gt;</string>
 
+    <string name="pref_code_key">code</string>
     <string name="pref_code_tile">Code</string>
     <string name="pref_code">https://github.com/axlecho/JtsViewer</string>
 
+    <string name="pref_license_key">license</string>
     <string name="pref_license_title">License</string>
     <string name="pref_license">Here is the libraries</string>
 
+    <string name="pref_version_key">version</string>
     <string name="pref_version_code_tile">Version</string>
     <string name="pref_version_code">0.0.0</string>
 

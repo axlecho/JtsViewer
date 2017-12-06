@@ -1,17 +1,21 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <Preference
+        android:key="@string/pref_aboutme_key"
         android:summary="@string/pref_about_me"
         android:title="@string/pref_aboutme_title" />
 
     <Preference
+        android:key="@string/pref_code_key"
         android:summary="@string/pref_code"
         android:title="@string/pref_code_tile" />
 
     <Preference
+        android:key="@string/pref_license_key"
         android:summary="@string/pref_license"
         android:title="@string/pref_license_title" />
 
     <Preference
+        android:key="@string/pref_version_key"
         android:summary="@string/pref_version_code"
         android:title="@string/pref_version_code_tile" />
 </PreferenceScreen>
