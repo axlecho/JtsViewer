@@ -6,7 +6,7 @@ import android.widget.FrameLayout;
 
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.action.JtsBaseAction;
-import com.axlecho.sakura.PlayerView;
+import com.axlecho.sakura.SakuraPlayerView;
 
 /**
  * Created by Administrator on 2017/11/23.
@@ -26,7 +26,7 @@ public class JtsStopVideoAction extends JtsBaseAction {
             Activity activity = (Activity) context;
             FrameLayout root = (FrameLayout) activity.findViewById(android.R.id.content);
 
-            PlayerView player = (PlayerView) root.findViewById(R.id.player);
+            SakuraPlayerView player = (SakuraPlayerView) root.findViewById(R.id.player);
             if (player != null) {
                 player.stop();
                 root.removeView(player);

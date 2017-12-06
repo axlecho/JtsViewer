@@ -8,8 +8,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.axlecho.jtsviewer.action.ui.JtsPlayVideoAction;
-import com.axlecho.sakura.PlayerView;
-import com.axlecho.sakura.utils.SakuraTextUtils;
 import com.pixplicity.htmlcompat.HtmlCompat;
 
 import org.xml.sax.Attributes;
