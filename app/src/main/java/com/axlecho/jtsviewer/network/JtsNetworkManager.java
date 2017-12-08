@@ -12,6 +12,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -37,6 +38,7 @@ public class JtsNetworkManager {
 
     private static JtsNetworkManager instance;
     private OkHttpClient client;
+    private List<Call> callList = new ArrayList<>();
 
     private JtsNetworkManager(Context context) {
         OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
@@ -63,7 +65,9 @@ public class JtsNetworkManager {
                 .url(url)
                 .build();
 
-        client.newCall(request).enqueue(new JtsNetworkCallback(action));
+        Call call = client.newCall(request);
+        call.enqueue(new JtsNetworkCallback(action));
+        callList.add(call);
     }
 
     public void post(String url, RequestBody data, JtsBaseAction action) {
@@ -73,7 +77,9 @@ public class JtsNetworkManager {
                 .post(data)
                 .build();
 
-        client.newCall(request).enqueue(new JtsNetworkCallback(action));
+        Call call = client.newCall(request);
+        call.enqueue(new JtsNetworkCallback(action));
+        callList.add(call);
     }
 
     public String download(String url, String path) throws Exception {
@@ -123,6 +129,15 @@ public class JtsNetworkManager {
         input.close();
         response.body().close();
         return file.getName();
+    }
+
+    public void cancelAll() {
+        for (Call call : callList) {
+            if (call.isCanceled()) {
+                call.cancel();
+            }
+        }
+        callList.clear();
     }
 
     private class ProgressResponseBody extends ResponseBody {

@@ -133,4 +133,10 @@ public class MainActivity extends AppCompatActivity
     public void setTitle(String title) {
         toolbar.setTitle(title);
     }
+
+    @Override
+    protected void onDestroy() {
+        controller.detachToActivity();
+        super.onDestroy();
+    }
 }

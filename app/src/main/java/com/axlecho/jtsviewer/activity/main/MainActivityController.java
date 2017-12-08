@@ -227,4 +227,9 @@ public class MainActivityController {
         intent.setClass(activity, JtsDetailActivity.class);
         ActivityCompat.startActivity(activity, intent, options.toBundle());
     }
+
+    public void detachToActivity() {
+        JtsNetworkManager.getInstance(activity).cancelAll();
+        activity = null;
+    }
 }

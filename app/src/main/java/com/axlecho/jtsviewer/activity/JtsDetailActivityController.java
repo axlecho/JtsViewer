@@ -22,6 +22,8 @@ import com.hippo.refreshlayout.RefreshLayout;
 
 import java.util.List;
 
+import okhttp3.Call;
+
 /**
  * Created by Administrator on 2017/11/7.
  */
@@ -93,6 +95,7 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
 
     public void detachToActivity() {
         this.stopVideoPlayer();
+        JtsNetworkManager.getInstance(activity).cancelAll();
         this.activity = null;
         this.adapter = null;
     }
@@ -157,8 +160,8 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
         }
 
         if (threads.get(0) != null) {
-            for(JtsThreadModule module: detail.threadList) {
-                if(module.floor.equals(threads.get(0).floor)) {
+            for (JtsThreadModule module : detail.threadList) {
+                if (module.floor.equals(threads.get(0).floor)) {
                     JtsViewerLog.w(TAG, "[processLoadMoreThread] over flow");
                     return;
                 }
