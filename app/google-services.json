@@ -1,0 +1,43 @@
+{
+  "project_info": {
+    "project_number": "449495189202",
+    "project_id": "jtsviewer-3eb48"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:449495189202:android:6bf1116ba2ead418",
+        "android_client_info": {
+          "package_name": "com.axlecho.jtsviewer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "449495189202-40kri8ciukmqr7hu0jbv556ckat8kk16.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWXf4LnJ1oQqu6-XCKJX3_kqOxTBJr8XY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 2,
+          "analytics_property": {
+            "tracking_id": "UA-110489666-1"
+          }
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

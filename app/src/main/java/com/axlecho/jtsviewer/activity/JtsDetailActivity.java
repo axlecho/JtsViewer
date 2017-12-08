@@ -11,13 +11,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.axlecho.jtsviewer.JtsApplication;
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.activity.main.MainActivityController;
 import com.axlecho.jtsviewer.widget.RecycleViewDivider;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.hippo.refreshlayout.RefreshLayout;
 
 public class JtsDetailActivity extends AppCompatActivity {
-
+    private static final String TAG = "detail-scene";
     public RecyclerView recyclerView;
 
     public ImageView avatar;
@@ -32,6 +35,7 @@ public class JtsDetailActivity extends AppCompatActivity {
 
     private JtsDetailActivityController controller;
 
+    private Tracker mTracker;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +63,15 @@ public class JtsDetailActivity extends AppCompatActivity {
 
         this.controller.getTabDetail();
 
+        JtsApplication application = (JtsApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+    }
+
+    @Override
+    protected void onResume() {
+        mTracker.setScreenName(TAG);
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        super.onResume();
     }
 
     @Override

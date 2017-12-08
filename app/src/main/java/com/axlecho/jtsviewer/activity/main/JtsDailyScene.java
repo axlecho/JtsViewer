@@ -14,15 +14,20 @@ import com.axlecho.jtsviewer.untils.JtsViewerLog;
 import java.util.List;
 
 
-public class JtsDailyScence extends BaseScene {
+public class JtsDailyScene extends BaseScene {
 
     private static final String TAG = "daily-scene";
     private int currentPage = 1;
     private Context context;
 
-    public JtsDailyScence(Context context) {
+    public JtsDailyScene(Context context) {
         this.context = context;
         MainActivityController.getInstance().getActivity().setTitle("最新");
+    }
+
+    @Override
+    public String getName() {
+        return TAG;
     }
 
     @Override

@@ -20,15 +20,22 @@ import static com.axlecho.jtsviewer.untils.JtsConf.DESKTOP_SEEACH_MORE_URL;
  */
 
 public class JtsSearchScene extends BaseScene {
+    private static final String TAG = "serch-scene";
 
     private int currentPage = 1;
     private Context context;
     private String keyword;
 
+
     public JtsSearchScene(Context context, String keyword) {
         this.context = context;
         this.keyword = keyword;
         MainActivityController.getInstance().getActivity().setTitle("搜索:" + keyword);
+    }
+
+    @Override
+    public String getName() {
+        return TAG;
     }
 
     @Override

@@ -13,8 +13,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.axlecho.jtsviewer.JtsApplication;
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.widget.RecycleViewDivider;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.hippo.refreshlayout.RefreshLayout;
 
 public class MainActivity extends AppCompatActivity
@@ -28,6 +31,9 @@ public class MainActivity extends AppCompatActivity
     public Toolbar toolbar;
     private MainActivityController controller;
 
+
+
+    private Tracker mTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +70,16 @@ public class MainActivity extends AppCompatActivity
 
         this.controller.loadDefaultScene();
         this.controller.loadUserInfo();
+
+        JtsApplication application = (JtsApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+    }
+
+    @Override
+    protected void onResume() {
+        mTracker.setScreenName(controller.getScene().getName());
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        super.onResume();
     }
 
     @Override

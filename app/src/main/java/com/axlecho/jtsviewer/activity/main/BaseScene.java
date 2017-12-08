@@ -20,6 +20,8 @@ public abstract class BaseScene {
 
     public abstract void processRefreah(List<JtsTabInfoModel> data);
 
+    public abstract String getName();
+
     public void setSearchKey(int searchKey) {
         this.searchKey = searchKey;
     }

@@ -16,15 +16,20 @@ import java.util.List;
  * Created by Administrator on 2017/10/29.
  */
 
-public class JtsHotScence extends BaseScene {
+public class JtsHotScene extends BaseScene {
+    private static final String TAG = "hot-scene";
     private int currentPage = 1;
     private Context context;
 
-    public JtsHotScence(Context context) {
+    public JtsHotScene(Context context) {
         this.context = context;
         MainActivityController.getInstance().getActivity().setTitle("热门");
     }
 
+    @Override
+    public String getName() {
+        return TAG;
+    }
     @Override
     public void loadMore() {
         this.currentPage++;

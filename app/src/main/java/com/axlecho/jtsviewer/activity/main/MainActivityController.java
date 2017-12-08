@@ -190,7 +190,7 @@ public class MainActivityController {
     }
 
     public void loadDefaultScene() {
-        this.currentScene = new JtsDailyScence(activity);
+        this.currentScene = new JtsDailyScene(activity);
         this.currentScene.refresh();
     }
 
@@ -199,12 +199,12 @@ public class MainActivityController {
     }
 
     public void switchSenceToDaily() {
-        this.currentScene = new JtsDailyScence(activity);
+        this.currentScene = new JtsDailyScene(activity);
         this.currentScene.refresh();
     }
 
     public void switchSenceToHot() {
-        this.currentScene = new JtsHotScence(activity);
+        this.currentScene = new JtsHotScene(activity);
         this.currentScene.refresh();
     }
 
