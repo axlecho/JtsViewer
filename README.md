@@ -3,6 +3,9 @@ JtsViewer
 
 这是一个 [吉他社](http://www.jitashe.org/) Android 平台的浏览器。
 
+![index-scene](screenshot/index-scene.png)
+
+
 License
 ---
 
