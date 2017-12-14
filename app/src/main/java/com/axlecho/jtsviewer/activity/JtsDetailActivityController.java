@@ -1,5 +1,7 @@
 package com.axlecho.jtsviewer.activity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.PopupMenu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,16 +15,14 @@ import com.axlecho.jtsviewer.action.ui.JtsStopVideoAction;
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.JtsThreadModule;
-import com.axlecho.jtsviewer.untils.JtsConf;
 import com.axlecho.jtsviewer.network.JtsNetworkManager;
+import com.axlecho.jtsviewer.untils.JtsConf;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 import com.bumptech.glide.Glide;
 import com.hippo.refreshlayout.RefreshLayout;
 
 import java.util.List;
-
-import okhttp3.Call;
 
 /**
  * Created by Administrator on 2017/11/7.
@@ -110,8 +110,10 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_open_in_other_app:
+                        openInOtherApp();
                         break;
                     case R.id.action_refresh:
+                        getTabDetail();
                         break;
                 }
                 return true;
@@ -187,5 +189,14 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
     private void stopVideoPlayer() {
         JtsStopVideoAction action = new JtsStopVideoAction(activity);
         action.execute();
+    }
+
+    private void openInOtherApp() {
+        Intent intent = new Intent();
+        intent.setAction("android.intent.action.VIEW");
+        Uri content_url = Uri.parse(JtsConf.DESKTOP_HOST_URL + info.url);
+        intent.setData(content_url);
+        activity.startActivity(intent);
+
     }
 }
