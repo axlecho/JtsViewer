@@ -8,12 +8,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.axlecho.jtsviewer.JtsApplication;
 import com.axlecho.jtsviewer.R;
-import com.axlecho.jtsviewer.activity.main.MainActivityController;
 import com.axlecho.jtsviewer.widget.RecycleViewDivider;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -36,6 +34,7 @@ public class JtsDetailActivity extends AppCompatActivity {
     private JtsDetailActivityController controller;
 
     private Tracker mTracker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +79,13 @@ public class JtsDetailActivity extends AppCompatActivity {
         JtsDetailActivityController.getInstance().detachToActivity();
     }
 
+
+    @Override
+    public void onBackPressed() {
+        if(controller.processBackPressed()) {
+            super.onBackPressed();
+        }
+    }
 
     public void initPopMenu() {
         if (popupMenu != null) {

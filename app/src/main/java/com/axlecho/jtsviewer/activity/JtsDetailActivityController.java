@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.support.v7.widget.PopupMenu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.action.JtsBaseAction;
@@ -19,6 +20,7 @@ import com.axlecho.jtsviewer.network.JtsNetworkManager;
 import com.axlecho.jtsviewer.untils.JtsConf;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
+import com.axlecho.sakura.SakuraPlayerView;
 import com.bumptech.glide.Glide;
 import com.hippo.refreshlayout.RefreshLayout;
 
@@ -122,7 +124,7 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
     }
 
     public JtsBaseAction createPlayProcessor() {
-        JtsViewerLog.appendToFile(activity, detail.raw);
+        // JtsViewerLog.appendToFile(activity, detail.raw);
         JtsParseTabTypeAction action = new JtsParseTabTypeAction();
         action.setKey(JtsNetworkManager.WEBPAGE_CONTENT_KEY, detail.raw);
         action.setKey(JtsBaseAction.CONTEXT_KEY, activity);
@@ -173,6 +175,22 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
 
         detail.threadList.addAll(threads);
         adapter.notifyDataSetChanged();
+    }
+
+    public boolean processBackPressed() {
+        SakuraPlayerView player = (SakuraPlayerView) activity.findViewById(R.id.player);
+        if (player != null) {
+            if (player.isFullScreen) {
+                player.toggleFullScreen();
+                return false;
+            }
+
+            player.stop();
+            ViewGroup root = (ViewGroup) activity.findViewById(android.R.id.content);
+            root.removeView(player);
+            return false;
+        }
+        return true;
     }
 
     @Override
