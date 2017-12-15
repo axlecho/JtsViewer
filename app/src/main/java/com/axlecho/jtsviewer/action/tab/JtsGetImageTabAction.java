@@ -15,7 +15,7 @@ import java.util.List;
 
 public class JtsGetImageTabAction extends JtsBaseAction {
 
-    private static final String IMAGE_PATTERN = "(?<=src=\"http:)//att.jitashe.org/.+?.(?:jpg|png|gif)@!tab_thumb";
+    private static final String IMAGE_PATTERN = "(?<=src=\"http:)//att.jitashe.org/.+?.(?:jpg|png|gif)";
     private static final String IMAGE_PATTERN2 = "(?<=src=\"http:)/data/attachment/forum/.+?.(?:jpg|png|gif)@!tab_thumb";
 
     private static final String TAG = JtsGetImageTabAction.class.getSimpleName();
