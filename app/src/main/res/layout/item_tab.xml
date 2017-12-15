@@ -19,7 +19,7 @@
         android:contentDescription="icon of avatar"
         android:paddingBottom="4dp"
         android:paddingTop="4dp"
-        android:src="@drawable/ic_launcher"
+        android:src="@mipmap/ic_launcher"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
