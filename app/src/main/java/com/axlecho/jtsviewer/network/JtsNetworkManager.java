@@ -70,6 +70,15 @@ public class JtsNetworkManager {
         callList.add(call);
     }
 
+    public String get(String url) throws IOException {
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        return response.body().string();
+    }
+
     public void post(String url, RequestBody data, JtsBaseAction action) {
         Request request = new Request.Builder()
                 .url(url)

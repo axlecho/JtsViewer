@@ -17,6 +17,7 @@ import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.JtsThreadModule;
 import com.axlecho.jtsviewer.network.JtsNetworkManager;
+import com.axlecho.jtsviewer.network.JtsPageParser;
 import com.axlecho.jtsviewer.untils.JtsConf;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
@@ -24,7 +25,18 @@ import com.axlecho.sakura.SakuraPlayerView;
 import com.bumptech.glide.Glide;
 import com.hippo.refreshlayout.RefreshLayout;
 
+import java.io.InterruptedIOException;
+import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Administrator on 2017/11/7.
@@ -37,6 +49,8 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
     private JtsTabDetailModule detail;
     private JtsTabInfoModel info;
     private int page = 1;
+
+    private List<Disposable> disposables = new ArrayList<>();
 
     private static JtsDetailActivityController instance;
 
@@ -59,7 +73,34 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
 
     public void getTabDetail() {
         this.info = (JtsTabInfoModel) activity.getIntent().getSerializableExtra("tabinfo");
-        JtsNetworkManager.getInstance(activity).get(JtsConf.DESKTOP_HOST_URL + info.url, createDetailInfoProcessor());
+        // JtsNetworkManager.getInstance(activity).get(JtsConf.DESKTOP_HOST_URL + info.url, createDetailInfoProcessor());
+
+        Disposable disposable = Observable.create(new ObservableOnSubscribe<String>() {
+            @Override
+            public void subscribe(ObservableEmitter<String> e) throws Exception {
+                try {
+                    String html = JtsNetworkManager.getInstance(activity).get(JtsConf.DESKTOP_HOST_URL + info.url);
+                    e.onNext(html);
+                    e.onComplete();
+                } catch (InterruptedIOException ex) {
+                    // e.onError(new Throwable("request dispose"));
+                    JtsViewerLog.e(TAG, ex.getMessage());
+                }
+            }
+        }).map(new Function<String, JtsTabDetailModule>() {
+            @Override
+            public JtsTabDetailModule apply(String s) throws Exception {
+                JtsPageParser.getInstance(activity).setContent(s);
+                return JtsPageParser.getInstance(activity).parserTabDetail();
+            }
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<JtsTabDetailModule>() {
+            @Override
+            public void accept(JtsTabDetailModule jtsTabDetailModule) throws Exception {
+                processDetail(jtsTabDetailModule);
+            }
+        });
+
+        disposables.add(disposable);
     }
 
     public void processDetail(JtsTabDetailModule detail) {
@@ -98,6 +139,14 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
     public void detachToActivity() {
         this.stopVideoPlayer();
         JtsNetworkManager.getInstance(activity).cancelAll();
+
+        for (Disposable disposable : disposables) {
+            if (disposable != null && !disposable.isDisposed()) {
+                disposable.dispose();
+            }
+        }
+        disposables.clear();
+
         this.activity = null;
         this.adapter = null;
     }
@@ -146,9 +195,37 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
 
     private void loadMoreThread() {
         page++;
-        String url = JtsConf.DESKTOP_HOST_URL + info.url + "/" + page;
-        JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, url);
-        JtsNetworkManager.getInstance(activity).get(url, createLoadMoreThreadProcessor());
+
+        Observable.create(new ObservableOnSubscribe<String>() {
+            @Override
+            public void subscribe(ObservableEmitter<String> e) throws Exception {
+                String url = JtsConf.DESKTOP_HOST_URL + info.url + "/" + page;
+                JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, url);
+                try {
+                    String html = JtsNetworkManager.getInstance(activity).get(url);
+                    e.onNext(html);
+                } catch (InterruptedIOException ex) {
+                    e.onError(new Throwable("request dispose"));
+                }
+
+            }
+        }).map(new Function<String, List<JtsThreadModule>>() {
+            @Override
+            public List<JtsThreadModule> apply(String s) throws Exception {
+                JtsPageParser.getInstance(activity).setContent(s);
+                return JtsPageParser.getInstance(activity).parserThread();
+            }
+        }).doOnError(new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+                JtsViewerLog.e(TAG, throwable.getMessage());
+            }
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<List<JtsThreadModule>>() {
+            @Override
+            public void accept(List<JtsThreadModule> jtsThreadModules) throws Exception {
+                processLoadMoreThread(jtsThreadModules);
+            }
+        });
     }
 
     public void processLoadMoreThread(List<JtsThreadModule> threads) {

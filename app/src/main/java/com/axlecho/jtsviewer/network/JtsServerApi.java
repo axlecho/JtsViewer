@@ -1,29 +1,13 @@
 package com.axlecho.jtsviewer.network;
 
-import android.content.Context;
+import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 
-public class JtsServerApi {
+import retrofit2.http.GET;
+import retrofit2.http.Path;
 
-    private static final String TAG = JtsServerApi.class.getSimpleName();
-    private static final String TAB_URL_PATTERN = "/tab/\\d+/";
-    private static JtsServerApi instance;
-    private Context context;
+public interface JtsServerApi {
+    String TAG = JtsServerApi.class.getSimpleName();
 
-    private JtsServerApi(Context context) {
-        this.context = context;
-    }
-
-    public static JtsServerApi getInstance(Context context) {
-        if (instance == null) {
-            synchronized (JtsServerApi.class) {
-                if (instance == null) {
-                    instance = new JtsServerApi(context);
-                }
-            }
-        }
-        return instance;
-    }
-
-    public void checkLogin() {
-    }
+    @GET("/tab/{id}")
+    JtsTabDetailModule getDetail(@Path("id") String id);
 }
