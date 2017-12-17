@@ -97,14 +97,23 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
 
+    <string name="pref_aboutme_key">author</string>
     <string name="pref_aboutme_title">作者</string>
     <string name="pref_about_me">Axlecho &lt;axlecho@gmail.com&gt;</string>
+
+    <string name="pref_code_key">code</string>
     <string name="pref_code_tile">源码</string>
     <string name="pref_code">https://github.com/axlecho/JtsViewer</string>
+
+    <string name="pref_license_key">license</string>
     <string name="pref_license_title">开源许可</string>
     <string name="pref_license">JtsViewer的诞生离不开许多开源项目</string>
+
+    <string name="pref_version_key">version</string>
     <string name="pref_version_code_tile">版本号</string>
     <string name="pref_version_code">0.0.0</string>
+
+
     <string name="pref_statistics_title">统计</string>
     <string name="pref_statistics">todo</string>
     <string name="add_short_cut">已经添加快捷方式</string>
