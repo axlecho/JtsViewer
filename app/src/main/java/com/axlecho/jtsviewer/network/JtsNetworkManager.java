@@ -227,7 +227,7 @@ public class JtsNetworkManager {
 
         @Override
         public void onFailure(Call call, IOException e) {
-            JtsViewerLog.d(TAG, "network error");
+            JtsViewerLog.d(TAG, "network error - " + e.getMessage());
         }
 
         @Override
