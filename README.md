@@ -46,19 +46,7 @@ Thanks
 
 License
 ---
+JtsViwer licensed under [GPLv3](LICENSE).
 
-    Copyright (C) 2014-2016 Axlecho
-
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-        http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-    
+Copyright (C) 2017 - 2019 Axlecho  
 ic_launcher 图标为 Axlecho 所有，所有权利保留
