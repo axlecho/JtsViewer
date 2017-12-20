@@ -21,6 +21,12 @@ android {
     defaultConfig {
         multiDexEnabled true
     }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -57,6 +63,7 @@ dependencies {
     compile 'tv.danmaku.ijk.media:ijkplayer-x86:0.8.4'
     compile 'tv.danmaku.ijk.media:ijkplayer-x86_64:0.8.4'
     testCompile 'junit:junit:4.12'
+    testCompile "org.robolectric:robolectric:3.4"
 
     apply plugin: 'com.google.gms.google-services'
 }
