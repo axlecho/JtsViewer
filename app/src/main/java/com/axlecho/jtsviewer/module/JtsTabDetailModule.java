@@ -1,5 +1,7 @@
 package com.axlecho.jtsviewer.module;
 
+import com.google.gson.Gson;
+
 import java.util.List;
 
 /**
@@ -9,4 +11,9 @@ import java.util.List;
 public class JtsTabDetailModule {
     public List<JtsThreadModule> threadList;
     public String raw;
+
+    @Override
+    public String toString() {
+        return new Gson().toJson(this);
+    }
 }

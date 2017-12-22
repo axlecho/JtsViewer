@@ -2,11 +2,11 @@ package com.axlecho.jtsviewer;
 
 import android.content.Context;
 
-import com.axlecho.jtsviewer.action.parser.JtsParseTabListFunction;
+import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
-import com.axlecho.jtsviewer.network.JtsServerApi;
-import com.axlecho.jtsviewer.untils.JtsConf;
+import com.axlecho.jtsviewer.network.JtsServer;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,10 +17,6 @@ import org.robolectric.annotation.Config;
 import java.util.List;
 
 import io.reactivex.functions.Consumer;
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 /**
  * Created by axlecho on 17-12-20.
@@ -31,40 +27,53 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 
 public class NetworkUnitTest {
-    private JtsServerApi service;
     private Context context;
+    private JtsServer server;
 
     @Before
     public void setup() {
-        // mMockClient = mock(Client.class);
-        // ShadowLog.stream = System.out;
-        OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.addInterceptor(new HttpLoggingInterceptor());
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .client(builder.build())
-                .baseUrl(JtsConf.DESKTOP_HOST_URL)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build();
-
-        service = retrofit.create(JtsServerApi.class);
         context = RuntimeEnvironment.application.getApplicationContext();
+        server = JtsServer.getSingleton(context);
     }
 
     @Test
     public void testNewTab() {
-        service.getNewTab(String.valueOf(1)).map(new JtsParseTabListFunction(context))
-                .subscribe(new Consumer<List<JtsTabInfoModel>>() {
-                    @Override
-                    public void accept(List<JtsTabInfoModel> list) throws Exception {
-                        System.out.println(list);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        // System.out.println(throwable.getMessage());
-                        throwable.printStackTrace();
-                    }
-                });
+        server.getNewTab(1).subscribe(new Consumer<List<JtsTabInfoModel>>() {
+            @Override
+            public void accept(List<JtsTabInfoModel> list) throws Exception {
+                System.out.println(list);
+                Assert.assertEquals(50, list.size());
+            }
+        }, errorHandler);
     }
+
+    @Test
+    public void testDetail() {
+        server.getDetail(1318946).subscribe(new Consumer<JtsTabDetailModule>() {
+            @Override
+            public void accept(JtsTabDetailModule jtsTabDetailModule) throws Exception {
+                System.out.println(jtsTabDetailModule);
+                Assert.assertEquals(3, jtsTabDetailModule.threadList.size());
+            }
+        }, errorHandler);
+    }
+
+    @Test
+    public void testDaily() {
+        server.getHotTab(1).subscribe(new Consumer<List<JtsTabInfoModel>>() {
+            @Override
+            public void accept(List<JtsTabInfoModel> list) throws Exception {
+                System.out.println(list);
+                Assert.assertEquals(50, list.size());
+            }
+        }, errorHandler);
+    }
+
+    private Consumer<Throwable> errorHandler = new Consumer<Throwable>() {
+        @Override
+        public void accept(Throwable throwable) throws Exception {
+            System.out.println(throwable.getMessage());
+            // throw new Exception(throwable);
+        }
+    };
 }

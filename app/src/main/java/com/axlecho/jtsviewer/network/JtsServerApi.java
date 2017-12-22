@@ -10,11 +10,11 @@ public interface JtsServerApi {
     String TAG = JtsServerApi.class.getSimpleName();
 
     @GET("/tab/{id}")
-    Observable<ResponseBody> getDetail(@Path("id") String id);
+    Observable<ResponseBody> getDetail(@Path("id") int id);
 
     @GET("/guide/newtab/{page}")
-    Observable<ResponseBody> getNewTab(@Path("page") String page);
+    Observable<ResponseBody> getNewTab(@Path("page") int page);
 
     @GET("/guide/hottab/{page}")
-    Observable<ResponseBody> getHotTab(@Path("page") String page);
+    Observable<ResponseBody> getHotTab(@Path("page") int page);
 }
