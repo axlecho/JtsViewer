@@ -12,7 +12,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
+import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
+import org.robolectric.shadows.ShadowLog;
 
 import java.util.List;
 
@@ -32,6 +34,7 @@ public class NetworkUnitTest {
 
     @Before
     public void setup() {
+        ShadowLog.stream = System.out;
         context = RuntimeEnvironment.application.getApplicationContext();
         server = JtsServer.getSingleton(context);
     }
@@ -67,6 +70,17 @@ public class NetworkUnitTest {
                 Assert.assertEquals(50, list.size());
             }
         }, errorHandler);
+    }
+
+    @Test
+    public void testArtist() {
+        server.getArtist(19301).subscribe(new Consumer<List<JtsTabInfoModel>>() {
+            @Override
+            public void accept(List<JtsTabInfoModel> list) throws Exception {
+                System.out.println(list);
+                Assert.assertEquals(50, list.size());
+            }
+        },errorHandler);
     }
 
     private Consumer<Throwable> errorHandler = new Consumer<Throwable>() {

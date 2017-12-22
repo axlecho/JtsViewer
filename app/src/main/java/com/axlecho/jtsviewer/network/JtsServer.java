@@ -64,4 +64,8 @@ public class JtsServer {
         return service.getHotTab(page).map(new JtsParseTabListFunction(context));
     }
 
+    public Observable<List<JtsTabInfoModel>> getArtist(int id) {
+        return service.getArtist(id).map(new JtsParseTabListFunction(context));
+    }
+
 }
