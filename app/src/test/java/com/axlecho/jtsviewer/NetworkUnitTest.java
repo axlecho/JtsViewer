@@ -78,15 +78,16 @@ public class NetworkUnitTest {
             @Override
             public void accept(List<JtsTabInfoModel> list) throws Exception {
                 System.out.println(list);
-                Assert.assertEquals(50, list.size());
+                // Assert.assertEquals(50, list.size());
             }
-        },errorHandler);
+        }, errorHandler);
     }
 
     private Consumer<Throwable> errorHandler = new Consumer<Throwable>() {
         @Override
         public void accept(Throwable throwable) throws Exception {
-            System.out.println(throwable.getMessage());
+            // System.out.println(throwable.getMessage());
+            throwable.printStackTrace();
             // throw new Exception(throwable);
         }
     };

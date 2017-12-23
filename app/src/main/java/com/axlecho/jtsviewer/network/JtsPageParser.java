@@ -77,7 +77,8 @@ public class JtsPageParser {
         model.title = e.select("a[href*=/tab/]").first().text();
         model.url = e.select("a[href*=/tab/]").first().attr("href");
         model.type = e.select("span.tabtype").first().text();
-        model.uper = e.select("span[title*=发布者]").first().nextElementSibling().text();
+        // model.uper = e.select("span[title*=发布者]").first().nextElementSibling().text();
+        model.uper = e.select("a[href*=/space/]").first().text();
         model.watch = e.select("span[title*=查看]").first().nextElementSibling().text();
         model.reply = e.select("span[title*=回复]").first().nextElementSibling().text();
         // search mode has no time attr
