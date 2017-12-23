@@ -5,6 +5,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Response;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface JtsServerApi {
     String TAG = JtsServerApi.class.getSimpleName();
@@ -20,4 +21,10 @@ public interface JtsServerApi {
 
     @GET("/artist/{id}")
     Observable<ResponseBody> getArtist(@Path("id") int id);
+
+    @GET("/search/tab/{keyword}")
+    Observable<ResponseBody> search(@Path("keyword") String keyword);
+
+    @GET("/search.php?mod=tab&searchsubmit=yes")
+    Observable<ResponseBody> searchById(@Query("searchid") int searchId, @Query("page") int page);
 }

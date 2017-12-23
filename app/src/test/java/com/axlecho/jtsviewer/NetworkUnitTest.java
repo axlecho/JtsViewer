@@ -83,6 +83,17 @@ public class NetworkUnitTest {
         }, errorHandler);
     }
 
+    @Test
+    public void testSearch() {
+        server.search("love", 0).subscribe(new Consumer<List<JtsTabInfoModel>>() {
+            @Override
+            public void accept(List<JtsTabInfoModel> jtsTabInfoModels) throws Exception {
+                System.out.println(jtsTabInfoModels);
+                System.out.println(server.getSearchKey());
+            }
+        }, errorHandler);
+    }
+
     private Consumer<Throwable> errorHandler = new Consumer<Throwable>() {
         @Override
         public void accept(Throwable throwable) throws Exception {

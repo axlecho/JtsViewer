@@ -8,13 +8,20 @@ import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.untils.JtsConf;
 
+import java.nio.charset.Charset;
+import java.nio.charset.UnsupportedCharsetException;
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
+import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
+import okio.Buffer;
+import okio.BufferedSource;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
@@ -23,6 +30,9 @@ public class JtsServer {
     private volatile static JtsServer singleton;
     private JtsServerApi service;
     private Context context;
+
+    private int searchKey;
+    private String keyword;
 
     private JtsServer(Context context) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
@@ -68,4 +78,33 @@ public class JtsServer {
         return service.getArtist(id).map(new JtsParseTabListFunction(context));
     }
 
+    public Observable<List<JtsTabInfoModel>> search(String keyword, int page) {
+        if (!this.keyword.equals(keyword) || page == 0) {
+            this.keyword = keyword;
+            return service.search(keyword).doOnNext(saveSearchKeyConsumer).map(new JtsParseTabListFunction(context));
+        } else {
+            return service.searchById(searchKey, page).map(new JtsParseTabListFunction(context));
+        }
+    }
+
+    public int getSearchKey() {
+        return searchKey;
+    }
+
+    private Consumer<ResponseBody> saveSearchKeyConsumer = new Consumer<ResponseBody>() {
+        @Override
+        public void accept(ResponseBody responseBody) throws Exception {
+            long contentLength = responseBody.contentLength();
+            BufferedSource source = responseBody.source();
+            source.request(Long.MAX_VALUE);
+            Buffer buffer = source.buffer();
+
+            if (contentLength != 0) {
+                Charset charset = Charset.forName("Utf-8");
+                String html = buffer.clone().readString(charset);
+                JtsPageParser.getInstance(context).setContent(html);
+                searchKey = JtsPageParser.getInstance(context).parserSearchId();
+            }
+        }
+    };
 }
