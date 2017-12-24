@@ -34,7 +34,7 @@ public class JtsTextUnitls {
         return null;
     }
 
-    public static int getTabKeyFromUrl(String url) {
+    public static long getTabKeyFromUrl(String url) {
         if (url == null) {
             JtsViewerLog.e(TAG, "get tabkey from url failed -- url is null");
             return -1;
@@ -49,7 +49,7 @@ public class JtsTextUnitls {
         JtsViewerLog.d(TAG, "url path -- " + path);
         for (String s : path.split("/")) {
             if (s.matches("\\d+")) {
-                return Integer.parseInt(s);
+                return Long.parseLong(s);
             }
         }
 

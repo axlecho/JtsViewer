@@ -12,7 +12,7 @@ public interface JtsServerApi {
     String USER_AGENT = "Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Mobile Safari/537.36";
 
     @GET("/tab/{id}")
-    Observable<ResponseBody> getDetail(@Path("id") int id);
+    Observable<ResponseBody> getDetail(@Path("id") long id);
 
     @GET("/guide/newtab/{page}")
     Observable<ResponseBody> getNewTab(@Path("page") int page);

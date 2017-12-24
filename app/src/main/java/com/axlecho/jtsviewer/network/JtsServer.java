@@ -80,7 +80,7 @@ public class JtsServer {
         return singleton;
     }
 
-    public Observable<JtsTabDetailModule> getDetail(int id) {
+    public Observable<JtsTabDetailModule> getDetail(long id) {
         return service.getDetail(id).map(new JtsParseTabDetailFunction(context))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());

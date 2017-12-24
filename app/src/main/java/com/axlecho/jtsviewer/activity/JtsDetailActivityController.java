@@ -84,7 +84,7 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
         this.info = (JtsTabInfoModel) activity.getIntent().getSerializableExtra("tabinfo");
         // JtsNetworkManager.getInstance(activity).get(JtsConf.DESKTOP_HOST_URL + info.url, createDetailInfoProcessor());
 
-        int tabKey = JtsTextUnitls.getTabKeyFromUrl(info.url);
+        long tabKey = JtsTextUnitls.getTabKeyFromUrl(info.url);
         JtsServer.getSingleton(activity).getDetail(tabKey).subscribe(new Consumer<JtsTabDetailModule>() {
             @Override
             public void accept(JtsTabDetailModule jtsTabDetailModule) throws Exception {
