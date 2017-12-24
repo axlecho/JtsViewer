@@ -44,7 +44,8 @@ public class MainActivityController {
     private Consumer<Throwable> errorHandler = new Consumer<Throwable>() {
         @Override
         public void accept(Throwable throwable) throws Exception {
-
+            JtsViewerLog.e(TAG, throwable.getMessage());
+            Snackbar.make(activity.getWindow().getDecorView(), throwable.getMessage(), Snackbar.LENGTH_LONG).show();
         }
     };
 

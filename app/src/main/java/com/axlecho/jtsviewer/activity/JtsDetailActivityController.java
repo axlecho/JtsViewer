@@ -2,6 +2,7 @@ package com.axlecho.jtsviewer.activity;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.PopupMenu;
 import android.view.MenuItem;
 import android.view.View;
@@ -58,7 +59,7 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
     private Consumer<Throwable> errorHandler = new Consumer<Throwable>() {
         @Override
         public void accept(Throwable throwable) throws Exception {
-
+            Snackbar.make(activity.getWindow().getDecorView(), throwable.getMessage(), Snackbar.LENGTH_LONG).show();
         }
     };
 
