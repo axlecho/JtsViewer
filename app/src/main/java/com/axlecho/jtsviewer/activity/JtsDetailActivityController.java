@@ -11,8 +11,6 @@ import android.view.ViewGroup;
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.action.tab.JtsParseTabTypeAction;
-import com.axlecho.jtsviewer.action.tab.JtsParseThreadAction;
-import com.axlecho.jtsviewer.action.ui.JtsLoadMoreThreadAction;
 import com.axlecho.jtsviewer.action.ui.JtsStopVideoAction;
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
@@ -168,18 +166,6 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
         action.setKey(JtsNetworkManager.WEBPAGE_CONTENT_KEY, detail.raw);
         action.setKey(JtsBaseAction.CONTEXT_KEY, activity);
         action.setKey(JtsParseTabTypeAction.GID_KEY, JtsTextUnitls.getTabKeyFromUrl(info.url));
-        return action;
-    }
-
-    public JtsBaseAction createDetailInfoProcessor() {
-        JtsParseThreadAction action = new JtsParseThreadAction(activity);
-        action.setKey(JtsBaseAction.CONTEXT_KEY, activity);
-        return action;
-    }
-
-    public JtsBaseAction createLoadMoreThreadProcessor() {
-        JtsLoadMoreThreadAction action = new JtsLoadMoreThreadAction();
-        action.setKey(JtsBaseAction.CONTEXT_KEY, activity);
         return action;
     }
 
