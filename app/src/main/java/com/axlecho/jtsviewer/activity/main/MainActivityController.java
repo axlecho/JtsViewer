@@ -28,6 +28,8 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import io.reactivex.functions.Consumer;
+
 public class MainActivityController {
     private static final String TAG = MainActivityController.class.getSimpleName();
     private static MainActivityController instance;
@@ -39,6 +41,13 @@ public class MainActivityController {
     private static String[] PERMISSIONS_STORAGE = {
             "android.permission.READ_EXTERNAL_STORAGE",
             "android.permission.WRITE_EXTERNAL_STORAGE"};
+    private Consumer<Throwable> errorHandler = new Consumer<Throwable>() {
+        @Override
+        public void accept(Throwable throwable) throws Exception {
+
+        }
+    };
+
 
     public static MainActivityController getInstance() {
         if (instance == null) {
@@ -211,6 +220,10 @@ public class MainActivityController {
     public void switchSenceToSearch(String keyword) {
         this.currentScene = new JtsSearchScene(activity, keyword);
         this.currentScene.refresh();
+    }
+
+    public Consumer<Throwable> getErrorHandler() {
+        return errorHandler;
     }
 
     public JtsTabInfoModel findTabInfoByGid(long gid) {

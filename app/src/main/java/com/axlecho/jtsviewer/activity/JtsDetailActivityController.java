@@ -18,6 +18,7 @@ import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.JtsThreadModule;
 import com.axlecho.jtsviewer.network.JtsNetworkManager;
 import com.axlecho.jtsviewer.network.JtsPageParser;
+import com.axlecho.jtsviewer.network.JtsServer;
 import com.axlecho.jtsviewer.untils.JtsConf;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
@@ -54,6 +55,13 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
 
     private static JtsDetailActivityController instance;
 
+    private Consumer<Throwable> errorHandler = new Consumer<Throwable>() {
+        @Override
+        public void accept(Throwable throwable) throws Exception {
+
+        }
+    };
+
     public static JtsDetailActivityController getInstance() {
         if (instance == null) {
             synchronized (JtsDetailActivity.class) {
@@ -75,32 +83,13 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
         this.info = (JtsTabInfoModel) activity.getIntent().getSerializableExtra("tabinfo");
         // JtsNetworkManager.getInstance(activity).get(JtsConf.DESKTOP_HOST_URL + info.url, createDetailInfoProcessor());
 
-        Disposable disposable = Observable.create(new ObservableOnSubscribe<String>() {
-            @Override
-            public void subscribe(ObservableEmitter<String> e) throws Exception {
-                try {
-                    String html = JtsNetworkManager.getInstance(activity).get(JtsConf.DESKTOP_HOST_URL + info.url);
-                    e.onNext(html);
-                    e.onComplete();
-                } catch (InterruptedIOException ex) {
-                    // e.onError(new Throwable("request dispose"));
-                    JtsViewerLog.e(TAG, ex.getMessage());
-                }
-            }
-        }).map(new Function<String, JtsTabDetailModule>() {
-            @Override
-            public JtsTabDetailModule apply(String s) throws Exception {
-                JtsPageParser.getInstance(activity).setContent(s);
-                return JtsPageParser.getInstance(activity).parserTabDetail();
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<JtsTabDetailModule>() {
+        int tabKey = JtsTextUnitls.getTabKeyFromUrl(info.url);
+        JtsServer.getSingleton(activity).getDetail(tabKey).subscribe(new Consumer<JtsTabDetailModule>() {
             @Override
             public void accept(JtsTabDetailModule jtsTabDetailModule) throws Exception {
                 processDetail(jtsTabDetailModule);
             }
-        });
-
-        disposables.add(disposable);
+        }, errorHandler);
     }
 
     public void processDetail(JtsTabDetailModule detail) {

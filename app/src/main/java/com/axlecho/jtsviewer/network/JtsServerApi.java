@@ -9,6 +9,7 @@ import retrofit2.http.Query;
 
 public interface JtsServerApi {
     String TAG = JtsServerApi.class.getSimpleName();
+    String USER_AGENT = "Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Mobile Safari/537.36";
 
     @GET("/tab/{id}")
     Observable<ResponseBody> getDetail(@Path("id") int id);

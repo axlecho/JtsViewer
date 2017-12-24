@@ -85,11 +85,31 @@ public class NetworkUnitTest {
 
     @Test
     public void testSearch() {
-        server.search("love", 0).subscribe(new Consumer<List<JtsTabInfoModel>>() {
+        server.search("love", 1).subscribe(new Consumer<List<JtsTabInfoModel>>() {
             @Override
             public void accept(List<JtsTabInfoModel> jtsTabInfoModels) throws Exception {
                 System.out.println(jtsTabInfoModels);
                 System.out.println(server.getSearchKey());
+            }
+        }, errorHandler);
+    }
+
+    @Test
+    public void testSearchEx() {
+        server.search("love", 1).subscribe(new Consumer<List<JtsTabInfoModel>>() {
+            @Override
+            public void accept(List<JtsTabInfoModel> jtsTabInfoModels) throws Exception {
+                searchMore(2);
+                System.out.println(server.getSearchKey());
+            }
+        }, errorHandler);
+    }
+
+    public void searchMore(int page) {
+        server.search("love", page).subscribe(new Consumer<List<JtsTabInfoModel>>() {
+            @Override
+            public void accept(List<JtsTabInfoModel> jtsTabInfoModels) throws Exception {
+                System.out.println(jtsTabInfoModels);
             }
         }, errorHandler);
     }

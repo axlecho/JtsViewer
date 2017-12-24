@@ -7,10 +7,13 @@ import com.axlecho.jtsviewer.action.tab.JtsParseTabListAction;
 import com.axlecho.jtsviewer.action.ui.JtsLoadMoreAction;
 import com.axlecho.jtsviewer.action.ui.JtsRefreshAction;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
+import com.axlecho.jtsviewer.network.JtsServer;
 import com.axlecho.jtsviewer.untils.JtsConf;
 import com.axlecho.jtsviewer.network.JtsNetworkManager;
 
 import java.util.List;
+
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by Administrator on 2017/10/29.
@@ -20,48 +23,53 @@ public class JtsHotScene extends BaseScene {
     private static final String TAG = "hot-scene";
     private int currentPage = 1;
     private Context context;
+    private MainActivityController controller;
 
     public JtsHotScene(Context context) {
         this.context = context;
-        MainActivityController.getInstance().getActivity().setTitle("热门");
+        controller = MainActivityController.getInstance();
+        controller.getActivity().setTitle("热门");
     }
 
     @Override
     public String getName() {
         return TAG;
     }
+
     @Override
     public void loadMore() {
         this.currentPage++;
-        MainActivityController.getInstance().startFooterRefreshing();
-        JtsParseTabListAction action = new JtsParseTabListAction();
-        JtsLoadMoreAction loadMoreAction = new JtsLoadMoreAction();
-        action.setKey(JtsBaseAction.CONTEXT_KEY, context);
-        action.setKey("after_action", loadMoreAction);
-        JtsNetworkManager.getInstance(context).get(JtsConf.DESKTOP_HOT_URL + currentPage, action);
+        controller.startFooterRefreshing();
+        JtsServer.getSingleton(context).getHotTab(currentPage).subscribe(new Consumer<List<JtsTabInfoModel>>() {
+            @Override
+            public void accept(List<JtsTabInfoModel> jtsTabInfoModels) throws Exception {
+                processLoadMore(jtsTabInfoModels);
+            }
+        }, controller.getErrorHandler());
     }
 
     @Override
     public void refresh() {
         this.currentPage = 1;
-        MainActivityController.getInstance().startHeaderRefreshing();
-        JtsRefreshAction refreshAction = new JtsRefreshAction();
-        JtsParseTabListAction action = new JtsParseTabListAction();
-        action.setKey(JtsBaseAction.CONTEXT_KEY, context);
-        action.setKey("after_action", refreshAction);
-        JtsNetworkManager.getInstance(context).get(JtsConf.DESKTOP_HOT_URL + currentPage, action);
+
+        JtsServer.getSingleton(context).getHotTab(currentPage).subscribe(new Consumer<List<JtsTabInfoModel>>() {
+            @Override
+            public void accept(List<JtsTabInfoModel> jtsTabInfoModels) throws Exception {
+                processRefreah(jtsTabInfoModels);
+            }
+        }, controller.getErrorHandler());
     }
 
     @Override
     public void processLoadMore(List<JtsTabInfoModel> data) {
-        MainActivityController.getInstance().processShowHome(data);
-        MainActivityController.getInstance().stopFooterRefreshing();
+        controller.processShowHome(data);
+        controller.stopFooterRefreshing();
     }
 
     @Override
     public void processRefreah(List<JtsTabInfoModel> data) {
-        MainActivityController.getInstance().clearData();
-        MainActivityController.getInstance().processShowHome(data);
-        MainActivityController.getInstance().stopHeaderRefreshing();
+        controller.clearData();
+        controller.processShowHome(data);
+        controller.stopHeaderRefreshing();
     }
 }
