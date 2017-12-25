@@ -115,6 +115,7 @@ public class NetworkUnitTest {
         }, errorHandler);
     }
 
+    @Test
     public void testLogin() {
         server.login("6b3db232", "http://www.jitashe.org/", "d39", "123456789", 2592000)
                 .subscribe(new Consumer<JtsUserModule>() {

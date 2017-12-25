@@ -21,7 +21,6 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
 import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import okio.Buffer;
@@ -47,7 +46,7 @@ public class JtsServer {
 
         Interceptor headerInterceptor = new Interceptor() {
             @Override
-            public Response intercept(Chain chain) throws IOException {
+            public okhttp3.Response intercept(Chain chain) throws IOException {
                 Request newRequest = chain.request().newBuilder()
                         .addHeader("user-agent", JtsServerApi.USER_AGENT)
                         .build();
