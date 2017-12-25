@@ -101,6 +101,7 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
         }
 
         adapter.addData(detail.threadList);
+        this.stopLoadingProgressBar();
     }
 
     public void bindTabInfo() {
@@ -269,5 +270,9 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
         intent.setData(content_url);
         activity.startActivity(intent);
 
+    }
+
+    public void stopLoadingProgressBar() {
+        activity.findViewById(R.id.detail_loading_progressbar).setVisibility(View.GONE);
     }
 }

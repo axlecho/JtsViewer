@@ -246,4 +246,8 @@ public class MainActivityController {
         JtsNetworkManager.getInstance(activity).cancelAll();
         activity = null;
     }
+
+    public void stopLoadingProgressBar() {
+        activity.findViewById(R.id.main_loading_progressbar).setVisibility(View.GONE);
+    }
 }

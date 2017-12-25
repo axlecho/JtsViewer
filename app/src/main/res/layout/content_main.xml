@@ -8,6 +8,17 @@
     tools:context="com.axlecho.jtsviewer.activity.main.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
+    <ProgressBar
+        android:id="@+id/main_loading_progressbar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:progressTint="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.hippo.refreshlayout.RefreshLayout
         android:id="@+id/main_swip_refresh_layout"
         android:layout_width="match_parent"

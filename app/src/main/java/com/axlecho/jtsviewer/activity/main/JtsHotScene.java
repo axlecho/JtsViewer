@@ -65,5 +65,6 @@ public class JtsHotScene extends BaseScene {
         controller.clearData();
         controller.processShowHome(data);
         controller.stopHeaderRefreshing();
+        controller.stopLoadingProgressBar();
     }
 }
