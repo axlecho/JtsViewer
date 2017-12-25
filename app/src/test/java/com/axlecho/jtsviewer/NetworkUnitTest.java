@@ -52,7 +52,7 @@ public class NetworkUnitTest {
 
     @Test
     public void testDetail() {
-        server.getDetail(1318946).subscribe(new Consumer<JtsTabDetailModule>() {
+        server.getDetail(1317048).subscribe(new Consumer<JtsTabDetailModule>() {
             @Override
             public void accept(JtsTabDetailModule jtsTabDetailModule) throws Exception {
                 System.out.println(jtsTabDetailModule);
