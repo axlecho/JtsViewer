@@ -3,7 +3,10 @@ package com.axlecho.jtsviewer.network;
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -28,4 +31,12 @@ public interface JtsServerApi {
 
     @GET("/search.php?mod=tab&searchsubmit=yes")
     Observable<ResponseBody> searchById(@Query("searchid") int searchId, @Query("page") int page);
+
+    @FormUrlEncoded
+    @POST("/member.php?mod=logging&action=login&loginsubmit=yes&handlekey=login&loginhash=LFR1d&inajax=1")
+    Observable<Response<ResponseBody>> login(@Field("formhash") String hash,
+                                             @Field("referer") String referer,
+                                             @Field("username") String username,
+                                             @Field("password") String password,
+                                             @Field("cookietime") long cookietime);
 }

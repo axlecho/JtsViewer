@@ -6,21 +6,19 @@ import com.axlecho.jtsviewer.action.parser.JtsParseTabDetailFunction;
 import com.axlecho.jtsviewer.action.parser.JtsParseTabListFunction;
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
+import com.axlecho.jtsviewer.module.JtsUserModule;
 import com.axlecho.jtsviewer.untils.JtsConf;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.charset.UnsupportedCharsetException;
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.Interceptor;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -115,6 +113,16 @@ public class JtsServer {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
         }
+    }
+
+    public Observable<JtsUserModule> login(String hash, String referer, String username, String password, long cookietime) {
+        return service.login(hash, referer, username, password, cookietime).map(new Function<retrofit2.Response<ResponseBody>, JtsUserModule>() {
+            @Override
+            public JtsUserModule apply(retrofit2.Response<ResponseBody> response) throws Exception {
+                // JtsViewerLog.d(TAG, response.code() + "\n" + response.headers().toString());
+                return new JtsUserModule();
+            }
+        });
     }
 
     public int getSearchKey() {

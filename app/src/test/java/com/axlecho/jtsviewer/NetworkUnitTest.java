@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
+import com.axlecho.jtsviewer.module.JtsUserModule;
 import com.axlecho.jtsviewer.network.JtsServer;
 
 import org.junit.Assert;
@@ -94,7 +95,7 @@ public class NetworkUnitTest {
         }, errorHandler);
     }
 
-    @Test
+
     public void testSearchEx() {
         server.search("love", 1).subscribe(new Consumer<List<JtsTabInfoModel>>() {
             @Override
@@ -112,6 +113,16 @@ public class NetworkUnitTest {
                 System.out.println(jtsTabInfoModels);
             }
         }, errorHandler);
+    }
+
+    public void testLogin() {
+        server.login("6b3db232", "http://www.jitashe.org/", "d39", "123456789", 2592000)
+                .subscribe(new Consumer<JtsUserModule>() {
+                    @Override
+                    public void accept(JtsUserModule jtsUserModule) throws Exception {
+                        System.out.println(jtsUserModule.toString());
+                    }
+                });
     }
 
     private Consumer<Throwable> errorHandler = new Consumer<Throwable>() {

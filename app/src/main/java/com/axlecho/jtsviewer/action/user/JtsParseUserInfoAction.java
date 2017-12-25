@@ -2,7 +2,7 @@ package com.axlecho.jtsviewer.action.user;
 
 import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.activity.main.MainActivityController;
-import com.axlecho.jtsviewer.module.UserModule;
+import com.axlecho.jtsviewer.module.JtsUserModule;
 import com.axlecho.jtsviewer.network.JtsNetworkManager;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 
@@ -15,7 +15,7 @@ public class JtsParseUserInfoAction extends JtsBaseAction {
     @Override
     public void processAction() {
         String webpageContent = (String) getKey(JtsNetworkManager.WEBPAGE_CONTENT_KEY);
-        UserModule user = new UserModule();
+        JtsUserModule user = new JtsUserModule();
         String uidStr = JtsTextUnitls.findByPatternOnce(webpageContent, UID_URL_PATTERN);
         if (uidStr != null) {
             user.uid = Long.parseLong(uidStr);
