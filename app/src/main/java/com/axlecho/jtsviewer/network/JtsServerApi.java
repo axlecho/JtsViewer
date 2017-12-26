@@ -6,6 +6,7 @@ import retrofit2.Response;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -39,4 +40,14 @@ public interface JtsServerApi {
                                              @Field("username") String username,
                                              @Field("password") String password,
                                              @Field("cookietime") long cookietime);
+
+    @FormUrlEncoded
+    @POST("/forum.php?mod=post&action=reply&extra=page%3D1&replysubmit=yes&infloat=yes&handlekey=fastpost&inajax=1")
+    Observable<Response<ResponseBody>> postComment(@Query("fid") int fid,
+                                                   @Query("tid") int tid,
+                                                   @Field("message") String message,
+                                                   @Field("posttime") long posttime,
+                                                   @Field("formhash") String formhash,
+                                                   @Field("usesig") int usesig,
+                                                   @Header("Cookie") String cookie);
 }

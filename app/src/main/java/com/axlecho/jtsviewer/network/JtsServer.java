@@ -8,6 +8,8 @@ import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.JtsUserModule;
 import com.axlecho.jtsviewer.untils.JtsConf;
+import com.axlecho.jtsviewer.untils.JtsTextUnitls;
+import com.axlecho.jtsviewer.untils.JtsViewerLog;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -114,12 +116,31 @@ public class JtsServer {
         }
     }
 
-    public Observable<JtsUserModule> login(String hash, String referer, String username, String password, long cookietime) {
-        return service.login(hash, referer, username, password, cookietime).map(new Function<retrofit2.Response<ResponseBody>, JtsUserModule>() {
+    public Observable<String> login(String hash, String referer, String username, String password, long cookietime) {
+        return service.login(hash, referer, username, password, cookietime).map(new Function<retrofit2.Response<ResponseBody>, String>() {
             @Override
-            public JtsUserModule apply(retrofit2.Response<ResponseBody> response) throws Exception {
+            public String apply(retrofit2.Response<ResponseBody> response) throws Exception {
                 // JtsViewerLog.d(TAG, response.code() + "\n" + response.headers().toString());
-                return new JtsUserModule();
+                // JtsViewerLog.d(TAG, response.headers().values("Set-Cookie").toString());
+                String cookies = "";
+                for (String cookie : response.headers().values("Set-Cookie")) {
+                    // if (cookie.contains("_auth=")) {
+                    JtsViewerLog.d(TAG, cookie.split(";")[0]);
+                    cookies += cookie.split(";")[0] + ";";
+                    // }
+                }
+
+                return cookies;
+            }
+        });
+    }
+
+    public Observable<String> postComment(int fid, int tid, String message, String cookie) {
+        return service.postComment(fid, tid, message, System.currentTimeMillis(), "f255ef81", 1, cookie).map(new Function<retrofit2.Response<ResponseBody>, String>() {
+            @Override
+            public String apply(retrofit2.Response<ResponseBody> responseBodyResponse) throws Exception {
+                JtsViewerLog.d(TAG, responseBodyResponse.body().string());
+                return "";
             }
         });
     }
