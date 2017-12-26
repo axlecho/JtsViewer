@@ -49,5 +49,5 @@ public interface JtsServerApi {
                                                    @Field("posttime") long posttime,
                                                    @Field("formhash") String formhash,
                                                    @Field("usesig") int usesig,
-                                                   @Header("Cookie") String cookie);
+                                                   @Field("subject") String subject);
 }

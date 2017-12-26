@@ -20,6 +20,8 @@ import org.robolectric.shadows.ShadowLog;
 import java.util.List;
 
 import io.reactivex.functions.Consumer;
+import okhttp3.ResponseBody;
+import retrofit2.Response;
 
 /**
  * Created by axlecho on 17-12-20.
@@ -118,21 +120,10 @@ public class NetworkUnitTest {
     @Test
     public void testLogin() {
         server.login("6b3db232", "http://www.jitashe.org/", "d39", "123456789", 2592000)
-                .subscribe(new Consumer<String>() {
+                .subscribe(new Consumer<Response<ResponseBody>>() {
                     @Override
-                    public void accept(String cookie) throws Exception {
-                        System.out.println(cookie);
-                    }
-                });
-    }
-
-    @Test
-    public void testPostComment() {
-        server.postComment(19301, 24285, "66666666666666666666", null)
-                .subscribe(new Consumer<String>() {
-                    @Override
-                    public void accept(String s) throws Exception {
-                        System.out.println(s);
+                    public void accept(Response<ResponseBody> response) throws Exception {
+                        //System.out.println(response.body().string());
                     }
                 });
     }
@@ -140,18 +131,25 @@ public class NetworkUnitTest {
     @Test
     public void testPostCommentWithLogin() {
         server.login("6b3db232", "http://www.jitashe.org/", "d39", "123456789", 2592000)
-                .subscribe(new Consumer<String>() {
+                .subscribe(new Consumer<Response<ResponseBody>>() {
                     @Override
-                    public void accept(String cookie) throws Exception {
-                        server.postComment(19301, 24285, "66666666666666666666", cookie)
-                                .subscribe(new Consumer<String>() {
-                                    @Override
-                                    public void accept(String s) throws Exception {
-                                        System.out.println(s);
-                                    }
-                                });
+                    public void accept(Response<ResponseBody> responseBodyResponse) throws Exception {
+                        server.getDetail(24285).subscribe(new Consumer<JtsTabDetailModule>() {
+                            @Override
+                            public void accept(JtsTabDetailModule jtsTabDetailModule) throws Exception {
+                                final JtsTabDetailModule module = jtsTabDetailModule;
+                                server.postComment(module.fid, 24285, "66666666666666666666", module.formhash)
+                                        .subscribe(new Consumer<String>() {
+                                            @Override
+                                            public void accept(String s) throws Exception {
+                                                System.out.println(s);
+                                            }
+                                        });
+                            }
+                        });
                     }
                 });
+
 
     }
 

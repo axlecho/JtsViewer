@@ -6,14 +6,15 @@ import com.axlecho.jtsviewer.action.parser.JtsParseTabDetailFunction;
 import com.axlecho.jtsviewer.action.parser.JtsParseTabListFunction;
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
-import com.axlecho.jtsviewer.module.JtsUserModule;
 import com.axlecho.jtsviewer.untils.JtsConf;
-import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;

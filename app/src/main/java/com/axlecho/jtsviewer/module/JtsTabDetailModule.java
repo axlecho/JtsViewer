@@ -10,6 +10,8 @@ import java.util.List;
 
 public class JtsTabDetailModule {
     public List<JtsThreadModule> threadList;
+    public String formhash;
+    public int fid;
     public String raw;
 
     @Override

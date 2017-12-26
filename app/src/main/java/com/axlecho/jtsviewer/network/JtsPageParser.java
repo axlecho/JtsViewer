@@ -8,6 +8,7 @@ import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.JtsThreadCommentModule;
 import com.axlecho.jtsviewer.module.JtsThreadModule;
+import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 import com.axlecho.sakura.utils.SakuraTextUtils;
 
@@ -110,10 +111,17 @@ public class JtsPageParser {
     public JtsTabDetailModule parserTabDetail() {
         JtsTabDetailModule detail = new JtsTabDetailModule();
         detail.raw = html;
+        detail.formhash = parserFormHash();
+        detail.fid = Integer.parseInt(JtsTextUnitls.findByPatternOnce(html,"(?<=fid=)\\d+"));
         detail.threadList = parserThread();
         return detail;
     }
 
+    public String parserFormHash() {
+        if (html == null) return null;
+        Document doc = Jsoup.parse(html);
+        return doc.select("input[name=formhash]").first().attr("value");
+    }
     public List<JtsThreadModule> parserThread() {
         if (html == null) return null;
 
