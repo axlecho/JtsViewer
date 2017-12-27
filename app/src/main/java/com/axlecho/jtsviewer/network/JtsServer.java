@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -34,7 +35,8 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 public class JtsServer {
-    String TAG = JtsServer.class.getSimpleName();
+    private static final String TAG = JtsServer.class.getSimpleName();
+    private static final int TIME_OUT = 10;
     private volatile static JtsServer singleton;
     private JtsServerApi service;
     private Context context;
@@ -47,6 +49,10 @@ public class JtsServer {
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         builder.addNetworkInterceptor(logging);
         builder.cookieJar(new JtsCookieJar(context));
+        builder.readTimeout(TIME_OUT, TimeUnit.SECONDS);
+        builder.writeTimeout(TIME_OUT, TimeUnit.SECONDS);
+        builder.connectTimeout(TIME_OUT, TimeUnit.SECONDS);
+
         Interceptor headerInterceptor = new Interceptor() {
             @Override
             public okhttp3.Response intercept(Chain chain) throws IOException {

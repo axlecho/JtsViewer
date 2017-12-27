@@ -22,7 +22,7 @@ import okhttp3.HttpUrl;
 
 public class JtsPersistentCookieStore {
     private static final String TAG = JtsPersistentCookieStore.class.getSimpleName();
-    private static final String COOKIE_PREFS = "Cookies_Prefs";
+    private static final String COOKIE_PREFS = "cookies_prefs";
 
     private final Map<String, ConcurrentHashMap<String, Cookie>> cookies;
     private final SharedPreferences cookiePrefs;
@@ -58,7 +58,7 @@ public class JtsPersistentCookieStore {
     public void put(HttpUrl url, Cookie cookie) {
         String name = getCookieToken(cookie);
 
-        if(cookies.get(url.host()) == null) {
+        if (cookies.get(url.host()) == null) {
             return;
         }
 
@@ -82,8 +82,9 @@ public class JtsPersistentCookieStore {
 
     public List<Cookie> get(HttpUrl url) {
         ArrayList<Cookie> ret = new ArrayList<>();
-        if (cookies.containsKey(url.host()))
+        if (cookies.containsKey(url.host())) {
             ret.addAll(cookies.get(url.host()).values());
+        }
         return ret;
     }
 

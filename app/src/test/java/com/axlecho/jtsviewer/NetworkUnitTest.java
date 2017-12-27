@@ -128,7 +128,7 @@ public class NetworkUnitTest {
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(String response) throws Exception {
-                        //System.out.println(response.body().string());
+                        server.getDetail(24285).subscribe();
                     }
                 });
     }
