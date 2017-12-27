@@ -5,6 +5,7 @@ import android.content.Context;
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.JtsUserModule;
+import com.axlecho.jtsviewer.network.JtsSchedulers;
 import com.axlecho.jtsviewer.network.JtsServer;
 
 import org.junit.Assert;
@@ -19,7 +20,9 @@ import org.robolectric.shadows.ShadowLog;
 
 import java.util.List;
 
+import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
+import io.reactivex.subscribers.TestSubscriber;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 
@@ -40,6 +43,7 @@ public class NetworkUnitTest {
         ShadowLog.stream = System.out;
         context = RuntimeEnvironment.application.getApplicationContext();
         server = JtsServer.getSingleton(context);
+        server.setSchedulers(new MockSchedulers());
     }
 
     @Test
@@ -120,9 +124,9 @@ public class NetworkUnitTest {
     @Test
     public void testLogin() {
         server.login("6b3db232", "http://www.jitashe.org/", "d39", "123456789", 2592000)
-                .subscribe(new Consumer<Response<ResponseBody>>() {
+                .subscribe(new Consumer<String>() {
                     @Override
-                    public void accept(Response<ResponseBody> response) throws Exception {
+                    public void accept(String response) throws Exception {
                         //System.out.println(response.body().string());
                     }
                 });
@@ -131,9 +135,9 @@ public class NetworkUnitTest {
     @Test
     public void testPostCommentWithLogin() {
         server.login("6b3db232", "http://www.jitashe.org/", "d39", "123456789", 2592000)
-                .subscribe(new Consumer<Response<ResponseBody>>() {
+                .subscribe(new Consumer<String>() {
                     @Override
-                    public void accept(Response<ResponseBody> responseBodyResponse) throws Exception {
+                    public void accept(String responseBodyResponse) throws Exception {
                         server.getDetail(24285).subscribe(new Consumer<JtsTabDetailModule>() {
                             @Override
                             public void accept(JtsTabDetailModule jtsTabDetailModule) throws Exception {
@@ -157,8 +161,15 @@ public class NetworkUnitTest {
         @Override
         public void accept(Throwable throwable) throws Exception {
             // System.out.println(throwable.getMessage());
-            throwable.printStackTrace();
-            // throw new Exception(throwable);
+            // throwable.printStackTrace();
+            throw new AssertionError(throwable);
         }
     };
+
+    private class MockSchedulers extends JtsSchedulers {
+        @Override
+        public <T> Observable<T> switchSchedulers(Observable<T> a) {
+            return a;
+        }
+    }
 }

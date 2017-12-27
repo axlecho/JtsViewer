@@ -2,6 +2,7 @@ package com.axlecho.jtsviewer.network;
 
 import android.content.Context;
 
+import com.axlecho.jtsviewer.action.parser.JtsParseLoginFunction;
 import com.axlecho.jtsviewer.action.parser.JtsParseTabDetailFunction;
 import com.axlecho.jtsviewer.action.parser.JtsParseTabListFunction;
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
@@ -36,6 +37,7 @@ public class JtsServer {
     private volatile static JtsServer singleton;
     private JtsServerApi service;
     private Context context;
+    private JtsSchedulers schedulers;
 
     private int searchKey;
     private String keyword;
@@ -46,7 +48,7 @@ public class JtsServer {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         builder.addNetworkInterceptor(logging);
-
+        builder.cookieJar(new JtsCookieJar(context));
         Interceptor headerInterceptor = new Interceptor() {
             @Override
             public okhttp3.Response intercept(Chain chain) throws IOException {
@@ -58,15 +60,15 @@ public class JtsServer {
         };
         builder.addInterceptor(headerInterceptor);
 
-
         Retrofit retrofit = new Retrofit.Builder()
                 .client(builder.build())
                 .baseUrl(JtsConf.DESKTOP_HOST_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
 
-        service = retrofit.create(JtsServerApi.class);
+        this.service = retrofit.create(JtsServerApi.class);
         this.context = context.getApplicationContext();
+        this.schedulers = new JtsSchedulers();
     }
 
     public static JtsServer getSingleton(Context context) {
@@ -81,69 +83,50 @@ public class JtsServer {
     }
 
     public Observable<JtsTabDetailModule> getDetail(long id) {
-        return service.getDetail(id).map(new JtsParseTabDetailFunction(context))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+        return service.getDetail(id).map(new JtsParseTabDetailFunction(context));
     }
 
     public Observable<List<JtsTabInfoModel>> getNewTab(int page) {
-        return service.getNewTab(page).map(new JtsParseTabListFunction(context))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+        Observable<List<JtsTabInfoModel>> o = service.getNewTab(page).map(new JtsParseTabListFunction(context));
+        return schedulers.switchSchedulers(o);
     }
 
     public Observable<List<JtsTabInfoModel>> getHotTab(int page) {
-        return service.getHotTab(page).map(new JtsParseTabListFunction(context))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+        Observable<List<JtsTabInfoModel>> o = service.getHotTab(page).map(new JtsParseTabListFunction(context));
+        return schedulers.switchSchedulers(o);
     }
 
     public Observable<List<JtsTabInfoModel>> getArtist(int id) {
-        return service.getArtist(id).map(new JtsParseTabListFunction(context))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+        Observable<List<JtsTabInfoModel>> o = service.getArtist(id).map(new JtsParseTabListFunction(context));
+        return schedulers.switchSchedulers(o);
     }
 
     public Observable<List<JtsTabInfoModel>> search(String keyword, int page) {
+        Observable<List<JtsTabInfoModel>> o;
         if (this.keyword == null || !this.keyword.equals(keyword) || page == 1 || searchKey == 0) {
             this.keyword = keyword;
-            return service.search(keyword).doOnNext(saveSearchKeyConsumer).map(new JtsParseTabListFunction(context))
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread());
+            o = service.search(keyword).doOnNext(saveSearchKeyConsumer).map(new JtsParseTabListFunction(context));
         } else {
-            return service.searchById(searchKey, page).map(new JtsParseTabListFunction(context))
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread());
+            o = service.searchById(searchKey, page).map(new JtsParseTabListFunction(context));
         }
+        return schedulers.switchSchedulers(o);
     }
 
     public Observable<String> login(String hash, String referer, String username, String password, long cookietime) {
-        return service.login(hash, referer, username, password, cookietime).map(new Function<retrofit2.Response<ResponseBody>, String>() {
-            @Override
-            public String apply(retrofit2.Response<ResponseBody> response) throws Exception {
-                // JtsViewerLog.d(TAG, response.code() + "\n" + response.headers().toString());
-                // JtsViewerLog.d(TAG, response.headers().values("Set-Cookie").toString());
-                String cookies = "";
-                for (String cookie : response.headers().values("Set-Cookie")) {
-                    // if (cookie.contains("_auth=")) {
-                    JtsViewerLog.d(TAG, cookie.split(";")[0]);
-                    cookies += cookie.split(";")[0] + ";";
-                    // }
-                }
-
-                return cookies;
-            }
-        });
+        Observable<String> o = service.login(hash, referer, username, password, cookietime).map(new JtsParseLoginFunction());
+        return schedulers.switchSchedulers(o);
     }
 
-    public Observable<String> postComment(int fid, int tid, String message, String cookie) {
-        return service.postComment(fid, tid, message, System.currentTimeMillis(), "f255ef81", 1, cookie).map(new Function<retrofit2.Response<ResponseBody>, String>() {
+    public Observable<String> postComment(int fid, int tid, String message, String formhash) {
+        Observable<String> o = service.postComment(fid, tid, message, System.currentTimeMillis(), formhash, 1, "").map(new Function<retrofit2.Response<ResponseBody>, String>() {
             @Override
             public String apply(retrofit2.Response<ResponseBody> responseBodyResponse) throws Exception {
                 JtsViewerLog.d(TAG, responseBodyResponse.body().string());
                 return "";
             }
         });
+
+        return schedulers.switchSchedulers(o);
     }
 
     public int getSearchKey() {
@@ -166,4 +149,8 @@ public class JtsServer {
             }
         }
     };
+
+    public void setSchedulers(JtsSchedulers schedulers) {
+        this.schedulers = schedulers;
+    }
 }
