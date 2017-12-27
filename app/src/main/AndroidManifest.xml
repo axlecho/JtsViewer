@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 
     <application
@@ -38,7 +38,12 @@
             android:label="@string/title_history"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.login.LoginActivity" />
+
+        <activity
+            android:name=".activity.login.JtsLoginActivity"
+            android:label="@string/title_history"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".activity.JtsDetailActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"

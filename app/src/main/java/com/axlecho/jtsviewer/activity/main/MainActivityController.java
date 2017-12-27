@@ -110,35 +110,32 @@ public class MainActivityController {
     }
 
     public void loadUserInfo() {
-        JtsParseUserInfoAction action = new JtsParseUserInfoAction();
-        JtsNetworkManager.getInstance(activity).get(JtsConf.HOST_URL, action);
+        JtsShowLoginAction action = new JtsShowLoginAction();
+        action.setKey(JtsBaseAction.CONTEXT_KEY, activity);
+        View headerView = activity.navigationView.getHeaderView(0);
+        ImageView drawerUserInfoImageView = (ImageView) headerView.findViewById(R.id.nav_user_imageView);
+        drawerUserInfoImageView.setOnClickListener(action);
     }
 
     public void processLoadUserInfo(final JtsUserModule user) {
         JtsViewerLog.d(TAG, user.toString());
+        View headerView = activity.navigationView.getHeaderView(0);
+        ImageView drawerUserInfoImageView = (ImageView) headerView.findViewById(R.id.nav_user_imageView);
+        TextView userNameTextView = (TextView) headerView.findViewById(R.id.nav_user_name);
 
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                View headerView = activity.navigationView.getHeaderView(0);
-                ImageView drawerUserInfoImageView = (ImageView) headerView.findViewById(R.id.nav_user_imageView);
-                TextView userNameTextView = (TextView) headerView.findViewById(R.id.nav_user_name);
+        if (user.avatarUrl != null) {
+            Glide.with(activity).load(user.avatarUrl).into(drawerUserInfoImageView);
+        }
 
-                if (user.avatarUrl != null) {
-                    Glide.with(activity).load(user.avatarUrl).into(drawerUserInfoImageView);
-                }
+        if (user.userName != null) {
+            userNameTextView.setText(user.userName);
+        }
 
-                if (user.userName != null) {
-                    userNameTextView.setText(user.userName);
-                }
-
-                if (user.uid <= 0) {
-                    JtsShowLoginAction action = new JtsShowLoginAction();
-                    action.setKey(JtsBaseAction.CONTEXT_KEY, activity);
-                    drawerUserInfoImageView.setOnClickListener(action);
-                }
-            }
-        });
+        if (user.uid <= 0) {
+            JtsShowLoginAction action = new JtsShowLoginAction();
+            action.setKey(JtsBaseAction.CONTEXT_KEY, activity);
+            drawerUserInfoImageView.setOnClickListener(action);
+        }
 
     }
 

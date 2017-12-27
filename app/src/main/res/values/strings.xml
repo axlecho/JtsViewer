@@ -13,8 +13,8 @@
     <string name="unlogin_tip_long">Please login if download gtp tab</string>
     <string name="search">search</string>
     <string name="login">login</string>
-    <string name="reply">回复</string>
-    <string name="watch">查看</string>
+    <string name="reply">reply</string>
+    <string name="watch">watch</string>
     <string name="title_hot">热门</string>
     <string name="title_new">最新</string>
     <string name="unknown_uper">吉他爱好者</string>
@@ -25,6 +25,8 @@
     <string name="title_activity_jts_settings">Settings</string>
     <string name="detail_transition">detail_transition</string>
 
+    <string name="login_usename_hint">user name</string>
+    <string name="login_password_hint">password</string>
     <!-- Strings related to Settings -->
     <string name="pref_header_about">About</string>
     <string name="pref_aboutme_key">author</string>

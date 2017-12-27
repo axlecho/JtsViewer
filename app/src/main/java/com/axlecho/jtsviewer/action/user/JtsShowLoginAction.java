@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.axlecho.jtsviewer.action.JtsBaseAction;
-import com.axlecho.jtsviewer.activity.login.LoginActivity;
+import com.axlecho.jtsviewer.activity.login.JtsLoginActivity;
 
 
 public class JtsShowLoginAction extends JtsBaseAction {
@@ -13,7 +13,7 @@ public class JtsShowLoginAction extends JtsBaseAction {
     public void processAction() {
         Context context = (Context) getKey(JtsBaseAction.CONTEXT_KEY);
         Intent intent = new Intent();
-        intent.setClass(context, LoginActivity.class);
+        intent.setClass(context, JtsLoginActivity.class);
         context.startActivity(intent);
     }
 }
