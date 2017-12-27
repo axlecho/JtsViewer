@@ -3,6 +3,7 @@ package com.axlecho.jtsviewer.network;
 import android.content.Context;
 
 import com.axlecho.jtsviewer.action.parser.JtsParseLoginFunction;
+import com.axlecho.jtsviewer.action.parser.JtsParseSearchKeyConsumer;
 import com.axlecho.jtsviewer.action.parser.JtsParseTabDetailFunction;
 import com.axlecho.jtsviewer.action.parser.JtsParseTabListFunction;
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
@@ -38,9 +39,6 @@ public class JtsServer {
     private JtsServerApi service;
     private Context context;
     private JtsSchedulers schedulers;
-
-    private int searchKey;
-    private String keyword;
 
     private JtsServer(Context context) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
@@ -103,9 +101,9 @@ public class JtsServer {
 
     public Observable<List<JtsTabInfoModel>> search(String keyword, int page) {
         Observable<List<JtsTabInfoModel>> o;
-        if (this.keyword == null || !this.keyword.equals(keyword) || page == 1 || searchKey == 0) {
-            this.keyword = keyword;
-            o = service.search(keyword).doOnNext(saveSearchKeyConsumer).map(new JtsParseTabListFunction(context));
+        int searchKey = JtsSearchHelper.getSingleton().getSearchKey(keyword);
+        if (searchKey == -1) {
+            o = service.search(keyword).doOnNext(new JtsParseSearchKeyConsumer(context, keyword)).map(new JtsParseTabListFunction(context));
         } else {
             o = service.searchById(searchKey, page).map(new JtsParseTabListFunction(context));
         }
@@ -128,27 +126,6 @@ public class JtsServer {
 
         return schedulers.switchSchedulers(o);
     }
-
-    public int getSearchKey() {
-        return searchKey;
-    }
-
-    private Consumer<ResponseBody> saveSearchKeyConsumer = new Consumer<ResponseBody>() {
-        @Override
-        public void accept(ResponseBody responseBody) throws Exception {
-            long contentLength = responseBody.contentLength();
-            BufferedSource source = responseBody.source();
-            source.request(Long.MAX_VALUE);
-            Buffer buffer = source.buffer();
-
-            if (contentLength != 0) {
-                Charset charset = Charset.forName("Utf-8");
-                String html = buffer.clone().readString(charset);
-                JtsPageParser.getInstance(context).setContent(html);
-                searchKey = JtsPageParser.getInstance(context).parserSearchId();
-            }
-        }
-    };
 
     public void setSchedulers(JtsSchedulers schedulers) {
         this.schedulers = schedulers;
