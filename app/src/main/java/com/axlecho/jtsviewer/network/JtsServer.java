@@ -87,7 +87,8 @@ public class JtsServer {
     }
 
     public Observable<JtsTabDetailModule> getDetail(long id) {
-        return service.getDetail(id).map(new JtsParseTabDetailFunction(context));
+        Observable<JtsTabDetailModule> o = service.getDetail(id).map(new JtsParseTabDetailFunction(context));
+        return schedulers.switchSchedulers(o);
     }
 
     public Observable<List<JtsTabInfoModel>> getNewTab(int page) {
