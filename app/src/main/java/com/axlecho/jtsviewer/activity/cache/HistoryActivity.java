@@ -3,6 +3,7 @@ package com.axlecho.jtsviewer.activity.cache;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -27,11 +28,17 @@ import com.axlecho.jtsviewer.widget.RecycleViewDivider;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.functions.Consumer;
 
 public class HistoryActivity extends AppCompatActivity implements CacheViewAdapter.OnItemClickListener, CacheViewAdapter.OnItemLongClickListener {
     private static final String TAG = HistoryActivity.class.getSimpleName();
@@ -91,7 +98,7 @@ public class HistoryActivity extends AppCompatActivity implements CacheViewAdapt
         action.processAction();
     }
 
-    private void processLongClickAction(CacheModule module) {
+    private void processLongClickAction(final CacheModule module) {
         Intent launcherIntent = new Intent();
         launcherIntent.setAction("android.intent.action.VIEW");
         launcherIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -107,21 +114,63 @@ public class HistoryActivity extends AppCompatActivity implements CacheViewAdapt
         addShortcutIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, launcherIntent);
         addShortcutIntent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
 
-        Glide.with(this).load(module.tabInfo.avatar).asBitmap()
-                .transform(new GlideRoundTransform(this))
-                .into(new SimpleTarget<Bitmap>(144, 144) {
-
+        Observable<Bitmap> network = Observable.create(new ObservableOnSubscribe<Bitmap>() {
+            @Override
+            public void subscribe(final ObservableEmitter<Bitmap> emitter) throws Exception {
+                Target<Bitmap> target = new SimpleTarget<Bitmap>(144, 144) {
                     @Override
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        addShortcutIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON, resource);
+                        emitter.onNext(resource);
+                        emitter.onComplete();
+                    }
+
+                    @Override
+                    public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                        e.printStackTrace();
+                        emitter.onComplete();
+                    }
+                };
+
+                Glide.with(HistoryActivity.this).load(module.tabInfo.avatar).asBitmap()
+                        .transform(new GlideRoundTransform(HistoryActivity.this))
+                        .into(target);
+            }
+        });
+
+        Observable<Bitmap> location = Observable.create(new ObservableOnSubscribe<Bitmap>() {
+            @Override
+            public void subscribe(final ObservableEmitter<Bitmap> emitter) throws Exception {
+                Target<Bitmap> target = new SimpleTarget<Bitmap>(144, 144) {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        emitter.onNext(resource);
+                        emitter.onComplete();
+                    }
+
+                    @Override
+                    public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                        e.printStackTrace();
+                        emitter.onComplete();
+                    }
+                };
+
+                Glide.with(HistoryActivity.this).load(R.drawable.ic_launcher).asBitmap()
+                        .transform(new GlideRoundTransform(HistoryActivity.this))
+                        .into(target);
+            }
+        });
+
+        Observable.concat(network, location)
+                .subscribe(new Consumer<Bitmap>() {
+                    @Override
+                    public void accept(Bitmap bitmap) throws Exception {
+                        addShortcutIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON, bitmap);
                         HistoryActivity.this.sendBroadcast(addShortcutIntent);
                         Snackbar.make(HistoryActivity.this.getWindow().getDecorView(),
                                 HistoryActivity.this.getResources().getString(R.string.add_short_cut),
                                 Snackbar.LENGTH_LONG).show();
                     }
-
                 });
-
     }
 
 
