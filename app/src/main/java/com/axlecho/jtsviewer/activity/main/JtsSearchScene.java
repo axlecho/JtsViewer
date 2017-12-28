@@ -48,8 +48,7 @@ public class JtsSearchScene extends BaseScene {
     @Override
     public void refresh() {
         this.currentPage = 1;
-
-
+        controller.startHeaderRefreshing();
         JtsServer.getSingleton(context).search(keyword, currentPage).subscribe(new Consumer<List<JtsTabInfoModel>>() {
             @Override
             public void accept(List<JtsTabInfoModel> jtsTabInfoModels) throws Exception {
