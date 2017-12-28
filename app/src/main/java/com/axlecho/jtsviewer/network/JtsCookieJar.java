@@ -24,8 +24,8 @@ public class JtsCookieJar implements CookieJar {
 
         for (Cookie cookie : cookies) {
             if (cookie.name().contains("auth")) {
-                JtsViewerLog.d(TAG, "save for url " + url.toString());
-                saveCookies(url, cookies);
+                JtsViewerLog.d(TAG, "save for url " + url.host());
+                cookieStore.put(url, cookies);
                 break;
             }
         }
@@ -33,13 +33,11 @@ public class JtsCookieJar implements CookieJar {
 
     @Override
     public List<Cookie> loadForRequest(HttpUrl url) {
+
         List<Cookie> cookies = cookieStore.get(url);
-        return cookies != null ? cookies : new ArrayList<Cookie>();
+        JtsViewerLog.d(TAG, "load for url " + url.host() + " -- " + cookies.size());
+        return cookies;
     }
 
-    private void saveCookies(HttpUrl url, List<Cookie> cookies) {
-        for (Cookie cookie : cookies) {
-            cookieStore.put(url, cookie);
-        }
-    }
+
 }

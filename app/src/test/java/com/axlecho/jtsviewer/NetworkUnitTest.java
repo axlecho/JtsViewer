@@ -4,28 +4,24 @@ import android.content.Context;
 
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
-import com.axlecho.jtsviewer.module.JtsUserModule;
 import com.axlecho.jtsviewer.network.JtsSchedulers;
 import com.axlecho.jtsviewer.network.JtsSearchHelper;
 import com.axlecho.jtsviewer.network.JtsServer;
 
-import org.junit.Assert;
+import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowLog;
 
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.subscribers.TestSubscriber;
-import okhttp3.ResponseBody;
-import retrofit2.Response;
+
+import static org.hamcrest.core.Is.is;
 
 /**
  * Created by axlecho on 17-12-20.
@@ -49,123 +45,57 @@ public class NetworkUnitTest {
 
     @Test
     public void testNewTab() {
-        server.getNewTab(1).subscribe(new Consumer<List<JtsTabInfoModel>>() {
-            @Override
-            public void accept(List<JtsTabInfoModel> list) throws Exception {
-                System.out.println(list);
-                Assert.assertEquals(50, list.size());
-            }
-        }, errorHandler);
+        List<JtsTabInfoModel> result = server.getNewTab(1).blockingFirst();
+        MatcherAssert.assertThat(result.size(), is(50));
     }
 
     @Test
     public void testDetail() {
-        server.getDetail(1317048).subscribe(new Consumer<JtsTabDetailModule>() {
-            @Override
-            public void accept(JtsTabDetailModule jtsTabDetailModule) throws Exception {
-                System.out.println(jtsTabDetailModule);
-                Assert.assertEquals(3, jtsTabDetailModule.threadList.size());
-            }
-        }, errorHandler);
+        JtsTabDetailModule result = server.getDetail(1317048).blockingFirst();
+        MatcherAssert.assertThat(result.threadList.size(), is(10));
     }
 
     @Test
     public void testDaily() {
-        server.getHotTab(1).subscribe(new Consumer<List<JtsTabInfoModel>>() {
-            @Override
-            public void accept(List<JtsTabInfoModel> list) throws Exception {
-                System.out.println(list);
-                Assert.assertEquals(50, list.size());
-            }
-        }, errorHandler);
+        List<JtsTabInfoModel> result = server.getHotTab(1).blockingFirst();
+        MatcherAssert.assertThat(result.size(), is(10));
     }
 
     @Test
     public void testArtist() {
-        server.getArtist(19301).subscribe(new Consumer<List<JtsTabInfoModel>>() {
-            @Override
-            public void accept(List<JtsTabInfoModel> list) throws Exception {
-                System.out.println(list);
-                // Assert.assertEquals(50, list.size());
-            }
-        }, errorHandler);
+        List<JtsTabInfoModel> result = server.getArtist(19301).blockingFirst();
+        MatcherAssert.assertThat(result.size(), is(20));
     }
 
     @Test
     public void testSearch() {
-        server.search("love", 1).subscribe(new Consumer<List<JtsTabInfoModel>>() {
-            @Override
-            public void accept(List<JtsTabInfoModel> jtsTabInfoModels) throws Exception {
-                System.out.println(jtsTabInfoModels);
-                JtsSearchHelper.getSingleton().dump();
-            }
-        }, errorHandler);
+        List<JtsTabInfoModel> result = server.search("love", 1).blockingFirst();
+        MatcherAssert.assertThat(result.size(), is(10));
     }
 
     @Test
     public void testSearchEx() {
-        server.search("love", 1).subscribe(new Consumer<List<JtsTabInfoModel>>() {
-            @Override
-            public void accept(List<JtsTabInfoModel> jtsTabInfoModels) throws Exception {
-                searchMore(2);
-            }
-        }, errorHandler);
+        server.search("love", 1).blockingSubscribe();
+        List<JtsTabInfoModel> result = server.search("love", 2).blockingFirst();
+        MatcherAssert.assertThat(result.size(), is(50));
+        JtsSearchHelper.getSingleton().dump();
     }
 
-    public void searchMore(int page) {
-        server.search("love", page).subscribe(new Consumer<List<JtsTabInfoModel>>() {
-            @Override
-            public void accept(List<JtsTabInfoModel> jtsTabInfoModels) throws Exception {
-                System.out.println(jtsTabInfoModels);
-                JtsSearchHelper.getSingleton().dump();
-            }
-        }, errorHandler);
-    }
 
     @Test
-    public void testLogin() {
+    public void testLogin() throws Exception {
         server.login("6b3db232", "http://www.jitashe.org/", "d39", "123456789", 2592000)
-                .subscribe(new Consumer<String>() {
-                    @Override
-                    public void accept(String response) throws Exception {
-                        server.getDetail(24285).subscribe();
-                    }
-                });
+                .blockingSubscribe();
+        server.getDetail(24285).blockingSubscribe();
     }
 
     @Test
     public void testPostCommentWithLogin() {
-        server.login("6b3db232", "http://www.jitashe.org/", "d39", "123456789", 2592000)
-                .subscribe(new Consumer<String>() {
-                    @Override
-                    public void accept(String responseBodyResponse) throws Exception {
-                        server.getDetail(24285).subscribe(new Consumer<JtsTabDetailModule>() {
-                            @Override
-                            public void accept(JtsTabDetailModule jtsTabDetailModule) throws Exception {
-                                final JtsTabDetailModule module = jtsTabDetailModule;
-                                server.postComment(module.fid, 24285, "66666666666666666666", module.formhash)
-                                        .subscribe(new Consumer<String>() {
-                                            @Override
-                                            public void accept(String s) throws Exception {
-                                                System.out.println(s);
-                                            }
-                                        });
-                            }
-                        });
-                    }
-                });
-
-
+        server.login("6b3db232", "http://www.jitashe.org/", "d39", "123456789", 2592000).blockingSubscribe();
+        JtsTabDetailModule detail = server.getDetail(24285).blockingFirst();
+        String result = server.postComment(detail.fid, 24285, "66666666666666666666", detail.formhash).blockingFirst();
+        MatcherAssert.assertThat(result.contains("没有权限"), is(false));
     }
-
-    private Consumer<Throwable> errorHandler = new Consumer<Throwable>() {
-        @Override
-        public void accept(Throwable throwable) throws Exception {
-            System.out.println(throwable.getMessage());
-            // throwable.printStackTrace();
-            // throw new AssertionError(throwable);
-        }
-    };
 
     private class MockSchedulers extends JtsSchedulers {
         @Override

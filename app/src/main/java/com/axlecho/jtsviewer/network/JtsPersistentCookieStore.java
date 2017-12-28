@@ -55,6 +55,12 @@ public class JtsPersistentCookieStore {
         return cookie.name() + "@" + cookie.domain();
     }
 
+    public void put(HttpUrl url,List<Cookie> cookies) {
+        for(Cookie cookie: cookies) {
+            put(url,cookie);
+        }
+    }
+
     public void put(HttpUrl url, Cookie cookie) {
         String name = getCookieToken(cookie);
 

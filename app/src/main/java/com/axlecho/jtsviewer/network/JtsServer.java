@@ -36,7 +36,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 public class JtsServer {
     private static final String TAG = JtsServer.class.getSimpleName();
-    private static final int TIME_OUT = 10;
+    private static final int TIME_OUT = 100;
     private volatile static JtsServer singleton;
     private JtsServerApi service;
     private Context context;
