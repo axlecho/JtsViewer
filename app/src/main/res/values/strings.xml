@@ -15,8 +15,12 @@
     <string name="login">login</string>
     <string name="reply">reply</string>
     <string name="watch">watch</string>
-    <string name="title_hot">热门</string>
-    <string name="title_new">最新</string>
+
+    <string name="title_hot">Hot</string>
+    <string name="title_new">New</string>
+    <string name="title_acg">Acg</string>
+    <string name="title_learn">Learn</string>
+
     <string name="unknown_uper">吉他爱好者</string>
     <string name="unknown_time">未知</string>
     <string name="title_activity_detail">DetailActivity</string>

@@ -8,8 +8,12 @@
     <string name="title_history">历史</string>
     <string name="title_home">主页</string>
     <string name="title_communicate">社交</string>
+
     <string name="title_hot">热门</string>
     <string name="title_new">最新</string>
+    <string name="title_acg">Acg</string>
+    <string name="title_learn">练习曲</string>
+
     <string name="action_share">分享</string>
     <string name="unlogin_tip">请登录</string>
     <string name="unlogin_tip_long">下载gtp需要登录</string>
