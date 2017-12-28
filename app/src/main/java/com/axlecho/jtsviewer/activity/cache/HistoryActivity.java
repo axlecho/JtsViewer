@@ -161,6 +161,7 @@ public class HistoryActivity extends AppCompatActivity implements CacheViewAdapt
         });
 
         Observable.concat(network, location)
+                .take(1)
                 .subscribe(new Consumer<Bitmap>() {
                     @Override
                     public void accept(Bitmap bitmap) throws Exception {
