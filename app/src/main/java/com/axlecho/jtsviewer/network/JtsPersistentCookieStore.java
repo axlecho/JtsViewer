@@ -5,6 +5,10 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.axlecho.jtsviewer.untils.JtsViewerLog;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -55,35 +59,25 @@ public class JtsPersistentCookieStore {
         return cookie.name() + "@" + cookie.domain();
     }
 
-    public void put(HttpUrl url,List<Cookie> cookies) {
-        for(Cookie cookie: cookies) {
-            put(url,cookie);
+    public void put(HttpUrl url, List<Cookie> cookies) {
+        for (Cookie cookie : cookies) {
+            put(url, cookie);
         }
     }
 
     public void put(HttpUrl url, Cookie cookie) {
         String name = getCookieToken(cookie);
-
-        if (cookies.get(url.host()) == null) {
-            return;
+        //将cookies缓存到内存中
+        if (!cookies.containsKey(url.host())) {
+            cookies.put(url.host(), new ConcurrentHashMap<String, Cookie>());
         }
+        cookies.get(url.host()).put(name, cookie);
 
-        //将cookies缓存到内存中 如果缓存过期 就重置此cookie
-        if (!cookie.persistent()) {
-            if (!cookies.containsKey(url.host())) {
-                cookies.put(url.host(), new ConcurrentHashMap<String, Cookie>());
-            }
-            cookies.get(url.host()).put(name, cookie);
-        } else {
-            if (cookies.containsKey(url.host())) {
-                cookies.get(url.host()).remove(name);
-            }
-        }
         //讲cookies持久化到本地
-        SharedPreferences.Editor prefsWriter = cookiePrefs.edit();
-        prefsWriter.putString(url.host(), TextUtils.join(",", cookies.get(url.host()).keySet()));
-        prefsWriter.putString(name, encodeCookie(new SerializableOkHttpCookies(cookie)));
-        prefsWriter.apply();
+         SharedPreferences.Editor prefsWriter = cookiePrefs.edit();
+         prefsWriter.putString(url.host(), TextUtils.join(",", cookies.get(url.host()).keySet()));
+         prefsWriter.putString(name, encodeCookie(new SerializableOkHttpCookies(cookie)));
+         prefsWriter.apply();
     }
 
     public List<Cookie> get(HttpUrl url) {
@@ -129,6 +123,10 @@ public class JtsPersistentCookieStore {
         return ret;
     }
 
+    public void dump() {
+        Gson gson = new GsonBuilder().enableComplexMapKeySerialization().create();
+        JtsViewerLog.d(TAG, gson.toJson(cookies));
+    }
 
     protected String encodeCookie(SerializableOkHttpCookies cookie) {
         if (cookie == null)
