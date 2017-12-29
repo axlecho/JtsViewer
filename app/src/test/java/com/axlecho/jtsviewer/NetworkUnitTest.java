@@ -85,7 +85,7 @@ public class NetworkUnitTest {
 
     @Test
     public void testLogin() throws Exception {
-        String cookies = server.login("6b3db232", "http://www.jitashe.org/", "d39", "123456789", 2592000)
+        String cookies = server.login("d39", "123456789")
                 .blockingFirst();
 
         MatcherAssert.assertThat("login cookie should not be null", !TextUtils.isEmpty(cookies));
@@ -93,7 +93,7 @@ public class NetworkUnitTest {
 
     @Test
     public void testPostCommentWithLogin() {
-        server.login("6b3db232", "http://www.jitashe.org/", "d39", "123456789", 2592000).blockingSubscribe();
+        server.login("d39", "123456789").blockingSubscribe();
         JtsTabDetailModule detail = server.getDetail(24285).blockingFirst();
         String result = server.postComment(detail.fid, 24285, "66666666666666666666", detail.formhash).blockingFirst();
         MatcherAssert.assertThat(result.contains("没有权限"), is(false));

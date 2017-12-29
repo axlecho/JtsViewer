@@ -41,7 +41,7 @@
 
         <activity
             android:name=".activity.login.JtsLoginActivity"
-            android:label="@string/title_history"
+            android:label="@string/title_login"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity

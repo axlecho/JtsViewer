@@ -117,7 +117,10 @@ public class JtsServer {
         return schedulers.switchSchedulers(o);
     }
 
-    public Observable<String> login(String hash, String referer, String username, String password, long cookietime) {
+    public Observable<String> login(String username, String password) {
+        String hash = "6b3db232";
+        String referer = JtsConf.DESKTOP_HOST_URL;
+        long cookietime = 2592000;
         Observable<String> o = service.login(hash, referer, username, password, cookietime).map(new JtsParseLoginFunction());
         return schedulers.switchSchedulers(o);
     }

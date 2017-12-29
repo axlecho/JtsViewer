@@ -7,6 +7,7 @@
     <string name="action_refresh">Refresh</string>
     <string name="title_history">History</string>
     <string name="title_home">Home</string>
+    <string name="title_login">Login</string>
     <string name="title_communicate">Communicate</string>
     <string name="action_share">Share</string>
     <string name="unlogin_tip">Please login</string>
