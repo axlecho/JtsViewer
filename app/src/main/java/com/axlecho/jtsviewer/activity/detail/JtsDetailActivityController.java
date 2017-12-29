@@ -1,4 +1,4 @@
-package com.axlecho.jtsviewer.activity;
+package com.axlecho.jtsviewer.activity.detail;
 
 import android.content.Intent;
 import android.net.Uri;

@@ -1,4 +1,4 @@
-package com.axlecho.jtsviewer.activity;
+package com.axlecho.jtsviewer.activity.detail;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
