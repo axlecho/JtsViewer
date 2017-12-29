@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
+import com.axlecho.jtsviewer.module.JtsUserModule;
 import com.axlecho.jtsviewer.network.JtsSchedulers;
 import com.axlecho.jtsviewer.network.JtsSearchHelper;
 import com.axlecho.jtsviewer.network.JtsServer;
@@ -91,13 +92,32 @@ public class NetworkUnitTest {
         MatcherAssert.assertThat("login cookie should not be null", !TextUtils.isEmpty(cookies));
     }
 
-    @Test
+    // @Test
     public void testPostCommentWithLogin() {
         server.login("d39", "123456789").blockingSubscribe();
         JtsTabDetailModule detail = server.getDetail(24285).blockingFirst();
         String result = server.postComment(detail.fid, 24285, "66666666666666666666", detail.formhash).blockingFirst();
         MatcherAssert.assertThat(result.contains("没有权限"), is(false));
     }
+
+    @Test
+    public void testGetUserInfo() {
+        server.login("d39", "123456789").blockingSubscribe();
+        JtsUserModule user = server.getUserInfo().blockingFirst();
+        System.out.println(user);
+        MatcherAssert.assertThat("check uid failed", user.uid, is(556355L));
+        MatcherAssert.assertThat("check username failed", user.userName, is("d39"));
+        MatcherAssert.assertThat("avatar is null", !TextUtils.isEmpty(user.avatarUrl));
+    }
+
+    @Test
+    public void testGetUserInfoWithoutLogin() {
+        JtsUserModule user = server.getUserInfo().blockingFirst();
+        System.out.println(user);
+        MatcherAssert.assertThat("check uid failed", user.uid, is(0L));
+        MatcherAssert.assertThat("check username failed", TextUtils.isEmpty(user.userName));
+    }
+
 
     private class MockSchedulers extends JtsSchedulers {
         @Override

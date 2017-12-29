@@ -6,31 +6,24 @@ import com.axlecho.jtsviewer.action.parser.JtsParseLoginFunction;
 import com.axlecho.jtsviewer.action.parser.JtsParseSearchKeyConsumer;
 import com.axlecho.jtsviewer.action.parser.JtsParseTabDetailFunction;
 import com.axlecho.jtsviewer.action.parser.JtsParseTabListFunction;
+import com.axlecho.jtsviewer.action.parser.JtsParseUserInfoFunction;
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
+import com.axlecho.jtsviewer.module.JtsUserModule;
 import com.axlecho.jtsviewer.untils.JtsConf;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
-import okio.Buffer;
-import okio.BufferedSource;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
@@ -122,6 +115,11 @@ public class JtsServer {
         String referer = JtsConf.DESKTOP_HOST_URL;
         long cookietime = 2592000;
         Observable<String> o = service.login(hash, referer, username, password, cookietime).map(new JtsParseLoginFunction());
+        return schedulers.switchSchedulers(o);
+    }
+
+    public Observable<JtsUserModule> getUserInfo() {
+        Observable<JtsUserModule> o = service.index().map(new JtsParseUserInfoFunction(context));
         return schedulers.switchSchedulers(o);
     }
 

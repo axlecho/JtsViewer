@@ -8,6 +8,7 @@ import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.JtsThreadCommentModule;
 import com.axlecho.jtsviewer.module.JtsThreadModule;
+import com.axlecho.jtsviewer.module.JtsUserModule;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 import com.axlecho.sakura.utils.SakuraTextUtils;
@@ -22,6 +23,11 @@ import java.util.Iterator;
 import java.util.List;
 
 public class JtsPageParser {
+    private String UID_URL_PATTERN = "(?<=discuz_uid = ')\\d+";
+    private String USER_NAME_PATTERN = "(?<=title=\"访问我的空间\">).*?(?=</a>)";
+    private String USER_IMAGE_PREFIX = "http://www.jitashe.org/uc_server/avatar.php?uid=";
+
+
     private static final String TAG = JtsPageParser.class.getSimpleName();
     private String html;
     private Context context;
@@ -44,6 +50,21 @@ public class JtsPageParser {
 
     public void setContent(String html) {
         this.html = html;
+    }
+
+    public JtsUserModule parserUserInfo() {
+        JtsUserModule user = new JtsUserModule();
+        String uidStr = JtsTextUnitls.findByPatternOnce(html, UID_URL_PATTERN);
+        if (uidStr != null) {
+            user.uid = Long.parseLong(uidStr);
+        } else {
+            user.uid = -1;
+        }
+        user.userName = JtsTextUnitls.findByPatternOnce(html, USER_NAME_PATTERN);
+        if (user.uid != -1) {
+            user.avatarUrl = USER_IMAGE_PREFIX + user.uid;
+        }
+        return user;
     }
 
     public List<JtsTabInfoModel> parserTabList() {
@@ -87,7 +108,7 @@ public class JtsPageParser {
             model.time = e.select("span[title*=发布时间]").first().nextElementSibling().text();
         } catch (NullPointerException ex) {
             // ex.printStackTrace();
-            model.time = context.getResources().getString( R.string.unknown_time);
+            model.time = context.getResources().getString(R.string.unknown_time);
         }
 
         if (TextUtils.isEmpty(model.avatar)) {
@@ -112,7 +133,7 @@ public class JtsPageParser {
         JtsTabDetailModule detail = new JtsTabDetailModule();
         detail.raw = html;
         detail.formhash = parserFormHash();
-        detail.fid = Integer.parseInt(JtsTextUnitls.findByPatternOnce(html,"(?<=fid=)\\d+"));
+        detail.fid = Integer.parseInt(JtsTextUnitls.findByPatternOnce(html, "(?<=fid=)\\d+"));
         detail.threadList = parserThread();
         return detail;
     }
@@ -122,6 +143,7 @@ public class JtsPageParser {
         Document doc = Jsoup.parse(html);
         return doc.select("input[name=formhash]").first().attr("value");
     }
+
     public List<JtsThreadModule> parserThread() {
         if (html == null) return null;
 

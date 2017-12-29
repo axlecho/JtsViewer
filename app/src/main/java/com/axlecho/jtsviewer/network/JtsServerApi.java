@@ -6,7 +6,6 @@ import retrofit2.Response;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -14,6 +13,9 @@ import retrofit2.http.Query;
 public interface JtsServerApi {
     String TAG = JtsServerApi.class.getSimpleName();
     String USER_AGENT = "Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Mobile Safari/537.36";
+
+    @GET("/")
+    Observable<ResponseBody> index();
 
     @GET("/tab/{id}")
     Observable<ResponseBody> getDetail(@Path("id") long id);
