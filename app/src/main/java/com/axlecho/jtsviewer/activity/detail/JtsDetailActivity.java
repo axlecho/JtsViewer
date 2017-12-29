@@ -1,11 +1,13 @@
 package com.axlecho.jtsviewer.activity.detail;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 
 import com.axlecho.jtsviewer.JtsApplication;
 import com.axlecho.jtsviewer.R;
+import com.axlecho.jtsviewer.widget.JtsEdittext;
 import com.axlecho.jtsviewer.widget.RecycleViewDivider;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -27,7 +30,7 @@ public class JtsDetailActivity extends AppCompatActivity {
     public TextView author;
     public TextView type;
 
-    public EditText comment;
+    public JtsEdittext comment;
 
     public PopupMenu popupMenu;
     public View otherActions;
@@ -37,6 +40,7 @@ public class JtsDetailActivity extends AppCompatActivity {
     private JtsDetailActivityController controller;
 
     private Tracker mTracker;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +55,7 @@ public class JtsDetailActivity extends AppCompatActivity {
         title = (TextView) findViewById(R.id.tab_detail_title);
         author = (TextView) findViewById(R.id.tab_detail_author);
         type = (TextView) findViewById(R.id.tab_detail_type);
-        comment = (EditText) findViewById(R.id.comment_edittext);
+        comment = (JtsEdittext) findViewById(R.id.comment_edittext);
         otherActions = findViewById(R.id.tab_detail_other_actions);
 
         this.controller = JtsDetailActivityController.getInstance();
@@ -86,7 +90,7 @@ public class JtsDetailActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(controller.processBackPressed()) {
+        if (controller.processBackPressed()) {
             super.onBackPressed();
         }
     }

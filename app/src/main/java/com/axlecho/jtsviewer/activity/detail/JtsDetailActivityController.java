@@ -12,6 +12,7 @@ import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.action.tab.JtsParseTabTypeAction;
 import com.axlecho.jtsviewer.action.ui.JtsStopVideoAction;
+import com.axlecho.jtsviewer.activity.login.JtsLoginActivity;
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.JtsThreadModule;
@@ -21,6 +22,7 @@ import com.axlecho.jtsviewer.network.JtsServer;
 import com.axlecho.jtsviewer.untils.JtsConf;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
+import com.axlecho.jtsviewer.widget.JtsEdittext;
 import com.axlecho.sakura.SakuraPlayerView;
 import com.bumptech.glide.Glide;
 import com.hippo.refreshlayout.RefreshLayout;
@@ -121,6 +123,13 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
                 activity.initPopMenu();
                 initPopMenuAction();
                 activity.popMenu();
+            }
+        });
+
+        activity.comment.setCompoundDrawableClickListener(new JtsEdittext.OnCompoundDrawableClickListener() {
+            @Override
+            public void onClick() {
+                JtsViewerLog.d(TAG, "send msg");
             }
         });
     }
