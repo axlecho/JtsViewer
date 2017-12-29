@@ -2,6 +2,7 @@ package com.axlecho.jtsviewer.activity.main;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -30,7 +31,6 @@ public class MainActivity extends AppCompatActivity
     public RefreshLayout refreshLayout;
     public Toolbar toolbar;
     private MainActivityController controller;
-
 
 
     private Tracker mTracker;
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity
         refreshLayout.setOnRefreshListener(this);
 
         this.controller.loadDefaultScene();
-        this.controller.loadUserInfo();
+
 
         JtsApplication application = (JtsApplication) getApplication();
         mTracker = application.getDefaultTracker();
@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         mTracker.setScreenName(controller.getScene().getName());
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        this.controller.loadUserInfo();
         super.onResume();
     }
 
@@ -146,6 +147,15 @@ public class MainActivity extends AppCompatActivity
 
     public void setTitle(String title) {
         toolbar.setTitle(title);
+    }
+
+    public void showError(String msg) {
+        Snackbar.make(this.getWindow().getDecorView(), msg, Snackbar.LENGTH_LONG).show();
+    }
+
+    public void closeDrawer() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
     }
 
     @Override

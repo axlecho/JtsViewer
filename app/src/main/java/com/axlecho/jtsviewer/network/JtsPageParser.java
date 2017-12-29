@@ -25,7 +25,7 @@ import java.util.List;
 public class JtsPageParser {
     private String UID_URL_PATTERN = "(?<=discuz_uid = ')\\d+";
     private String USER_NAME_PATTERN = "(?<=title=\"访问我的空间\">).*?(?=</a>)";
-    private String USER_IMAGE_PREFIX = "http://www.jitashe.org/uc_server/avatar.php?uid=";
+    private String USER_IMAGE_PATTERN = "http://att.jitashe.org/data/attachment/avatar/.*?.jpg";
 
 
     private static final String TAG = JtsPageParser.class.getSimpleName();
@@ -61,9 +61,7 @@ public class JtsPageParser {
             user.uid = -1;
         }
         user.userName = JtsTextUnitls.findByPatternOnce(html, USER_NAME_PATTERN);
-        if (user.uid != -1) {
-            user.avatarUrl = USER_IMAGE_PREFIX + user.uid;
-        }
+        user.avatarUrl = JtsTextUnitls.findByPatternOnce(html, USER_IMAGE_PATTERN);
         return user;
     }
 

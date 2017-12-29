@@ -18,9 +18,11 @@ import com.axlecho.jtsviewer.action.user.JtsShowLoginAction;
 import com.axlecho.jtsviewer.activity.JtsDetailActivity;
 import com.axlecho.jtsviewer.activity.JtsSettingsActivity;
 import com.axlecho.jtsviewer.activity.cache.HistoryActivity;
+import com.axlecho.jtsviewer.activity.login.JtsLoginActivity;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.JtsUserModule;
 import com.axlecho.jtsviewer.network.JtsNetworkManager;
+import com.axlecho.jtsviewer.network.JtsServer;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 import com.bumptech.glide.Glide;
 
@@ -43,10 +45,13 @@ public class MainActivityController {
         @Override
         public void accept(Throwable throwable) throws Exception {
             JtsViewerLog.e(TAG, throwable.getMessage());
-            Snackbar.make(activity.getWindow().getDecorView(), throwable.getMessage(), Snackbar.LENGTH_LONG).show();
+            processShowError(throwable.getMessage());
         }
     };
 
+    private void processShowError(String msg) {
+        activity.showError(msg);
+    }
 
     public static MainActivityController getInstance() {
         if (instance == null) {
@@ -108,11 +113,19 @@ public class MainActivityController {
     }
 
     public void loadUserInfo() {
-        JtsShowLoginAction action = new JtsShowLoginAction();
-        action.setKey(JtsBaseAction.CONTEXT_KEY, activity);
-        View headerView = activity.navigationView.getHeaderView(0);
-        ImageView drawerUserInfoImageView = (ImageView) headerView.findViewById(R.id.nav_user_imageView);
-        drawerUserInfoImageView.setOnClickListener(action);
+        JtsServer.getSingleton(activity).getUserInfo().subscribe(new Consumer<JtsUserModule>() {
+            @Override
+            public void accept(JtsUserModule user) throws Exception {
+                if (user.uid == 0) {
+                    // processShowError(activity.getResources().getString(R.string.unlogin_tip));
+                    bindUserNotLoadAction();
+                    return;
+                }
+
+                processLoadUserInfo(user);
+                bindUserNotLoadAction();
+            }
+        }, errorHandler);
     }
 
     public void processLoadUserInfo(final JtsUserModule user) {
@@ -137,19 +150,22 @@ public class MainActivityController {
 
     }
 
-    public void processLogin() {
-        DrawerLayout drawer = (DrawerLayout) activity.findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        JtsShowLoginAction action = new JtsShowLoginAction();
-        action.setKey(JtsBaseAction.CONTEXT_KEY, activity);
-        action.processAction();
+    public void bindUserNotLoadAction() {
+        View headerView = activity.navigationView.getHeaderView(0);
+        ImageView drawerUserInfoImageView = (ImageView) headerView.findViewById(R.id.nav_user_imageView);
+        drawerUserInfoImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                processLogin();
+            }
+        });
     }
 
-    public void processShowLogin() {
-        JtsShowLoginAction action = new JtsShowLoginAction();
-        action.setKey(JtsBaseAction.CONTEXT_KEY, activity);
-        Snackbar.make(activity.recyclerView, activity.getResources().getString(R.string.unlogin_tip_long), Snackbar.LENGTH_LONG)
-                .setAction(activity.getResources().getString(R.string.login), action).show();
+    public void processLogin() {
+        activity.closeDrawer();
+        Intent intent = new Intent();
+        intent.setClass(activity, JtsLoginActivity.class);
+        activity.startActivity(intent);
     }
 
     public void clearData() {

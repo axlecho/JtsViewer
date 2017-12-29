@@ -12,8 +12,6 @@ public class JtsShowLoginAction extends JtsBaseAction {
     @Override
     public void processAction() {
         Context context = (Context) getKey(JtsBaseAction.CONTEXT_KEY);
-        Intent intent = new Intent();
-        intent.setClass(context, JtsLoginActivity.class);
-        context.startActivity(intent);
+
     }
 }
