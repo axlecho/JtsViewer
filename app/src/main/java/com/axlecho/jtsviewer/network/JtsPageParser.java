@@ -148,7 +148,7 @@ public class JtsPageParser {
         module.time = e.select("em:contains(发表于)").first().text();
         module.message = e.select("td.t_f").first().html();
         module.floor = e.select("a[onclick*=setCopy]").first().text();
-        Elements comments = e.select("dl.cl");
+        Elements comments = e.select("div.cmtl");
         Iterator it = comments.iterator();
         while (it.hasNext()) {
             Element c = (Element) it.next();
