@@ -7,6 +7,7 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,6 +26,8 @@ public class JtsDetailActivity extends AppCompatActivity {
     public TextView title;
     public TextView author;
     public TextView type;
+
+    public EditText comment;
 
     public PopupMenu popupMenu;
     public View otherActions;
@@ -48,6 +51,7 @@ public class JtsDetailActivity extends AppCompatActivity {
         title = (TextView) findViewById(R.id.tab_detail_title);
         author = (TextView) findViewById(R.id.tab_detail_author);
         type = (TextView) findViewById(R.id.tab_detail_type);
+        comment = (EditText) findViewById(R.id.comment_edittext);
         otherActions = findViewById(R.id.tab_detail_other_actions);
 
         this.controller = JtsDetailActivityController.getInstance();

@@ -33,6 +33,8 @@
 
     <string name="login_usename_hint">用户名</string>
     <string name="login_password_hint">密码</string>
+    <string name="detail_comment_hint">说点什么吧…</string>
+
     <!-- Example settings for Data & Sync -->
     <string name="pref_header_about">关于</string>
     <string name="pref_aboutme_key">author</string>

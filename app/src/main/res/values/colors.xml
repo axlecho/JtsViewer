@@ -14,6 +14,17 @@
     <color name="nakabeni">#DB4D6D</color>
     <color name="karakurenai">#D0104C</color>
 
+    <color name="shironeri">#FCFAF2</color>
+    <color name="gofun">#FFFFFB</color>
+    <color name="shironezumi">#BDC0BA</color>
+    <color name="namari">#787878</color>
+    <color name="hai">#828282</color>
+    <color name="keshizumi">#434343</color>
+    <color name="sumi">#1C1C1C</color>
+    <color name="kuro">#080808</color>
+    <color name="ro">#0C0C0C</color>
+
+
     <color name="light_grey">#e8e8e8</color>
     <color name="white">#FFFFFF</color>
     <color name="title_black">#333333</color>
