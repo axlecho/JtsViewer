@@ -1,6 +1,7 @@
 package com.axlecho.jtsviewer;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
@@ -84,9 +85,10 @@ public class NetworkUnitTest {
 
     @Test
     public void testLogin() throws Exception {
-        server.login("6b3db232", "http://www.jitashe.org/", "d39", "123456789", 2592000)
-                .blockingSubscribe();
-        server.getDetail(24285).blockingSubscribe();
+        String cookies = server.login("6b3db232", "http://www.jitashe.org/", "d39", "123456789", 2592000)
+                .blockingFirst();
+
+        MatcherAssert.assertThat("login cookie should not be null", !TextUtils.isEmpty(cookies));
     }
 
     @Test
