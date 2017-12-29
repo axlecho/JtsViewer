@@ -58,7 +58,7 @@ public class NetworkUnitTest {
     @Test
     public void testDaily() {
         List<JtsTabInfoModel> result = server.getHotTab(1).blockingFirst();
-        MatcherAssert.assertThat(result.size(), is(10));
+        MatcherAssert.assertThat(result.size(), is(50));
     }
 
     @Test
@@ -70,14 +70,14 @@ public class NetworkUnitTest {
     @Test
     public void testSearch() {
         List<JtsTabInfoModel> result = server.search("love", 1).blockingFirst();
-        MatcherAssert.assertThat(result.size(), is(10));
+        MatcherAssert.assertThat(result.size(), is(20));
     }
 
     @Test
     public void testSearchEx() {
         server.search("love", 1).blockingSubscribe();
         List<JtsTabInfoModel> result = server.search("love", 2).blockingFirst();
-        MatcherAssert.assertThat(result.size(), is(50));
+        MatcherAssert.assertThat(result.size(), is(20));
         JtsSearchHelper.getSingleton().dump();
     }
 
