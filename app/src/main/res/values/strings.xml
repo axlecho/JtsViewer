@@ -51,6 +51,8 @@
     <string name="pref_statistics_title">statistics</string>
     <string name="pref_statistics">todo</string>
     <string name="add_short_cut">add short to home screen</string>
-    s
+
     <string name="error_comment_null">comment data could not be null</string>
+    <string name="comment_success"> comment success</string>
+    <string name="comment_failed">comment failed</string>
 </resources>

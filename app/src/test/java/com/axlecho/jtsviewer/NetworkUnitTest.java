@@ -66,7 +66,10 @@ public class NetworkUnitTest {
 
     @Test
     public void testArtist() {
-        List<JtsTabInfoModel> result = server.getArtist(19301).blockingFirst();
+        List<JtsTabInfoModel> result = server.getArtist(19301,1).blockingFirst();
+        MatcherAssert.assertThat(result.size(), is(20));
+
+        result = server.getArtist(19301,2).blockingFirst();
         MatcherAssert.assertThat(result.size(), is(20));
     }
 

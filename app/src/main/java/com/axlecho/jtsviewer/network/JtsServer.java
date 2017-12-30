@@ -95,8 +95,8 @@ public class JtsServer {
         return schedulers.switchSchedulers(o);
     }
 
-    public Observable<List<JtsTabInfoModel>> getArtist(int id) {
-        Observable<List<JtsTabInfoModel>> o = service.getArtist(id).map(new JtsParseTabListFunction(context));
+    public Observable<List<JtsTabInfoModel>> getArtist(int id,int page) {
+        Observable<List<JtsTabInfoModel>> o = service.getArtist(id,page).map(new JtsParseTabListFunction(context));
         return schedulers.switchSchedulers(o);
     }
 

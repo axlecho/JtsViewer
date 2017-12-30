@@ -26,8 +26,8 @@ public interface JtsServerApi {
     @GET("/guide/hottab/{page}")
     Observable<ResponseBody> getHotTab(@Path("page") int page);
 
-    @GET("/artist/{id}")
-    Observable<ResponseBody> getArtist(@Path("id") int id);
+    @GET("/artist/{id}/{page}")
+    Observable<ResponseBody> getArtist(@Path("id") int id,@Path("page")int page);
 
     @GET("/search/tab/{keyword}")
     Observable<ResponseBody> search(@Path("keyword") String keyword);

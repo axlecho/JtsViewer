@@ -194,7 +194,7 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(String s) throws Exception {
-                        processPostCommentSucceed();
+                        processPostComment(s);
                     }
                 }, errorHandler);
     }
@@ -276,10 +276,18 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
         return true;
     }
 
-    public void processPostCommentSucceed() {
-        activity.comment.setText("");
+    public void processPostComment(String result) {
         JtsToolUnitls.hideSoftInput(activity, activity.comment);
-        getTabDetail();
+
+        if(result.equals(JtsConf.STATUS_SUCCESSED)) {
+            activity.comment.setText("");
+            getTabDetail();
+            activity.showError(R.string.comment_success);
+        } else {
+            activity.showError(R.string.comment_failed);
+        }
+
+
     }
 
     @Override

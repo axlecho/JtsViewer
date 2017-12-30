@@ -54,4 +54,6 @@
     <string name="add_short_cut">已经添加快捷方式</string>
 
     <string name="error_comment_null">评论内容不能为空</string>
+    <string name="comment_success">评论成功</string>
+    <string name="comment_failed">评论失败</string>
 </resources>
