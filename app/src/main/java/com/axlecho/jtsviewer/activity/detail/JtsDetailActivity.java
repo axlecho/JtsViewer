@@ -2,6 +2,7 @@ package com.axlecho.jtsviewer.activity.detail;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
@@ -103,6 +104,14 @@ public class JtsDetailActivity extends AppCompatActivity {
         popupMenu = new PopupMenu(this, otherActions, Gravity.TOP);
         popupMenu.getMenuInflater().inflate(R.menu.scene_tab_detail, popupMenu.getMenu());
         JtsDetailActivityController.getInstance().initPopMenuAction();
+    }
+
+    public void showError(String msg) {
+        Snackbar.make(getWindow().getDecorView(), msg, Snackbar.LENGTH_LONG).show();
+    }
+
+    public void showError(int resId) {
+        Snackbar.make(getWindow().getDecorView(), resId, Snackbar.LENGTH_LONG).show();
     }
 
     public void popMenu() {

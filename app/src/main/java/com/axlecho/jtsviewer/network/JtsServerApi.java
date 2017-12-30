@@ -46,7 +46,7 @@ public interface JtsServerApi {
     @FormUrlEncoded
     @POST("/forum.php?mod=post&action=reply&extra=page%3D1&replysubmit=yes&infloat=yes&handlekey=fastpost&inajax=1")
     Observable<Response<ResponseBody>> postComment(@Query("fid") int fid,
-                                                   @Query("tid") int tid,
+                                                   @Query("tid") long tid,
                                                    @Field("message") String message,
                                                    @Field("posttime") long posttime,
                                                    @Field("formhash") String formhash,

@@ -123,7 +123,7 @@ public class JtsServer {
         return schedulers.switchSchedulers(o);
     }
 
-    public Observable<String> postComment(int fid, int tid, String message, String formhash) {
+    public Observable<String> postComment(int fid, long tid, String message, String formhash) {
         Observable<String> o = service.postComment(fid, tid, message, System.currentTimeMillis(), formhash, 1, "").map(new Function<retrofit2.Response<ResponseBody>, String>() {
             @Override
             public String apply(retrofit2.Response<ResponseBody> responseBodyResponse) throws Exception {

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.PopupMenu;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.axlecho.jtsviewer.network.JtsPageParser;
 import com.axlecho.jtsviewer.network.JtsServer;
 import com.axlecho.jtsviewer.untils.JtsConf;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
+import com.axlecho.jtsviewer.untils.JtsToolUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 import com.axlecho.jtsviewer.widget.JtsEdittext;
 import com.axlecho.sakura.SakuraPlayerView;
@@ -59,7 +61,7 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
     private Consumer<Throwable> errorHandler = new Consumer<Throwable>() {
         @Override
         public void accept(Throwable throwable) throws Exception {
-            Snackbar.make(activity.getWindow().getDecorView(), throwable.getMessage(), Snackbar.LENGTH_LONG).show();
+            activity.showError(throwable.getMessage());
         }
     };
 
@@ -103,6 +105,12 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
         }
 
         adapter.addData(detail.threadList);
+        activity.comment.setCompoundDrawableClickListener(new JtsEdittext.OnCompoundDrawableClickListener() {
+            @Override
+            public void onClick() {
+                sendComment();
+            }
+        });
         this.stopLoadingProgressBar();
     }
 
@@ -126,12 +134,7 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
             }
         });
 
-        activity.comment.setCompoundDrawableClickListener(new JtsEdittext.OnCompoundDrawableClickListener() {
-            @Override
-            public void onClick() {
-                JtsViewerLog.d(TAG, "send msg");
-            }
-        });
+
     }
 
     public void detachToActivity() {
@@ -177,6 +180,23 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
         action.setKey(JtsBaseAction.CONTEXT_KEY, activity);
         action.setKey(JtsParseTabTypeAction.GID_KEY, JtsTextUnitls.getTabKeyFromUrl(info.url));
         return action;
+    }
+
+    public void sendComment() {
+        String comment = activity.comment.getText().toString();
+        if (TextUtils.isEmpty(comment)) {
+
+            activity.showError(R.string.error_comment_null);
+            return;
+        }
+
+        JtsServer.getSingleton(activity).postComment(detail.fid, JtsTextUnitls.getTabKeyFromUrl(info.url), comment, detail.formhash)
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Exception {
+                        processPostCommentSucceed();
+                    }
+                }, errorHandler);
     }
 
     private void loadMoreThread() {
@@ -254,6 +274,12 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
             return false;
         }
         return true;
+    }
+
+    public void processPostCommentSucceed() {
+        activity.comment.setText("");
+        JtsToolUnitls.hideSoftInput(activity, activity.comment);
+        getTabDetail();
     }
 
     @Override
