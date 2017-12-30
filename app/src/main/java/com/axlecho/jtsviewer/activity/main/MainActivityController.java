@@ -231,6 +231,16 @@ public class MainActivityController {
         this.currentScene.refresh();
     }
 
+    public void switchSenceToAcg() {
+        this.currentScene = new JtsArtistScene(activity, 19301, "Acg");
+        this.currentScene.refresh();
+    }
+
+    public void switchSenceToLearn() {
+        this.currentScene = new JtsArtistScene(activity, 101941, "Learn");
+        this.currentScene.refresh();
+    }
+
     public Consumer<Throwable> getErrorHandler() {
         return errorHandler;
     }

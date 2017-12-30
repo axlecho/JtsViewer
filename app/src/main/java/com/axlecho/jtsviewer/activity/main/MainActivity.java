@@ -124,6 +124,10 @@ public class MainActivity extends AppCompatActivity
             this.controller.switchSenceToDaily();
         } else if (id == R.id.nav_hot) {
             this.controller.switchSenceToHot();
+        } else if (id == R.id.nav_acg) {
+            this.controller.switchSenceToAcg();
+        } else if (id == R.id.nav_learn) {
+            this.controller.switchSenceToLearn();
         } else if (id == R.id.nav_history) {
             this.controller.toHistory();
         } else if (id == R.id.nav_setting) {
