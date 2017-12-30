@@ -23,6 +23,7 @@
         android:id="@+id/thread_item_avatar"
         android:layout_width="@dimen/item_icon_size_normal"
         android:layout_height="@dimen/item_icon_size_normal"
+        android:layout_marginStart="@dimen/activity_margin"
         android:scaleType="fitCenter"
         android:src="@mipmap/ic_launcher"
         app:layout_constraintLeft_toLeftOf="parent"
