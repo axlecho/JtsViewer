@@ -9,6 +9,7 @@ import com.axlecho.jtsviewer.module.JtsUserModule;
 import com.axlecho.jtsviewer.network.JtsSchedulers;
 import com.axlecho.jtsviewer.network.JtsSearchHelper;
 import com.axlecho.jtsviewer.network.JtsServer;
+import com.axlecho.jtsviewer.untils.JtsConf;
 
 import org.hamcrest.MatcherAssert;
 import org.junit.Before;
@@ -92,12 +93,16 @@ public class NetworkUnitTest {
         MatcherAssert.assertThat("login cookie should not be null", !TextUtils.isEmpty(cookies));
     }
 
-    // @Test
-    public void testPostCommentWithLogin() {
+    @Test
+    public void testPostComment() {
+        JtsTabDetailModule detail = server.getDetail(24285L).blockingFirst();
+        String result = server.postComment(detail.fid, 24285, "谢谢楼主分享", detail.formhash).blockingFirst();
+        MatcherAssert.assertThat("comment without login", result.equals(JtsConf.STATUS_FAILED));
+
         server.login("d39", "123456789").blockingSubscribe();
-        JtsTabDetailModule detail = server.getDetail(24285).blockingFirst();
-        String result = server.postComment(detail.fid, 24285, "66666666666666666666", detail.formhash).blockingFirst();
-        MatcherAssert.assertThat(result.contains("没有权限"), is(false));
+        detail = server.getDetail(24285L).blockingFirst();
+        result = server.postComment(detail.fid, 24285, "谢谢楼主分享", detail.formhash).blockingFirst();
+        MatcherAssert.assertThat("comment with login", result.equals(JtsConf.STATUS_SUCCESSED));
     }
 
     @Test

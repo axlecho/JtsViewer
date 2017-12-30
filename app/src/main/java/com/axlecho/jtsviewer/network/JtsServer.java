@@ -2,6 +2,7 @@ package com.axlecho.jtsviewer.network;
 
 import android.content.Context;
 
+import com.axlecho.jtsviewer.action.parser.JtsParseCommentFunction;
 import com.axlecho.jtsviewer.action.parser.JtsParseLoginFunction;
 import com.axlecho.jtsviewer.action.parser.JtsParseSearchKeyConsumer;
 import com.axlecho.jtsviewer.action.parser.JtsParseTabDetailFunction;
@@ -124,13 +125,8 @@ public class JtsServer {
     }
 
     public Observable<String> postComment(int fid, long tid, String message, String formhash) {
-        Observable<String> o = service.postComment(fid, tid, message, System.currentTimeMillis(), formhash, 1, "").map(new Function<retrofit2.Response<ResponseBody>, String>() {
-            @Override
-            public String apply(retrofit2.Response<ResponseBody> responseBodyResponse) throws Exception {
-                JtsViewerLog.d(TAG, responseBodyResponse.body().string());
-                return "";
-            }
-        });
+        Observable<String> o = service.postComment(fid, tid, message, System.currentTimeMillis(), formhash, 1, "")
+                .map(new JtsParseCommentFunction());
 
         return schedulers.switchSchedulers(o);
     }

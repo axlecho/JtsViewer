@@ -14,4 +14,7 @@ public class JtsConf {
 
     public static final String WORK_SPACE = "JtsViewer";
     public static final String CRASH_PATH = "crash";
+
+    public static final String STATUS_SUCCESSED = "successed";
+    public static final String STATUS_FAILED = "failed";
 }
