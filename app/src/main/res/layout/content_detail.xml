@@ -131,9 +131,8 @@
     <com.axlecho.jtsviewer.widget.JtsEdittext
         android:id="@+id/comment_edittext"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="64dp"
         android:background="@color/colorAccent"
-        android:drawableEnd="@drawable/ic_send"
         android:drawablePadding="4dp"
         android:hint="@string/detail_comment_hint"
         android:maxLines="1"
@@ -145,6 +144,7 @@
         android:textColorHint="@color/shironezumi"
         android:textCursorDrawable="@drawable/cursor_style"
         android:textSize="14sp"
+        android:drawableEnd="@drawable/ic_action_send"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
