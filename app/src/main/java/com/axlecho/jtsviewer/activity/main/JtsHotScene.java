@@ -15,14 +15,9 @@ import io.reactivex.functions.Consumer;
 
 public class JtsHotScene extends BaseScene {
     private static final String TAG = "hot-scene";
-    private int currentPage = 1;
-    private Context context;
-    private MainActivityController controller;
 
     public JtsHotScene(Context context) {
-        this.context = context;
-        controller = MainActivityController.getInstance();
-        controller.getActivity().setTitle("热门");
+        super(context, "热门");
     }
 
     @Override
@@ -32,8 +27,7 @@ public class JtsHotScene extends BaseScene {
 
     @Override
     public void loadMore() {
-        this.currentPage++;
-        controller.startFooterRefreshing();
+        super.loadMore();
         JtsServer.getSingleton(context).getHotTab(currentPage).subscribe(new Consumer<List<JtsTabInfoModel>>() {
             @Override
             public void accept(List<JtsTabInfoModel> jtsTabInfoModels) throws Exception {
@@ -44,8 +38,7 @@ public class JtsHotScene extends BaseScene {
 
     @Override
     public void refresh() {
-        this.currentPage = 1;
-        controller.startHeaderRefreshing();
+        super.refresh();
         JtsServer.getSingleton(context).getHotTab(currentPage).subscribe(new Consumer<List<JtsTabInfoModel>>() {
             @Override
             public void accept(List<JtsTabInfoModel> jtsTabInfoModels) throws Exception {
@@ -54,17 +47,5 @@ public class JtsHotScene extends BaseScene {
         }, controller.getErrorHandler());
     }
 
-    @Override
-    public void processLoadMore(List<JtsTabInfoModel> data) {
-        controller.processShowHome(data);
-        controller.stopFooterRefreshing();
-    }
 
-    @Override
-    public void processRefreah(List<JtsTabInfoModel> data) {
-        controller.clearData();
-        controller.processShowHome(data);
-        controller.stopHeaderRefreshing();
-        controller.stopLoadingProgressBar();
-    }
 }

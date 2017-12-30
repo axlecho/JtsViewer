@@ -1,6 +1,9 @@
 package com.axlecho.jtsviewer.activity.main;
 
+import android.content.Context;
+
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
+import com.axlecho.jtsviewer.untils.JtsViewerLog;
 
 import java.util.List;
 
@@ -10,23 +13,38 @@ import java.util.List;
 
 public abstract class BaseScene {
 
-    private int searchKey = -1;
+    protected MainActivityController controller;
+    protected Context context;
+    protected int currentPage = 1;
 
-    public abstract void loadMore();
+    public BaseScene(Context context, String title) {
+        this.context = context;
+        controller = MainActivityController.getInstance();
+        controller.getActivity().setTitle(title);
+    }
 
-    public abstract void refresh();
+    public void loadMore() {
+        this.currentPage++;
+        JtsViewerLog.d(getName(), "load page " + currentPage);
+        controller.startFooterRefreshing();
+    }
 
-    public abstract void processLoadMore(List<JtsTabInfoModel> data);
+    public void refresh() {
+        this.currentPage = 1;
+        controller.startHeaderRefreshing();
+    }
 
-    public abstract void processRefreah(List<JtsTabInfoModel> data);
+    public void processLoadMore(List<JtsTabInfoModel> data) {
+        controller.processShowHome(data);
+        controller.stopFooterRefreshing();
+    }
+
+    public void processRefreah(List<JtsTabInfoModel> data) {
+        controller.clearData();
+        controller.processShowHome(data);
+        controller.stopHeaderRefreshing();
+        controller.stopLoadingProgressBar();
+    }
 
     public abstract String getName();
-
-    public void setSearchKey(int searchKey) {
-        this.searchKey = searchKey;
-    }
-
-    public int getSearchKey() {
-        return searchKey;
-    }
 }
