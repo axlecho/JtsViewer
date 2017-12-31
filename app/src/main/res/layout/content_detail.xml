@@ -116,7 +116,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
-        app:layout_constraintBottom_toTopOf="@+id/comment_edittext"
+        app:layout_constraintBottom_toTopOf="@+id/comment_layout"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tab_detail_play">
@@ -128,25 +128,41 @@
             android:scrollbars="vertical" />
     </com.hippo.refreshlayout.RefreshLayout>
 
-    <com.axlecho.jtsviewer.widget.JtsEdittext
-        android:id="@+id/comment_edittext"
-        android:layout_width="0dp"
-        android:layout_height="64dp"
-        android:background="@color/colorAccent"
-        android:drawablePadding="4dp"
-        android:hint="@string/detail_comment_hint"
-        android:maxLines="1"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingEnd="@dimen/common_margin_parent_horizontal"
-        android:paddingStart="@dimen/common_margin_parent_horizontal"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:textColor="@color/gofun"
-        android:textColorHint="@color/shironezumi"
-        android:textCursorDrawable="@drawable/cursor_style"
-        android:textSize="14sp"
-        android:drawableEnd="@drawable/ic_action_send"
+    <LinearLayout
+        android:id="@+id/comment_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/main_swip_refresh_layout" />
+        app:layout_constraintTop_toBottomOf="@+id/main_swip_refresh_layout">
+
+        <EditText
+            android:id="@+id/comment_edittext"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null"
+            android:drawablePadding="4dp"
+            android:hint="@string/detail_comment_hint"
+            android:maxLines="1"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingEnd="@dimen/common_margin_parent_horizontal"
+            android:paddingStart="@dimen/common_margin_parent_horizontal"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:textColor="@color/gofun"
+            android:textColorHint="@color/shironezumi"
+            android:textCursorDrawable="@drawable/cursor_style"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/comment_send"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_gravity="bottom"
+            android:padding="16dp"
+            android:src="@drawable/ic_action_send" />
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

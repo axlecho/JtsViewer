@@ -31,7 +31,8 @@ public class JtsDetailActivity extends AppCompatActivity {
     public TextView author;
     public TextView type;
 
-    public JtsEdittext comment;
+    public EditText comment;
+    public ImageView send;
 
     public PopupMenu popupMenu;
     public View otherActions;
@@ -56,7 +57,8 @@ public class JtsDetailActivity extends AppCompatActivity {
         title = (TextView) findViewById(R.id.tab_detail_title);
         author = (TextView) findViewById(R.id.tab_detail_author);
         type = (TextView) findViewById(R.id.tab_detail_type);
-        comment = (JtsEdittext) findViewById(R.id.comment_edittext);
+        comment = (EditText) findViewById(R.id.comment_edittext);
+        send = (ImageView) findViewById(R.id.comment_send);
         otherActions = findViewById(R.id.tab_detail_other_actions);
 
         this.controller = JtsDetailActivityController.getInstance();
@@ -107,11 +109,13 @@ public class JtsDetailActivity extends AppCompatActivity {
     }
 
     public void showError(String msg) {
-        Snackbar.make(getWindow().getDecorView(), msg, Snackbar.LENGTH_LONG).show();
+        View rootView = findViewById(R.id.layout_detail);
+        Snackbar.make(rootView, msg, Snackbar.LENGTH_LONG).show();
     }
 
     public void showError(int resId) {
-        Snackbar.make(getWindow().getDecorView(), resId, Snackbar.LENGTH_LONG).show();
+        View rootView = findViewById(R.id.layout_detail);
+        Snackbar.make(rootView, resId, Snackbar.LENGTH_LONG).show();
     }
 
     public void popMenu() {

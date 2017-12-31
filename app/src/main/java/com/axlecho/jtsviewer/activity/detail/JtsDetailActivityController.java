@@ -105,9 +105,9 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
         }
 
         adapter.addData(detail.threadList);
-        activity.comment.setCompoundDrawableClickListener(new JtsEdittext.OnCompoundDrawableClickListener() {
+        activity.send.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick() {
+            public void onClick(View view) {
                 sendComment();
             }
         });
@@ -279,7 +279,7 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
     public void processPostComment(String result) {
         JtsToolUnitls.hideSoftInput(activity, activity.comment);
 
-        if(result.equals(JtsConf.STATUS_SUCCESSED)) {
+        if (result.equals(JtsConf.STATUS_SUCCESSED)) {
             activity.comment.setText("");
             getTabDetail();
             activity.showError(R.string.comment_success);
