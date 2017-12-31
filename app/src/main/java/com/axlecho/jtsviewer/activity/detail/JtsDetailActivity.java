@@ -1,6 +1,5 @@
 package com.axlecho.jtsviewer.activity.detail;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -8,7 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -16,7 +14,6 @@ import android.widget.TextView;
 
 import com.axlecho.jtsviewer.JtsApplication;
 import com.axlecho.jtsviewer.R;
-import com.axlecho.jtsviewer.widget.JtsEdittext;
 import com.axlecho.jtsviewer.widget.RecycleViewDivider;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
