@@ -260,9 +260,12 @@ public class MainActivityController {
         ActivityCompat.startActivity(activity, intent, options.toBundle());
     }
 
-    public void detachToActivity() {
+    public void detachFromActivity() {
         JtsNetworkManager.getInstance(activity).cancelAll();
         activity = null;
+        adapter = null;
+        currentScene = null;
+        // instance = null;
     }
 
     public void stopLoadingProgressBar() {

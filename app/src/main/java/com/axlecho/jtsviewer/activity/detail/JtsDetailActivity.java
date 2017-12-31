@@ -84,7 +84,7 @@ public class JtsDetailActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        JtsDetailActivityController.getInstance().detachToActivity();
+        JtsDetailActivityController.getInstance().detachFromActivity();
     }
 
 

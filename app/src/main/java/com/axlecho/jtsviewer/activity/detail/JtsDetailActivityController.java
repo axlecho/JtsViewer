@@ -81,8 +81,6 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
 
     public void getTabDetail() {
         this.info = (JtsTabInfoModel) activity.getIntent().getSerializableExtra("tabinfo");
-        // JtsNetworkManager.getInstance(activity).get(JtsConf.DESKTOP_HOST_URL + info.url, createDetailInfoProcessor());
-
         long tabKey = JtsTextUnitls.getTabKeyFromUrl(info.url);
         JtsServer.getSingleton(activity).getDetail(tabKey).subscribe(new Consumer<JtsTabDetailModule>() {
             @Override
@@ -134,7 +132,7 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
 
     }
 
-    public void detachToActivity() {
+    public void detachFromActivity() {
         this.stopVideoPlayer();
         JtsNetworkManager.getInstance(activity).cancelAll();
 
