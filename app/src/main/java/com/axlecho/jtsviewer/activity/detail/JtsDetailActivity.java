@@ -106,12 +106,12 @@ public class JtsDetailActivity extends AppCompatActivity {
     }
 
     public void showError(String msg) {
-        View rootView = findViewById(R.id.layout_detail);
+        View rootView = findViewById(R.id.comment_layout);
         Snackbar.make(rootView, msg, Snackbar.LENGTH_LONG).show();
     }
 
     public void showError(int resId) {
-        View rootView = findViewById(R.id.layout_detail);
+        View rootView = findViewById(R.id.comment_layout);
         Snackbar.make(rootView, resId, Snackbar.LENGTH_LONG).show();
     }
 
