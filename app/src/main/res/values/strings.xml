@@ -13,7 +13,7 @@
     <string name="unlogin_tip">Please login</string>
     <string name="unlogin_tip_long">Please login if download gtp tab</string>
     <string name="search">search</string>
-    <string name="login">login</string>
+
     <string name="reply">reply</string>
     <string name="watch">watch</string>
 
@@ -21,6 +21,9 @@
     <string name="title_new">New</string>
     <string name="title_acg">Acg</string>
     <string name="title_learn">Learn</string>
+
+    <string name="login"><u>login</u></string>
+    <string name="register"><u>register</u></string>
 
     <string name="unknown_uper">吉他爱好者</string>
     <string name="unknown_time">未知</string>

@@ -302,15 +302,10 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
     }
 
     private void openInOtherApp() {
-        Intent intent = new Intent();
-        intent.setAction("android.intent.action.VIEW");
-        Uri content_url = Uri.parse(JtsConf.DESKTOP_HOST_URL + info.url);
-        intent.setData(content_url);
-        activity.startActivity(intent);
-
+        JtsToolUnitls.openUrl(activity, JtsConf.DESKTOP_HOST_URL + info.url);
     }
 
     public void stopLoadingProgressBar() {
-        activity.findViewById(R.id.detail_loading_progressbar).setVisibility(View.GONE);
+        activity.findViewById(R.id.detail_loading_progressbar).setVisibility(View.INVISIBLE);
     }
 }

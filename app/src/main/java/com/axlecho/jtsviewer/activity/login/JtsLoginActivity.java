@@ -11,6 +11,8 @@ import android.widget.EditText;
 
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.network.JtsServer;
+import com.axlecho.jtsviewer.untils.JtsConf;
+import com.axlecho.jtsviewer.untils.JtsToolUnitls;
 
 import io.reactivex.functions.Consumer;
 
@@ -36,9 +38,9 @@ public class JtsLoginActivity extends AppCompatActivity implements View.OnClickL
         });
 
         findViewById(R.id.login_btn).setOnClickListener(this);
+        findViewById(R.id.register_btn).setOnClickListener(this);
         usernameEditText = (EditText) findViewById(R.id.login_username_edittext);
         passwordEditText = (EditText) findViewById(R.id.login_password_edittext);
-
         loadingProgressDialog = new ProgressDialog(this);
     }
 
@@ -49,6 +51,8 @@ public class JtsLoginActivity extends AppCompatActivity implements View.OnClickL
             String password = passwordEditText.getText().toString();
 
             login(username, password);
+        } else if (v.getId() == R.id.register_btn) {
+            JtsToolUnitls.openUrl(this, JtsConf.HOST_URL + JtsConf.REGISTER_URL);
         }
     }
 
