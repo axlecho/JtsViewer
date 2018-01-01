@@ -15,10 +15,16 @@ public class JtsShowGtpTabAction extends JtsBaseAction {
     private static final String TAG = JtsShowGtpTabAction.class.getSimpleName();
     public static final String GTP_FILE_PATH = "show_gtp_file_path";
 
+    private Context context;
+    private String filePath;
+
+    public JtsShowGtpTabAction(Context context, String filePath) {
+        this.context = context;
+        this.filePath = filePath;
+    }
+
     @Override
     public void processAction() {
-        Context context = (Context) getKey(CONTEXT_KEY);
-        String filePath = (String) getKey(JtsShowGtpTabAction.GTP_FILE_PATH);
         if (filePath == null) {
             JtsViewerLog.e(TAG, "file path is null");
             return;

@@ -14,6 +14,9 @@ public class JtsTabDetailModule {
     public int fid;
     public String raw;
 
+    public String gtpUrl;
+    public List<String> imgUrls;
+
     @Override
     public String toString() {
         return new Gson().toJson(this);

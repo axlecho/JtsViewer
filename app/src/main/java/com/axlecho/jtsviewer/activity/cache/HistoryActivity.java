@@ -92,9 +92,8 @@ public class HistoryActivity extends AppCompatActivity implements CacheViewAdapt
             JtsViewerLog.e(TAG, "update tab info failed");
         }
 
-        JtsShowGtpTabAction action = new JtsShowGtpTabAction();
-        action.setKey(JtsBaseAction.CONTEXT_KEY, this.getApplicationContext());
-        action.setKey(JtsShowGtpTabAction.GTP_FILE_PATH, module.path + File.separator + module.fileName);
+        JtsShowGtpTabAction action = new JtsShowGtpTabAction(this.getApplicationContext(),
+                module.path + File.separator + module.fileName);
         action.processAction();
     }
 

@@ -56,6 +56,7 @@ public class NetworkUnitTest {
     public void testDetail() {
         JtsTabDetailModule result = server.getDetail(1317048).blockingFirst();
         MatcherAssert.assertThat(result.threadList.size(), is(10));
+
     }
 
     @Test

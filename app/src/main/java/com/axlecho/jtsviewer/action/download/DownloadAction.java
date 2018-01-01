@@ -3,7 +3,6 @@ package com.axlecho.jtsviewer.action.download;
 import android.content.Context;
 
 import com.axlecho.jtsviewer.action.JtsBaseAction;
-import com.axlecho.jtsviewer.action.tab.JtsParseTabTypeAction;
 import com.axlecho.jtsviewer.action.ui.JtsShowGtpTabAction;
 import com.axlecho.jtsviewer.cache.CacheManager;
 import com.axlecho.jtsviewer.module.CacheModule;
@@ -26,22 +25,21 @@ public class DownloadAction extends JtsBaseAction {
     private DownloadTask downloadTask;
 
 
-    public DownloadAction() {
-
+    public DownloadAction(Context context, String url, long gid) {
+        this.context = context;
+        this.url = url;
+        this.gid = gid;
     }
 
     @Override
     public void processAction() {
-        this.context = (Context) getKey(CONTEXT_KEY);
-        this.url = (String) getKey(URL_KEY);
-        this.gid = (long) getKey(JtsParseTabTypeAction.GID_KEY);
 
         JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, "[download url] " + url);
         JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, "[download gid] " + gid);
         CacheModule module = CacheManager.getInstance(context).getModule(gid);
 
         if (module != null) {
-            JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE,TAG,"load from cache");
+            JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, "load from cache");
             processShowGtpFromCache(module);
             return;
         }
@@ -58,9 +56,8 @@ public class DownloadAction extends JtsBaseAction {
     }
 
     private void processShowGtpFromCache(CacheModule module) {
-        JtsShowGtpTabAction action = new JtsShowGtpTabAction();
-        action.setKey(JtsBaseAction.CONTEXT_KEY, getKey(JtsBaseAction.CONTEXT_KEY));
-        action.setKey(JtsShowGtpTabAction.GTP_FILE_PATH, module.path + File.separator + module.fileName);
+        JtsShowGtpTabAction action = new JtsShowGtpTabAction(context,
+                module.path + File.separator + module.fileName);
         action.executeOnUiThread();
     }
 }

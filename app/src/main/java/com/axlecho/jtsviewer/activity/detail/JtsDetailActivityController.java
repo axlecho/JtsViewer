@@ -1,7 +1,5 @@
 package com.axlecho.jtsviewer.activity.detail;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.widget.PopupMenu;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -10,7 +8,8 @@ import android.view.ViewGroup;
 
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.action.JtsBaseAction;
-import com.axlecho.jtsviewer.action.tab.JtsParseTabTypeAction;
+import com.axlecho.jtsviewer.action.tab.JtsGtpTabAction;
+import com.axlecho.jtsviewer.action.tab.JtsImgTabAction;
 import com.axlecho.jtsviewer.action.ui.JtsStopVideoAction;
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
@@ -170,10 +169,23 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
 
     public JtsBaseAction createPlayProcessor() {
         // JtsViewerLog.appendToFile(activity, detail.raw);
-        JtsParseTabTypeAction action = new JtsParseTabTypeAction();
-        action.setKey(JtsNetworkManager.WEBPAGE_CONTENT_KEY, detail.raw);
-        action.setKey(JtsBaseAction.CONTEXT_KEY, activity);
-        action.setKey(JtsParseTabTypeAction.GID_KEY, JtsTextUnitls.getTabKeyFromUrl(info.url));
+
+        JtsBaseAction action;
+
+        long gid = JtsTextUnitls.getTabKeyFromUrl(info.url);
+        if (detail.gtpUrl != null) {
+            action = new JtsGtpTabAction(activity, gid, detail.gtpUrl);
+        } else if (detail.imgUrls != null && detail.imgUrls.size() != 0) {
+            action = new JtsImgTabAction(activity, gid, detail.imgUrls);
+        } else {
+            action = new JtsBaseAction() {
+                @Override
+                public void processAction() {
+                    activity.showError(R.string.error_comment_null);
+                }
+            };
+        }
+
         return action;
     }
 

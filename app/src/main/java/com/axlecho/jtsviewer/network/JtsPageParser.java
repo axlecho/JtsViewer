@@ -9,9 +9,11 @@ import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.JtsThreadCommentModule;
 import com.axlecho.jtsviewer.module.JtsThreadModule;
 import com.axlecho.jtsviewer.module.JtsUserModule;
+import com.axlecho.jtsviewer.untils.JtsConf;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 import com.axlecho.sakura.utils.SakuraTextUtils;
+import com.axlecho.tabgallery.ImageTabInfo;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -27,6 +29,10 @@ public class JtsPageParser {
     private String USER_NAME_PATTERN = "(?<=title=\"访问我的空间\">).*?(?=</a>)";
     private String USER_IMAGE_PATTERN = "http://att.jitashe.org/data/attachment/avatar/.*?.jpg";
 
+    private static final String IMAGE_PATTERN = "(?<=src=\"http:)//att.jitashe.org/.+?.(?:jpg|png|gif)";
+    private static final String IMAGE_PATTERN2 = "(?<=src=\"http:)/data/attachment/forum/.+?.(?:jpg|png|gif)@!tab_thumb";
+
+    private static final String GTP_PATTERN = "dlink=\"/forum.php\\?mod=attachment.*?\"";
 
     private static final String TAG = JtsPageParser.class.getSimpleName();
     private String html;
@@ -52,18 +58,7 @@ public class JtsPageParser {
         this.html = html;
     }
 
-    public JtsUserModule parserUserInfo() {
-        JtsUserModule user = new JtsUserModule();
-        String uidStr = JtsTextUnitls.findByPatternOnce(html, UID_URL_PATTERN);
-        if (uidStr != null) {
-            user.uid = Long.parseLong(uidStr);
-        } else {
-            user.uid = -1;
-        }
-        user.userName = JtsTextUnitls.findByPatternOnce(html, USER_NAME_PATTERN);
-        user.avatarUrl = JtsTextUnitls.findByPatternOnce(html, USER_IMAGE_PATTERN);
-        return user;
-    }
+
 
     public List<JtsTabInfoModel> parserTabList() {
         return parserTabListFromDaily();
@@ -79,9 +74,9 @@ public class JtsPageParser {
         List<JtsTabInfoModel> models = new ArrayList<>();
         while (it.hasNext()) {
             Element element = (Element) it.next();
-            JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, element.toString());
+            JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE, TAG, element.toString());
             JtsTabInfoModel model = parserTabByElementFromDaily(element);
-            JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, model.toString());
+            JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE, TAG, model.toString());
             models.add(model);
         }
 
@@ -127,13 +122,58 @@ public class JtsPageParser {
         return model;
     }
 
+
+
     public JtsTabDetailModule parserTabDetail() {
         JtsTabDetailModule detail = new JtsTabDetailModule();
         detail.raw = html;
         detail.formhash = parserFormHash();
         detail.fid = Integer.parseInt(JtsTextUnitls.findByPatternOnce(html, "(?<=fid=)\\d+"));
         detail.threadList = parserThread();
+        detail.gtpUrl = parserGtpUrl();
+        detail.imgUrls = parserImgUrl();
         return detail;
+    }
+
+    public List<String> parserImgUrl() {
+        List<String> imageUrl = JtsTextUnitls.findByPattern(html, IMAGE_PATTERN);
+        JtsViewerLog.d(TAG, imageUrl.toString());
+
+        List<String> imageUrl2 = JtsTextUnitls.findByPattern(html, IMAGE_PATTERN2);
+        JtsViewerLog.d(TAG, imageUrl2.toString());
+
+        if (imageUrl.size() == 0 && imageUrl2.size() == 0) {
+            JtsViewerLog.e(TAG, "processAction failed - image url is null");
+            return null;
+        }
+
+        for (int i = 0; i < imageUrl.size(); i++) {
+            imageUrl.set(i, "http:" + imageUrl.get(i));
+        }
+
+        if (imageUrl.size() == 0) {
+            for (String url : imageUrl2) {
+                imageUrl.add(JtsConf.HOST_URL + url);
+            }
+        }
+
+        return imageUrl;
+    }
+
+    public String parserGtpUrl() {
+        List<String> gtpUrls = JtsTextUnitls.findByPattern(html, GTP_PATTERN);
+        JtsViewerLog.i(TAG, gtpUrls.toString());
+
+        if (gtpUrls.size() == 0) {
+            return null;
+        }
+
+        String gtpUrl = gtpUrls.get(0);
+        gtpUrl = gtpUrl.replaceAll("dlink=\"", "");
+        gtpUrl = gtpUrl.replaceAll("\"$", "");
+        gtpUrl = gtpUrl.replaceAll("amp;", "");
+        gtpUrl = JtsConf.HOST_URL + gtpUrl;
+        return gtpUrl;
     }
 
     public String parserFormHash() {
@@ -152,9 +192,9 @@ public class JtsPageParser {
         Iterator it = tbodys.iterator();
         while (it.hasNext()) {
             Element c = (Element) it.next();
-            JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, c.toString());
+            JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE, TAG, c.toString());
             JtsThreadModule module = parserThraed(c);
-            JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, "[parserThread]" + module);
+            JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE, TAG, "[parserThread]" + module);
             moduleList.add(module);
         }
         return moduleList;
@@ -172,17 +212,32 @@ public class JtsPageParser {
         Iterator it = comments.iterator();
         while (it.hasNext()) {
             Element c = (Element) it.next();
-            JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, "[parserComment]" + c.toString());
+            JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE, TAG, "[parserComment]" + c.toString());
             JtsThreadCommentModule comment = new JtsThreadCommentModule();
             comment.time = c.select("span.xg1").first().text();
             comment.avatar = c.select("img[src*=avatar.php]").attr("src");
             comment.authi = c.select("a.xi2").first().text();
             comment.message = c.select("dd:not(.m)").first().text();
-            JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, "[parserComment]" + comment.toString());
+            JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE, TAG, "[parserComment]" + comment.toString());
             module.comments.add(comment);
 
         }
         return module;
+    }
+
+
+
+    public JtsUserModule parserUserInfo() {
+        JtsUserModule user = new JtsUserModule();
+        String uidStr = JtsTextUnitls.findByPatternOnce(html, UID_URL_PATTERN);
+        if (uidStr != null) {
+            user.uid = Long.parseLong(uidStr);
+        } else {
+            user.uid = -1;
+        }
+        user.userName = JtsTextUnitls.findByPatternOnce(html, USER_NAME_PATTERN);
+        user.avatarUrl = JtsTextUnitls.findByPatternOnce(html, USER_IMAGE_PATTERN);
+        return user;
     }
 
     public int parserSearchId() {
