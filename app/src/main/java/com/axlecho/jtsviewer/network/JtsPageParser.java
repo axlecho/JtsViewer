@@ -59,7 +59,6 @@ public class JtsPageParser {
     }
 
 
-
     public List<JtsTabInfoModel> parserTabList() {
         return parserTabListFromDaily();
     }
@@ -123,10 +122,9 @@ public class JtsPageParser {
     }
 
 
-
     public JtsTabDetailModule parserTabDetail() {
         JtsTabDetailModule detail = new JtsTabDetailModule();
-        detail.raw = html;
+        // detail.raw = html;
         detail.formhash = parserFormHash();
         detail.fid = Integer.parseInt(JtsTextUnitls.findByPatternOnce(html, "(?<=fid=)\\d+"));
         detail.threadList = parserThread();
@@ -136,28 +134,37 @@ public class JtsPageParser {
     }
 
     public List<String> parserImgUrl() {
-        List<String> imageUrl = JtsTextUnitls.findByPattern(html, IMAGE_PATTERN);
-        JtsViewerLog.d(TAG, imageUrl.toString());
 
-        List<String> imageUrl2 = JtsTextUnitls.findByPattern(html, IMAGE_PATTERN2);
-        JtsViewerLog.d(TAG, imageUrl2.toString());
+        List<String> imageUrls = new ArrayList<>();
 
-        if (imageUrl.size() == 0 && imageUrl2.size() == 0) {
+        if (html == null) return imageUrls;
+        Document doc = Jsoup.parse(html);
+        Element tab = doc.select("div.imgtab").first();
+
+        if (tab == null) {
+            return imageUrls;
+        }
+
+        JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, tab.toString());
+
+        Elements tabimg = tab.select("img[id*=aimg]");
+
+
+        Iterator it = tabimg.iterator();
+        while (it.hasNext()) {
+            Element element = (Element) it.next();
+            JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE, TAG, element.toString());
+            String url = element.attr("src");
+            JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE, TAG, url);
+            imageUrls.add(url);
+        }
+
+        if (imageUrls.size() == 0) {
             JtsViewerLog.e(TAG, "processAction failed - image url is null");
             return null;
         }
 
-        for (int i = 0; i < imageUrl.size(); i++) {
-            imageUrl.set(i, "http:" + imageUrl.get(i));
-        }
-
-        if (imageUrl.size() == 0) {
-            for (String url : imageUrl2) {
-                imageUrl.add(JtsConf.HOST_URL + url);
-            }
-        }
-
-        return imageUrl;
+        return imageUrls;
     }
 
     public String parserGtpUrl() {
@@ -224,7 +231,6 @@ public class JtsPageParser {
         }
         return module;
     }
-
 
 
     public JtsUserModule parserUserInfo() {

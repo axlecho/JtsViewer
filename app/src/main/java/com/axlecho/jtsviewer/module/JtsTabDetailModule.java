@@ -12,7 +12,7 @@ public class JtsTabDetailModule {
     public List<JtsThreadModule> threadList;
     public String formhash;
     public int fid;
-    public String raw;
+    // public String raw;
 
     public String gtpUrl;
     public List<String> imgUrls;
