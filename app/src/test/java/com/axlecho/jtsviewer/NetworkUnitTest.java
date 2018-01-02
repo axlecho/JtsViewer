@@ -93,6 +93,13 @@ public class NetworkUnitTest {
         JtsSearchHelper.getSingleton().dump();
     }
 
+    // @Test
+    public void testGetUserInfoWithoutLogin() {
+        JtsUserModule user = server.getUserInfo().blockingFirst();
+        System.out.println(user);
+        MatcherAssert.assertThat("check uid failed", user.uid, is(0L));
+        MatcherAssert.assertThat("check username failed", TextUtils.isEmpty(user.userName));
+    }
 
     @Test
     public void testLogin() throws Exception {
@@ -102,7 +109,7 @@ public class NetworkUnitTest {
         MatcherAssert.assertThat("login cookie should not be null", !TextUtils.isEmpty(cookies));
     }
 
-    @Test
+    // @Test
     public void testPostComment() {
         JtsTabDetailModule detail = server.getDetail(24285L).blockingFirst();
         String result = server.postComment(detail.fid, 24285, "谢谢楼主分享", detail.formhash).blockingFirst();
@@ -114,6 +121,7 @@ public class NetworkUnitTest {
         MatcherAssert.assertThat("comment with login", result.equals(JtsConf.STATUS_SUCCESSED));
     }
 
+
     @Test
     public void testGetUserInfo() {
         server.login("d39", "123456789").blockingSubscribe();
@@ -124,13 +132,7 @@ public class NetworkUnitTest {
         MatcherAssert.assertThat("avatar is null", !TextUtils.isEmpty(user.avatarUrl));
     }
 
-    @Test
-    public void testGetUserInfoWithoutLogin() {
-        JtsUserModule user = server.getUserInfo().blockingFirst();
-        System.out.println(user);
-        MatcherAssert.assertThat("check uid failed", user.uid, is(0L));
-        MatcherAssert.assertThat("check username failed", TextUtils.isEmpty(user.userName));
-    }
+
 
 
     private class MockSchedulers extends JtsSchedulers {
