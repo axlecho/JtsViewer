@@ -22,8 +22,8 @@
     <string name="title_acg">Acg</string>
     <string name="title_learn">Learn</string>
 
-    <string name="login"><u>login</u></string>
-    <string name="register"><u>register</u></string>
+    <string name="login">login</string>
+    <string name="register">register</string>
 
     <string name="unknown_uper">吉他爱好者</string>
     <string name="unknown_time">未知</string>
