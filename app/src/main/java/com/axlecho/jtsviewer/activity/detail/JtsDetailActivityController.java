@@ -57,6 +57,7 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
     private Consumer<Throwable> errorHandler = new Consumer<Throwable>() {
         @Override
         public void accept(Throwable throwable) throws Exception {
+            JtsToolUnitls.hideSoftInput(activity, activity.comment);
             activity.showError(throwable.getMessage());
         }
     };
@@ -192,7 +193,7 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
     public void sendComment() {
         String comment = activity.comment.getText().toString();
         if (TextUtils.isEmpty(comment)) {
-
+            JtsToolUnitls.hideSoftInput(activity, activity.comment);
             activity.showError(R.string.error_comment_null);
             return;
         }

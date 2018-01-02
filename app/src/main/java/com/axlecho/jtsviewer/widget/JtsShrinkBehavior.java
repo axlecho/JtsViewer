@@ -1,18 +1,18 @@
 package com.axlecho.jtsviewer.widget;
 
 import android.content.Context;
-import android.graphics.Rect;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewCompat;
-import android.support.v7.widget.AppCompatEditText;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.View;
+
+import com.axlecho.jtsviewer.untils.JtsViewerLog;
 
 import java.util.List;
 
 public class JtsShrinkBehavior extends CoordinatorLayout.Behavior<View> {
+    private static final String TAG = "ui";
 
     public JtsShrinkBehavior() {
     }
@@ -31,9 +31,8 @@ public class JtsShrinkBehavior extends CoordinatorLayout.Behavior<View> {
         float translationY = getFabTranslationYForSnackbar(parent, child);
         float percentComplete = -translationY / dependency.getHeight();
         float scaleFactor = 1 - percentComplete;
-
-        child.setScaleX(scaleFactor);
-        child.setScaleY(scaleFactor);
+        // JtsViewerLog.d(TAG, dependency.getY() + " " + dependency.getHeight() + " " + child.getY() + child.getHeight());
+        child.setAlpha(scaleFactor);
         return false;
     }
 
@@ -47,7 +46,6 @@ public class JtsShrinkBehavior extends CoordinatorLayout.Behavior<View> {
                         ViewCompat.getTranslationY(view) - view.getHeight());
             }
         }
-
         return minOffset;
     }
 }
