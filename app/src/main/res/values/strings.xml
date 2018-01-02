@@ -23,6 +23,7 @@
     <string name="title_learn">Learn</string>
 
     <string name="login">login</string>
+    <string name="login_tip">logining</string>
     <string name="register">register</string>
 
     <string name="unknown_uper">吉他爱好者</string>

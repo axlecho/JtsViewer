@@ -47,7 +47,11 @@ public class JtsLoginActivity extends AppCompatActivity implements View.OnClickL
         findViewById(R.id.register_btn).setOnClickListener(this);
         usernameEditText = (EditText) findViewById(R.id.login_username_edittext);
         passwordEditText = (EditText) findViewById(R.id.login_password_edittext);
+
         loadingProgressDialog = new ProgressDialog(this);
+        loadingProgressDialog.setTitle(null);
+        loadingProgressDialog.setMessage(getResources().getString(R.string.login_tip));
+
         Observable.timer(400, TimeUnit.MILLISECONDS)
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<Long>() {
@@ -76,6 +80,7 @@ public class JtsLoginActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void login(String username, String password) {
+        JtsToolUnitls.hideSoftInput(this, this.getWindow().getDecorView());
         loadingProgressDialog.show();
         JtsServer.getSingleton(this).login(username, password)
                 .subscribe(new Consumer<String>() {

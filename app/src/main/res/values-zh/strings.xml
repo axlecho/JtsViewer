@@ -27,6 +27,7 @@
     <string name="refresh">刷新</string>
 
     <string name="login">登录</string>
+    <string name="login_tip">登录中</string>
     <string name="register">注册</string>
 
     <string name="detail_transition">detail_transition</string>
