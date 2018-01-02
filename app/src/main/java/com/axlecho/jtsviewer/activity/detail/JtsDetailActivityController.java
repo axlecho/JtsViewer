@@ -315,7 +315,7 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
     }
 
     private void openInOtherApp() {
-        JtsToolUnitls.openUrl(activity, JtsConf.DESKTOP_HOST_URL + info.url);
+        JtsToolUnitls.openUrl(activity, JtsConf.HOST_URL + info.url);
     }
 
     public void stopLoadingProgressBar() {
