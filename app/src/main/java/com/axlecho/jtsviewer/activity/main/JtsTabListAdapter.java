@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
@@ -104,7 +105,10 @@ public class JtsTabListAdapter extends RecyclerView.Adapter<JtsTabListAdapter.Ta
             uper.setText(model.uper);
             this.setType(model.type);
 
-            Glide.with(context).load(model.avatar).error(R.drawable.ic_launcher).into(avatar);
+            TextDrawable defaultDrawable = TextDrawable.builder()
+                    .beginConfig().height(48).width(48).bold().endConfig()
+                    .buildRect(model.title.substring(0, 1), context.getResources().getColor(R.color.colorPrimary));
+            Glide.with(context).load(model.avatar).error(defaultDrawable).into(avatar);
         }
 
         private void setType(String tabType) {
@@ -123,7 +127,7 @@ public class JtsTabListAdapter extends RecyclerView.Adapter<JtsTabListAdapter.Ta
         public void onClick(View v) {
             JtsTabInfoModel model = content.get(getAdapterPosition());
             JtsViewerLog.d(TAG, model.url);
-            MainActivityController.getInstance().startDetailActivity(model,avatar);
+            MainActivityController.getInstance().startDetailActivity(model, avatar);
         }
     }
 }

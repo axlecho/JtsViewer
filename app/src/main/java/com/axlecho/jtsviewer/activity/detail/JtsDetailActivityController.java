@@ -6,6 +6,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.amulyakhare.textdrawable.TextDrawable;
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.action.tab.JtsGtpTabAction;
@@ -113,9 +114,13 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
         this.page = 1;
         JtsTabInfoModel model = (JtsTabInfoModel) activity.getIntent().getSerializableExtra("tabinfo");
         JtsViewerLog.d(TAG, "[bindTabInfo] " + model);
+
+        TextDrawable defaultDrawable = TextDrawable.builder()
+                .beginConfig().height(200).width(300).bold().endConfig()
+                .buildRect(model.title.substring(0, 1), activity.getResources().getColor(R.color.colorPrimary));
         Glide.with(activity).load(JtsTextUnitls.getResizePicUrl(model.avatar, 200, 300))
-                .error(R.drawable.ic_launcher)
-                .into(activity.avatar);
+                .error(defaultDrawable).into(activity.avatar);
+
         activity.title.setText(model.title);
         activity.author.setText(model.author);
         activity.type.setText(model.type);

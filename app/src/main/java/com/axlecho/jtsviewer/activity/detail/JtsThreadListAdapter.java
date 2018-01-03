@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.module.JtsThreadCommentModule;
 import com.axlecho.jtsviewer.module.JtsThreadModule;
@@ -76,7 +77,10 @@ public class JtsThreadListAdapter extends RecyclerView.Adapter<JtsThreadListAdap
         }
 
         public void bindData(JtsThreadModule model) {
-            Glide.with(context).load(model.avatar).into(avatar);
+            TextDrawable defaultDrawable = TextDrawable.builder()
+                    .beginConfig().height(48).width(48).bold().endConfig()
+                    .buildRect(model.authi.substring(0, 1), context.getResources().getColor(R.color.colorPrimary));
+            Glide.with(context).load(model.avatar).error(defaultDrawable).into(avatar);
             auth.setText(model.authi);
             time.setText(model.time);
             message.setText(HtmlCompat.fromHtml(context, model.message, FROM_HTML_MODE_LEGACY, new JtsImageGetter(message), new JtsTagHandler(context,message)));
@@ -102,7 +106,10 @@ public class JtsThreadListAdapter extends RecyclerView.Adapter<JtsThreadListAdap
             TextView message = (TextView) view.findViewById(R.id.thread_item_message);
             view.findViewById(R.id.thread_item_floor).setVisibility(View.GONE);
 
-            Glide.with(context).load(model.avatar).into(avatar);
+            TextDrawable defaultDrawable = TextDrawable.builder()
+                    .beginConfig().height(48).width(48).bold().endConfig()
+                    .buildRect(model.authi.substring(0, 1), context.getResources().getColor(R.color.colorPrimary));
+            Glide.with(context).load(model.avatar).error(defaultDrawable).into(avatar);
             auth.setText(model.authi);
             time.setText(model.time);
             message.setText(model.message);

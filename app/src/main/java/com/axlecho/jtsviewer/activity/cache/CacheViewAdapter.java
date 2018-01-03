@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.module.CacheModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
@@ -41,8 +42,8 @@ public class CacheViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        if(!(holder instanceof CacheViewHolder)) {
-            JtsViewerLog.w(TAG,"holder is not a cache view holder");
+        if (!(holder instanceof CacheViewHolder)) {
+            JtsViewerLog.w(TAG, "holder is not a cache view holder");
             return;
         }
 
@@ -51,7 +52,7 @@ public class CacheViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for(OnItemClickListener listener:clickListenerList) {
+                for (OnItemClickListener listener : clickListenerList) {
                     listener.onItemClick(module);
                 }
             }
@@ -60,7 +61,7 @@ public class CacheViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         viewHolder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                for(CacheViewAdapter.OnItemLongClickListener listener:longClickListenerList) {
+                for (CacheViewAdapter.OnItemLongClickListener listener : longClickListenerList) {
                     listener.onItemLongClick(module);
                 }
                 return true;
@@ -70,8 +71,8 @@ public class CacheViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         viewHolder.avatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                for(OnItemClickListener listener:clickListenerList) {
-                    listener.onItemAvatarClick(module.tabInfo,viewHolder.avatar);
+                for (OnItemClickListener listener : clickListenerList) {
+                    listener.onItemAvatarClick(module.tabInfo, viewHolder.avatar);
                 }
             }
         });
@@ -122,7 +123,10 @@ public class CacheViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             uper.setText(model.uper);
             this.setType(model.type);
 
-            Glide.with(context).load(model.avatar).error(R.drawable.ic_launcher).into(avatar);
+            TextDrawable defaultDrawable = TextDrawable.builder()
+                    .beginConfig().height(48).width(48).bold().endConfig()
+                    .buildRect(model.title.substring(0, 1), context.getResources().getColor(R.color.colorPrimary));
+            Glide.with(context).load(model.avatar).error(defaultDrawable).into(avatar);
         }
 
         private void setType(String tabType) {
@@ -153,6 +157,6 @@ public class CacheViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public interface OnItemClickListener {
         void onItemClick(CacheModule module);
 
-        void onItemAvatarClick(JtsTabInfoModel module,View shareView);
+        void onItemAvatarClick(JtsTabInfoModel module, View shareView);
     }
 }
