@@ -62,6 +62,9 @@ public class NetworkUnitTest {
         MatcherAssert.assertThat(result.threadList.size(), is(10));
         System.out.println(result);
 
+        result = server.getDetail(1319358).blockingFirst();
+        MatcherAssert.assertThat(result.threadList.size(), is(1));
+        System.out.println(result);
     }
 
     @Test

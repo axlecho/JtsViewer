@@ -130,6 +130,9 @@ public class JtsPageParser {
         detail.threadList = parserThread();
         detail.gtpUrl = parserGtpUrl();
         detail.imgUrls = parserImgUrl();
+        if(detail.imgUrls.size() == 0) {
+            detail.imgUrls = parserPdfUrl();
+        }
         return detail;
     }
 
@@ -148,6 +151,40 @@ public class JtsPageParser {
         JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, tab.toString());
 
         Elements tabimg = tab.select("img[id*=aimg]");
+
+
+        Iterator it = tabimg.iterator();
+        while (it.hasNext()) {
+            Element element = (Element) it.next();
+            JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE, TAG, element.toString());
+            String url = element.attr("src");
+            JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE, TAG, url);
+            imageUrls.add(url);
+        }
+
+        if (imageUrls.size() == 0) {
+            JtsViewerLog.e(TAG, "processAction failed - image url is null");
+            return null;
+        }
+
+        return imageUrls;
+    }
+
+    public List<String> parserPdfUrl() {
+
+        List<String> imageUrls = new ArrayList<>();
+
+        if (html == null) return imageUrls;
+        Document doc = Jsoup.parse(html);
+        Element tab = doc.select("div#pdfpngContainer").first();
+
+        if (tab == null) {
+            return imageUrls;
+        }
+
+        JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, tab.toString());
+
+        Elements tabimg = tab.select("img");
 
 
         Iterator it = tabimg.iterator();

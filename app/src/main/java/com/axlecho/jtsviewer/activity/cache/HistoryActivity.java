@@ -3,6 +3,8 @@ package com.axlecho.jtsviewer.activity.cache;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.amulyakhare.textdrawable.TextDrawable;
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.action.ui.JtsShowGtpTabAction;
@@ -113,6 +116,7 @@ public class HistoryActivity extends AppCompatActivity implements CacheViewAdapt
         addShortcutIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, launcherIntent);
         addShortcutIntent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
 
+
         Observable<Bitmap> network = Observable.create(new ObservableOnSubscribe<Bitmap>() {
             @Override
             public void subscribe(final ObservableEmitter<Bitmap> emitter) throws Exception {
@@ -139,23 +143,23 @@ public class HistoryActivity extends AppCompatActivity implements CacheViewAdapt
         Observable<Bitmap> location = Observable.create(new ObservableOnSubscribe<Bitmap>() {
             @Override
             public void subscribe(final ObservableEmitter<Bitmap> emitter) throws Exception {
-                Target<Bitmap> target = new SimpleTarget<Bitmap>(144, 144) {
-                    @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        emitter.onNext(resource);
-                        emitter.onComplete();
-                    }
+                TextDrawable defaultDrawable = TextDrawable.builder()
+                        .beginConfig().height(128).width(128).bold().endConfig()
+                        .buildRoundRect(module.tabInfo.title.substring(0, 1),
+                                HistoryActivity.this.getResources().getColor(R.color.colorPrimary),8);
 
-                    @Override
-                    public void onLoadFailed(Exception e, Drawable errorDrawable) {
-                        e.printStackTrace();
-                        emitter.onComplete();
-                    }
-                };
+                Bitmap bitmap = Bitmap.createBitmap(
+                        defaultDrawable.getIntrinsicWidth(),
+                        defaultDrawable.getIntrinsicHeight(),
+                        defaultDrawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
+                                : Bitmap.Config.RGB_565);
 
-                Glide.with(HistoryActivity.this).load(R.drawable.ic_launcher).asBitmap()
-                        .transform(new GlideRoundTransform(HistoryActivity.this))
-                        .into(target);
+                Canvas canvas = new Canvas(bitmap);
+                defaultDrawable.setBounds(0, 0, defaultDrawable.getIntrinsicWidth(),
+                        defaultDrawable.getIntrinsicHeight());
+                defaultDrawable.draw(canvas);
+                emitter.onNext(bitmap);
+                emitter.onComplete();
             }
         });
 
