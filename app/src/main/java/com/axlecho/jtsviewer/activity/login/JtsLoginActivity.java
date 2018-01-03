@@ -16,10 +16,13 @@ import com.axlecho.jtsviewer.network.JtsServer;
 import com.axlecho.jtsviewer.untils.JtsConf;
 import com.axlecho.jtsviewer.untils.JtsToolUnitls;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 public class JtsLoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -27,6 +30,18 @@ public class JtsLoginActivity extends AppCompatActivity implements View.OnClickL
     private EditText usernameEditText;
     private EditText passwordEditText;
     private ProgressDialog loadingProgressDialog;
+    private List<Disposable> disposables = new ArrayList<>();
+
+    @Override
+    protected void onDestroy() {
+        for (Disposable disposable : disposables) {
+            if (disposable != null && !disposable.isDisposed()) {
+                disposable.dispose();
+            }
+        }
+        disposables.clear();
+        super.onDestroy();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +97,7 @@ public class JtsLoginActivity extends AppCompatActivity implements View.OnClickL
     private void login(String username, String password) {
         JtsToolUnitls.hideSoftInput(this, this.getWindow().getDecorView());
         loadingProgressDialog.show();
-        JtsServer.getSingleton(this).login(username, password)
+        Disposable disposable = JtsServer.getSingleton(this).login(username, password)
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(String s) throws Exception {
@@ -99,6 +114,7 @@ public class JtsLoginActivity extends AppCompatActivity implements View.OnClickL
                         showError(throwable.getMessage());
                     }
                 });
+        disposables.add(disposable);
     }
 
     private void showInputMethod() {

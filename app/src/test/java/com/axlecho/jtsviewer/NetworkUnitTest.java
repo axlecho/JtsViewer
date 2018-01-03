@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
+import com.axlecho.jtsviewer.module.JtsThreadModule;
 import com.axlecho.jtsviewer.module.JtsUserModule;
 import com.axlecho.jtsviewer.network.JtsSchedulers;
 import com.axlecho.jtsviewer.network.JtsSearchHelper;
@@ -68,6 +69,13 @@ public class NetworkUnitTest {
     }
 
     @Test
+    public void testTread() {
+        List<JtsThreadModule> result = server.getThread(9440, 2).blockingFirst();
+        MatcherAssert.assertThat(result.size(), is(10));
+        System.out.println(result);
+    }
+
+    @Test
     public void testDaily() {
         List<JtsTabInfoModel> result = server.getHotTab(1).blockingFirst();
         MatcherAssert.assertThat(result.size(), is(50));
@@ -75,10 +83,10 @@ public class NetworkUnitTest {
 
     @Test
     public void testArtist() {
-        List<JtsTabInfoModel> result = server.getArtist(19301,1).blockingFirst();
+        List<JtsTabInfoModel> result = server.getArtist(19301, 1).blockingFirst();
         MatcherAssert.assertThat(result.size(), is(20));
 
-        result = server.getArtist(19301,2).blockingFirst();
+        result = server.getArtist(19301, 2).blockingFirst();
         MatcherAssert.assertThat(result.size(), is(20));
     }
 
@@ -134,8 +142,6 @@ public class NetworkUnitTest {
         MatcherAssert.assertThat("check username failed", user.userName, is("d39"));
         MatcherAssert.assertThat("avatar is null", !TextUtils.isEmpty(user.avatarUrl));
     }
-
-
 
 
     private class MockSchedulers extends JtsSchedulers {

@@ -83,12 +83,13 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
     public void getTabDetail() {
         this.info = (JtsTabInfoModel) activity.getIntent().getSerializableExtra("tabinfo");
         long tabKey = JtsTextUnitls.getTabKeyFromUrl(info.url);
-        JtsServer.getSingleton(activity).getDetail(tabKey).subscribe(new Consumer<JtsTabDetailModule>() {
+        Disposable disposable = JtsServer.getSingleton(activity).getDetail(tabKey).subscribe(new Consumer<JtsTabDetailModule>() {
             @Override
             public void accept(JtsTabDetailModule jtsTabDetailModule) throws Exception {
                 processDetail(jtsTabDetailModule);
             }
         }, errorHandler);
+        disposables.add(disposable);
     }
 
     public void processDetail(JtsTabDetailModule detail) {
@@ -203,48 +204,32 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
             return;
         }
 
-        JtsServer.getSingleton(activity).postComment(detail.fid, JtsTextUnitls.getTabKeyFromUrl(info.url), comment, detail.formhash)
+        Disposable disposable = JtsServer.getSingleton(activity).postComment(detail.fid, JtsTextUnitls.getTabKeyFromUrl(info.url), comment, detail.formhash)
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(String s) throws Exception {
                         processPostComment(s);
                     }
                 }, errorHandler);
+        disposables.add(disposable);
     }
 
     private void loadMoreThread() {
         page++;
 
-        Observable.create(new ObservableOnSubscribe<String>() {
-            @Override
-            public void subscribe(ObservableEmitter<String> e) throws Exception {
-                String url = JtsConf.DESKTOP_HOST_URL + info.url + "/" + page;
-                JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, url);
-                try {
-                    String html = JtsNetworkManager.getInstance(activity).get(url);
-                    e.onNext(html);
-                } catch (InterruptedIOException ex) {
-                    e.onError(new Throwable("request dispose"));
-                }
 
-            }
-        }).map(new Function<String, List<JtsThreadModule>>() {
-            @Override
-            public List<JtsThreadModule> apply(String s) throws Exception {
-                JtsPageParser.getInstance(activity).setContent(s);
-                return JtsPageParser.getInstance(activity).parserThread();
-            }
-        }).doOnError(new Consumer<Throwable>() {
-            @Override
-            public void accept(Throwable throwable) throws Exception {
-                JtsViewerLog.e(TAG, throwable.getMessage());
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<List<JtsThreadModule>>() {
-            @Override
-            public void accept(List<JtsThreadModule> jtsThreadModules) throws Exception {
-                processLoadMoreThread(jtsThreadModules);
-            }
-        });
+        this.info = (JtsTabInfoModel) activity.getIntent().getSerializableExtra("tabinfo");
+        long tabKey = JtsTextUnitls.getTabKeyFromUrl(info.url);
+        Disposable disposable = JtsServer.getSingleton(activity).getThread(tabKey, page)
+                .subscribe(new Consumer<List<JtsThreadModule>>() {
+                    @Override
+                    public void accept(List<JtsThreadModule> jtsThreadModules) throws Exception {
+                        processLoadMoreThread(jtsThreadModules);
+                    }
+
+                }, errorHandler);
+
+        disposables.add(disposable);
     }
 
     public void processLoadMoreThread(List<JtsThreadModule> threads) {

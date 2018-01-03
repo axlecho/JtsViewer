@@ -17,8 +17,8 @@ public interface JtsServerApi {
     @GET("/")
     Observable<ResponseBody> index();
 
-    @GET("/tab/{id}")
-    Observable<ResponseBody> getDetail(@Path("id") long id);
+    @GET("/tab/{id}/{page}")
+    Observable<ResponseBody> getDetail(@Path("id") long id,@Path("page") int page);
 
     @GET("/guide/newtab/{page}")
     Observable<ResponseBody> getNewTab(@Path("page") int page);

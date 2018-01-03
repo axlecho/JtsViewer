@@ -7,9 +7,11 @@ import com.axlecho.jtsviewer.action.parser.JtsParseLoginFunction;
 import com.axlecho.jtsviewer.action.parser.JtsParseSearchKeyConsumer;
 import com.axlecho.jtsviewer.action.parser.JtsParseTabDetailFunction;
 import com.axlecho.jtsviewer.action.parser.JtsParseTabListFunction;
+import com.axlecho.jtsviewer.action.parser.JtsParseThreadFunction;
 import com.axlecho.jtsviewer.action.parser.JtsParseUserInfoFunction;
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
+import com.axlecho.jtsviewer.module.JtsThreadModule;
 import com.axlecho.jtsviewer.module.JtsUserModule;
 import com.axlecho.jtsviewer.untils.JtsConf;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
@@ -81,7 +83,12 @@ public class JtsServer {
     }
 
     public Observable<JtsTabDetailModule> getDetail(long id) {
-        Observable<JtsTabDetailModule> o = service.getDetail(id).map(new JtsParseTabDetailFunction(context));
+        Observable<JtsTabDetailModule> o = service.getDetail(id, 1).map(new JtsParseTabDetailFunction(context));
+        return schedulers.switchSchedulers(o);
+    }
+
+    public Observable<List<JtsThreadModule>> getThread(long id, int page) {
+        Observable<List<JtsThreadModule>> o = service.getDetail(id, page).map(new JtsParseThreadFunction(context));
         return schedulers.switchSchedulers(o);
     }
 
@@ -95,8 +102,8 @@ public class JtsServer {
         return schedulers.switchSchedulers(o);
     }
 
-    public Observable<List<JtsTabInfoModel>> getArtist(int id,int page) {
-        Observable<List<JtsTabInfoModel>> o = service.getArtist(id,page).map(new JtsParseTabListFunction(context));
+    public Observable<List<JtsTabInfoModel>> getArtist(int id, int page) {
+        Observable<List<JtsTabInfoModel>> o = service.getArtist(id, page).map(new JtsParseTabListFunction(context));
         return schedulers.switchSchedulers(o);
     }
 
