@@ -3,6 +3,7 @@ package com.axlecho.jtsviewer.activity.detail;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +13,9 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -39,6 +43,8 @@ public class JtsDetailActivity extends AppCompatActivity {
 
     public EditText comment;
     public ImageView send;
+    public FloatingActionButton play;
+
 
     public PopupMenu popupMenu;
     public View otherActions;
@@ -65,6 +71,8 @@ public class JtsDetailActivity extends AppCompatActivity {
         type = (TextView) findViewById(R.id.tab_detail_type);
         comment = (EditText) findViewById(R.id.comment_edittext);
         send = (ImageView) findViewById(R.id.comment_send);
+        play = (FloatingActionButton) findViewById(R.id.tab_detail_play);
+
         otherActions = findViewById(R.id.tab_detail_other_actions);
 
         this.controller = JtsDetailActivityController.getInstance();
@@ -128,5 +136,16 @@ public class JtsDetailActivity extends AppCompatActivity {
 
     public void popMenu() {
         popupMenu.show();
+    }
+
+    public void showPlayBtn() {
+        Animation mShowAnim = new ScaleAnimation(0.1f, Animation.RELATIVE_TO_SELF,
+                0.1f, Animation.RELATIVE_TO_SELF,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f);
+        mShowAnim.setDuration(500);
+
+        play.startAnimation(mShowAnim);
+        play.setVisibility(View.VISIBLE);
     }
 }

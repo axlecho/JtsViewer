@@ -224,7 +224,7 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
         }
 
         adapter.addData(detail.threadList);
-        activity.findViewById(R.id.tab_detail_play).setOnClickListener(new View.OnClickListener() {
+        activity.play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 processTabPlay();
@@ -236,6 +236,7 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
                 sendComment();
             }
         });
+        activity.showPlayBtn();
     }
 
     public void processLoadMoreThread(List<JtsThreadModule> threads) {
