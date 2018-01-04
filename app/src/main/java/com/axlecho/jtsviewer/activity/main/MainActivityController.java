@@ -43,13 +43,11 @@ public class MainActivityController {
         public void accept(Throwable throwable) throws Exception {
             JtsViewerLog.e(TAG, throwable.getMessage());
             stopLoadingProgressBar();
-            processShowError(throwable.getMessage());
+            activity.showError(throwable.getMessage());
+
         }
     };
 
-    private void processShowError(String msg) {
-        activity.showError(msg);
-    }
 
     public static MainActivityController getInstance() {
         if (instance == null) {
@@ -94,21 +92,7 @@ public class MainActivityController {
         }
     }
 
-    public void stopHeaderRefreshing() {
-        activity.refreshLayout.setHeaderRefreshing(false);
-    }
 
-    public void startHeaderRefreshing() {
-        activity.refreshLayout.setHeaderRefreshing(true);
-    }
-
-    public void startFooterRefreshing() {
-        activity.refreshLayout.setFooterRefreshing(true);
-    }
-
-    public void stopFooterRefreshing() {
-        activity.refreshLayout.setFooterRefreshing(false);
-    }
 
     public void loadUserInfo() {
         JtsServer.getSingleton(activity).getUserInfo().subscribe(new Consumer<JtsUserModule>() {
@@ -251,7 +235,6 @@ public class MainActivityController {
     }
 
     public void startDetailActivity(JtsTabInfoModel model, View shareView) {
-
         String transition_name = activity.getResources().getString(R.string.detail_transition);
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, shareView, transition_name);
 
@@ -271,5 +254,22 @@ public class MainActivityController {
 
     public void stopLoadingProgressBar() {
         activity.findViewById(R.id.main_loading_progressbar).setVisibility(View.GONE);
+    }
+
+    public void stopHeaderRefreshing() {
+        activity.refreshLayout.setHeaderRefreshing(false);
+    }
+
+    public void startHeaderRefreshing() {
+        activity.refreshLayout.setHeaderRefreshing(true);
+        activity.hideError();
+    }
+
+    public void startFooterRefreshing() {
+        activity.refreshLayout.setFooterRefreshing(true);
+    }
+
+    public void stopFooterRefreshing() {
+        activity.refreshLayout.setFooterRefreshing(false);
     }
 }

@@ -14,7 +14,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.axlecho.jtsviewer.JtsApplication;
 import com.axlecho.jtsviewer.R;
@@ -156,9 +159,24 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void showError(String msg) {
-        Snackbar.make(this.getWindow().getDecorView(), msg, Snackbar.LENGTH_LONG).show();
         ViewGroup rootView = (ViewGroup) findViewById(R.id.activity_content_layout);
-        LayoutInflater.from(this).inflate(R.layout.view_error_tip, rootView);
+        View errorLayout = findViewById(R.id.error_tip_layout);
+        if (errorLayout == null) {
+            errorLayout = LayoutInflater.from(this).inflate(R.layout.view_error_tip, rootView);
+        }
+        ImageView errorImageView = (ImageView) errorLayout.findViewById(R.id.error_tip_imageview);
+        TextView errorTextView = (TextView) errorLayout.findViewById(R.id.error_tip_textview);
+        errorTextView.setText(msg);
+
+        errorLayout.setVisibility(View.VISIBLE);
+        Snackbar.make(this.getWindow().getDecorView(), msg, Snackbar.LENGTH_LONG).show();
+    }
+
+    public void hideError() {
+        View errorLayout = findViewById(R.id.error_tip_layout);
+        if (errorLayout != null) {
+            errorLayout.setVisibility(View.GONE);
+        }
     }
 
     public void closeDrawer() {
