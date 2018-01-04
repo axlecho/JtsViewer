@@ -20,6 +20,7 @@ import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.JtsUserModule;
 import com.axlecho.jtsviewer.network.JtsNetworkManager;
 import com.axlecho.jtsviewer.network.JtsServer;
+import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 import com.bumptech.glide.Glide;
 
@@ -41,10 +42,9 @@ public class MainActivityController {
     private Consumer<Throwable> errorHandler = new Consumer<Throwable>() {
         @Override
         public void accept(Throwable throwable) throws Exception {
-            JtsViewerLog.e(TAG, throwable.getMessage());
+            throwable.printStackTrace();
             stopLoadingProgressBar();
-            activity.showError(throwable.getMessage());
-
+            activity.showError(JtsTextUnitls.getErrorMessageFromException(activity, throwable));
         }
     };
 
@@ -91,7 +91,6 @@ public class MainActivityController {
             e.printStackTrace();
         }
     }
-
 
 
     public void loadUserInfo() {

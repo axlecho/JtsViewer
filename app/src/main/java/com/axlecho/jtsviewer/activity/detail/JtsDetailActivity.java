@@ -121,12 +121,25 @@ public class JtsDetailActivity extends AppCompatActivity {
         popupMenu.getMenuInflater().inflate(R.menu.scene_tab_detail, popupMenu.getMenu());
         JtsDetailActivityController.getInstance().initPopMenuAction();
     }
-
-    public void showError(int resId, String msg) {
+    public void showError(String msg) {
         ViewGroup rootView = (ViewGroup) findViewById(R.id.activity_content_layout);
-        Snackbar.make(rootView, msg, Snackbar.LENGTH_LONG).show();
+        View errorLayout = findViewById(R.id.error_tip_layout);
+        if (errorLayout == null) {
+            errorLayout = LayoutInflater.from(this).inflate(R.layout.view_error_tip, rootView);
+        }
+        ImageView errorImageView = (ImageView) errorLayout.findViewById(R.id.error_tip_imageview);
+        TextView errorTextView = (TextView) errorLayout.findViewById(R.id.error_tip_textview);
+        errorTextView.setText(msg);
 
-        LayoutInflater.from(this).inflate(R.layout.view_error_tip, rootView);
+        errorLayout.setVisibility(View.VISIBLE);
+        Snackbar.make(this.getWindow().getDecorView(), msg, Snackbar.LENGTH_LONG).show();
+    }
+
+    public void hideError() {
+        View errorLayout = findViewById(R.id.error_tip_layout);
+        if (errorLayout != null) {
+            errorLayout.setVisibility(View.GONE);
+        }
     }
 
     public void showError(int resId) {

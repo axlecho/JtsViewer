@@ -1,7 +1,13 @@
 package com.axlecho.jtsviewer.untils;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.net.Uri;
 
+import com.axlecho.jtsviewer.R;
+
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -11,6 +17,7 @@ import java.util.regex.Pattern;
 public class JtsTextUnitls {
     private static final String TAG = JtsTextUnitls.class.getSimpleName();
     public static int CONST_PLAYER_ID = 100001;
+
     public static List<String> findByPattern(String s, String reg) {
         if (s == null || reg == null) {
             return null;
@@ -86,5 +93,16 @@ public class JtsTextUnitls {
         String target = url.replace("w_100", "w_" + width);
         target = target.replace("h_100", "h_" + height);
         return target;
+    }
+
+    public static String getErrorMessageFromException(Context context, Throwable e) {
+        Resources res = context.getResources();
+        if (e instanceof UnknownHostException) {
+            return res.getString(R.string.error_network_unknow_host);
+        } else if (e instanceof SocketTimeoutException) {
+            return res.getString(R.string.error_network_time_out);
+        } else {
+            return e.getMessage();
+        }
     }
 }

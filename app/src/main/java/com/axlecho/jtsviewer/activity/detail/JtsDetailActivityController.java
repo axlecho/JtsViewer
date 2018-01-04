@@ -52,7 +52,8 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
         @Override
         public void accept(Throwable throwable) throws Exception {
             throwable.printStackTrace();
-            activity.showError(R.drawable.ic_error_network, throwable.getMessage());
+            activity.showError(JtsTextUnitls.getErrorMessageFromException(activity, throwable));
+
         }
     };
 
@@ -144,6 +145,7 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
                         if (adapter != null) {
                             adapter.clear();
                         }
+                        activity.hideError();
                         startLoading();
                     }
                 })

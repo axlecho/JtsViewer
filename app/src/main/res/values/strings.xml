@@ -62,4 +62,6 @@
 
     <string name="error_comment_null">comment data could not be null</string>
     <string name="error_network">network error</string>
+    <string name="error_network_unknow_host">unknow host</string>
+    <string name="error_network_time_out">connect time out</string>
 </resources>
