@@ -57,6 +57,11 @@ public class JtsThreadListAdapter extends RecyclerView.Adapter<JtsThreadListAdap
         this.threads = threads;
     }
 
+    public void clear() {
+        this.threads.clear();
+        notifyDataSetChanged();
+    }
+
     public class ThreadViewHolder extends ViewHolder {
         public ImageView avatar;
         public TextView auth;
@@ -83,7 +88,7 @@ public class JtsThreadListAdapter extends RecyclerView.Adapter<JtsThreadListAdap
             Glide.with(context).load(model.avatar).error(defaultDrawable).into(avatar);
             auth.setText(model.authi);
             time.setText(model.time);
-            message.setText(HtmlCompat.fromHtml(context, model.message, FROM_HTML_MODE_LEGACY, new JtsImageGetter(message), new JtsTagHandler(context,message)));
+            message.setText(HtmlCompat.fromHtml(context, model.message, FROM_HTML_MODE_LEGACY, new JtsImageGetter(message), new JtsTagHandler(context, message)));
             message.setMovementMethod(LinkMovementMethod.getInstance());
 
             floor.setText(model.floor);

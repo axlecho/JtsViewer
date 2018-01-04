@@ -1,16 +1,21 @@
 package com.axlecho.jtsviewer.activity.detail;
 
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.axlecho.jtsviewer.JtsApplication;
@@ -20,6 +25,8 @@ import com.axlecho.jtsviewer.widget.RecycleViewDivider;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.hippo.refreshlayout.RefreshLayout;
+
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 public class JtsDetailActivity extends AppCompatActivity {
     private static final String TAG = "detail-scene";
@@ -108,25 +115,10 @@ public class JtsDetailActivity extends AppCompatActivity {
     }
 
     public void showError(int resId, String msg) {
-        View rootView = findViewById(R.id.comment_layout);
+        ViewGroup rootView = (ViewGroup) findViewById(R.id.activity_content_layout);
         Snackbar.make(rootView, msg, Snackbar.LENGTH_LONG).show();
 
-        View topView = this.getWindow().getDecorView();
-        if (!(topView instanceof FrameLayout)) {
-            JtsViewerLog.e(TAG, "can not show error message");
-            return;
-        }
-
-        FrameLayout rootLayout = (FrameLayout) topView;
-        ImageView imageView = new ImageView(this);
-        imageView.setImageResource(resId);
-        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-
-        rootLayout.addView(imageView);
-
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(128, 128);
-        params.gravity = Gravity.CENTER;
-        imageView.setLayoutParams(params);
+        LayoutInflater.from(this).inflate(R.layout.view_error_tip, rootView);
     }
 
     public void showError(int resId) {

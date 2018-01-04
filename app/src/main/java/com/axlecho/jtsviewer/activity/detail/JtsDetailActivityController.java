@@ -51,7 +51,7 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
     private Consumer<Throwable> errorHandler = new Consumer<Throwable>() {
         @Override
         public void accept(Throwable throwable) throws Exception {
-            JtsToolUnitls.hideSoftInput(activity, activity.comment);
+            throwable.printStackTrace();
             activity.showError(R.drawable.ic_error_network, throwable.getMessage());
         }
     };
@@ -71,26 +71,6 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
     public void attachToActivity(JtsDetailActivity activity) {
         this.activity = activity;
         this.bindTabInfo();
-    }
-
-
-    public void processDetail(JtsTabDetailModule detail) {
-        this.detail = detail;
-
-        this.registerListener();
-        if (adapter == null) {
-            adapter = new JtsThreadListAdapter(activity);
-            activity.recyclerView.setAdapter(adapter);
-        }
-
-        adapter.addData(detail.threadList);
-        activity.send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendComment();
-            }
-        });
-        this.stopLoading();
     }
 
     public void bindTabInfo() {
@@ -135,10 +115,6 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
         this.adapter = null;
     }
 
-    public void registerListener() {
-        activity.findViewById(R.id.tab_detail_play).setOnClickListener(createPlayProcessor());
-    }
-
     public void initPopMenuAction() {
         activity.popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
@@ -156,45 +132,6 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
         });
     }
 
-    public JtsBaseAction createPlayProcessor() {
-        // JtsViewerLog.appendToFile(activity, detail.raw);
-
-        JtsBaseAction action;
-
-        long gid = JtsTextUnitls.getTabKeyFromUrl(info.url);
-        if (detail.gtpUrl != null) {
-            action = new JtsGtpTabAction(activity, gid, detail.gtpUrl);
-        } else if (detail.imgUrls != null && detail.imgUrls.size() != 0) {
-            action = new JtsImgTabAction(activity, gid, detail.imgUrls);
-        } else {
-            action = new JtsBaseAction() {
-                @Override
-                public void processAction() {
-                    activity.showError(R.string.error_comment_null);
-                }
-            };
-        }
-
-        return action;
-    }
-
-    public void sendComment() {
-        String comment = activity.comment.getText().toString();
-        if (TextUtils.isEmpty(comment)) {
-            JtsToolUnitls.hideSoftInput(activity, activity.comment);
-            activity.showError(R.string.error_comment_null);
-            return;
-        }
-
-        Disposable disposable = JtsServer.getSingleton(activity).postComment(detail.fid, JtsTextUnitls.getTabKeyFromUrl(info.url), comment, detail.formhash)
-                .subscribe(new Consumer<String>() {
-                    @Override
-                    public void accept(String s) throws Exception {
-                        processPostComment(s);
-                    }
-                }, errorHandler);
-        disposables.add(disposable);
-    }
 
     public void getTabDetail() {
         this.info = (JtsTabInfoModel) activity.getIntent().getSerializableExtra("tabinfo");
@@ -203,6 +140,10 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(Disposable disposable) throws Exception {
+                        page = 1;
+                        if (adapter != null) {
+                            adapter.clear();
+                        }
                         startLoading();
                     }
                 })
@@ -223,11 +164,21 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
 
     private void loadMoreThread() {
         page++;
-
-
         this.info = (JtsTabInfoModel) activity.getIntent().getSerializableExtra("tabinfo");
         long tabKey = JtsTextUnitls.getTabKeyFromUrl(info.url);
         Disposable disposable = JtsServer.getSingleton(activity).getThread(tabKey, page)
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+                        activity.refreshLayout.setFooterRefreshing(true);
+                    }
+                })
+                .doOnTerminate(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        activity.refreshLayout.setFooterRefreshing(false);
+                    }
+                })
                 .subscribe(new Consumer<List<JtsThreadModule>>() {
                     @Override
                     public void accept(List<JtsThreadModule> jtsThreadModules) throws Exception {
@@ -239,8 +190,55 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
         disposables.add(disposable);
     }
 
+    public void sendComment() {
+        String comment = activity.comment.getText().toString();
+        if (TextUtils.isEmpty(comment)) {
+            JtsToolUnitls.hideSoftInput(activity, activity.comment);
+            activity.showError(R.string.error_comment_null);
+            return;
+        }
+
+        Disposable disposable = JtsServer.getSingleton(activity)
+                .postComment(detail.fid, JtsTextUnitls.getTabKeyFromUrl(info.url), comment, detail.formhash)
+                .doOnTerminate(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        JtsToolUnitls.hideSoftInput(activity, activity.comment);
+                    }
+                })
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Exception {
+                        processPostComment(s);
+                    }
+                }, errorHandler);
+        disposables.add(disposable);
+    }
+
+    public void processDetail(JtsTabDetailModule detail) {
+        this.detail = detail;
+
+        if (adapter == null) {
+            adapter = new JtsThreadListAdapter(activity);
+            activity.recyclerView.setAdapter(adapter);
+        }
+
+        adapter.addData(detail.threadList);
+        activity.findViewById(R.id.tab_detail_play).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                processTabPlay();
+            }
+        });
+        activity.send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendComment();
+            }
+        });
+    }
+
     public void processLoadMoreThread(List<JtsThreadModule> threads) {
-        activity.refreshLayout.setFooterRefreshing(false);
         if (threads == null) {
             JtsViewerLog.e(TAG, "[processLoadMoreThread] null");
             return;
@@ -265,6 +263,20 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
         adapter.notifyDataSetChanged();
     }
 
+    public void processPostComment(String result) {
+        JtsToolUnitls.hideSoftInput(activity, activity.comment);
+
+        if (result.equals(JtsConf.STATUS_SUCCESSED)) {
+            activity.comment.setText("");
+            getTabDetail();
+            activity.showError(R.string.comment_success);
+        } else {
+            activity.showError(R.string.comment_failed);
+        }
+
+
+    }
+
     public boolean processBackPressed() {
         SakuraPlayerView player = (SakuraPlayerView) activity.findViewById(R.id.player);
         if (player != null) {
@@ -281,19 +293,25 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
         return true;
     }
 
-    public void processPostComment(String result) {
-        JtsToolUnitls.hideSoftInput(activity, activity.comment);
+    public void processTabPlay() {
 
-        if (result.equals(JtsConf.STATUS_SUCCESSED)) {
-            activity.comment.setText("");
-            getTabDetail();
-            activity.showError(R.string.comment_success);
+        JtsBaseAction action;
+        long gid = JtsTextUnitls.getTabKeyFromUrl(info.url);
+        if (detail.gtpUrl != null) {
+            action = new JtsGtpTabAction(activity, gid, detail.gtpUrl);
+        } else if (detail.imgUrls != null && detail.imgUrls.size() != 0) {
+            action = new JtsImgTabAction(activity, gid, detail.imgUrls);
         } else {
-            activity.showError(R.string.comment_failed);
+            action = new JtsBaseAction() {
+                @Override
+                public void processAction() {
+                    activity.showError(R.string.error_comment_null);
+                }
+            };
         }
-
-
+        action.execute();
     }
+
 
     @Override
     public void onHeaderRefresh() {
@@ -302,7 +320,6 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
 
     @Override
     public void onFooterRefresh() {
-        activity.refreshLayout.setFooterRefreshing(true);
         loadMoreThread();
     }
 

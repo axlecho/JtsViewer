@@ -7,6 +7,7 @@ import com.axlecho.jtsviewer.network.JtsServer;
 
 import java.util.List;
 
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 
@@ -29,12 +30,13 @@ public class JtsArtistScene extends BaseScene {
     @Override
     public void loadMore() {
         super.loadMore();
-        JtsServer.getSingleton(context).getArtist(artistId, currentPage).subscribe(new Consumer<List<JtsTabInfoModel>>() {
-            @Override
-            public void accept(List<JtsTabInfoModel> jtsTabInfoModels) throws Exception {
-                processLoadMore(jtsTabInfoModels);
-            }
-        }, controller.getErrorHandler());
+        JtsServer.getSingleton(context).getArtist(artistId, currentPage)
+                .subscribe(new Consumer<List<JtsTabInfoModel>>() {
+                    @Override
+                    public void accept(List<JtsTabInfoModel> jtsTabInfoModels) throws Exception {
+                        processLoadMore(jtsTabInfoModels);
+                    }
+                }, controller.getErrorHandler());
     }
 
     @Override

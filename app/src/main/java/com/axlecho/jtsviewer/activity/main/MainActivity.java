@@ -11,8 +11,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 
 import com.axlecho.jtsviewer.JtsApplication;
 import com.axlecho.jtsviewer.R;
@@ -155,6 +157,8 @@ public class MainActivity extends AppCompatActivity
 
     public void showError(String msg) {
         Snackbar.make(this.getWindow().getDecorView(), msg, Snackbar.LENGTH_LONG).show();
+        ViewGroup rootView = (ViewGroup) findViewById(R.id.activity_content_layout);
+        LayoutInflater.from(this).inflate(R.layout.view_error_tip, rootView);
     }
 
     public void closeDrawer() {
