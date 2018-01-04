@@ -16,7 +16,6 @@ import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.JtsThreadModule;
 import com.axlecho.jtsviewer.network.JtsNetworkManager;
-import com.axlecho.jtsviewer.network.JtsPageParser;
 import com.axlecho.jtsviewer.network.JtsServer;
 import com.axlecho.jtsviewer.untils.JtsConf;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
@@ -26,18 +25,12 @@ import com.axlecho.sakura.SakuraPlayerView;
 import com.bumptech.glide.Glide;
 import com.hippo.refreshlayout.RefreshLayout;
 
-import java.io.InterruptedIOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Administrator on 2017/11/7.
@@ -59,7 +52,7 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
         @Override
         public void accept(Throwable throwable) throws Exception {
             JtsToolUnitls.hideSoftInput(activity, activity.comment);
-            activity.showError(throwable.getMessage());
+            activity.showError(R.drawable.ic_error_network, throwable.getMessage());
         }
     };
 
@@ -80,17 +73,6 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
         this.bindTabInfo();
     }
 
-    public void getTabDetail() {
-        this.info = (JtsTabInfoModel) activity.getIntent().getSerializableExtra("tabinfo");
-        long tabKey = JtsTextUnitls.getTabKeyFromUrl(info.url);
-        Disposable disposable = JtsServer.getSingleton(activity).getDetail(tabKey).subscribe(new Consumer<JtsTabDetailModule>() {
-            @Override
-            public void accept(JtsTabDetailModule jtsTabDetailModule) throws Exception {
-                processDetail(jtsTabDetailModule);
-            }
-        }, errorHandler);
-        disposables.add(disposable);
-    }
 
     public void processDetail(JtsTabDetailModule detail) {
         this.detail = detail;
@@ -108,7 +90,7 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
                 sendComment();
             }
         });
-        this.stopLoadingProgressBar();
+        this.stopLoading();
     }
 
     public void bindTabInfo() {
@@ -214,6 +196,31 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
         disposables.add(disposable);
     }
 
+    public void getTabDetail() {
+        this.info = (JtsTabInfoModel) activity.getIntent().getSerializableExtra("tabinfo");
+        long tabKey = JtsTextUnitls.getTabKeyFromUrl(info.url);
+        Disposable disposable = JtsServer.getSingleton(activity).getDetail(tabKey)
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+                        startLoading();
+                    }
+                })
+                .doOnTerminate(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        stopLoading();
+                    }
+                })
+                .subscribe(new Consumer<JtsTabDetailModule>() {
+                    @Override
+                    public void accept(JtsTabDetailModule jtsTabDetailModule) throws Exception {
+                        processDetail(jtsTabDetailModule);
+                    }
+                }, errorHandler);
+        disposables.add(disposable);
+    }
+
     private void loadMoreThread() {
         page++;
 
@@ -308,7 +315,11 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
         JtsToolUnitls.openUrl(activity, JtsConf.HOST_URL + info.url);
     }
 
-    public void stopLoadingProgressBar() {
+    public void stopLoading() {
         activity.findViewById(R.id.detail_loading_progressbar).setVisibility(View.INVISIBLE);
+    }
+
+    public void startLoading() {
+        activity.findViewById(R.id.detail_loading_progressbar).setVisibility(View.VISIBLE);
     }
 }

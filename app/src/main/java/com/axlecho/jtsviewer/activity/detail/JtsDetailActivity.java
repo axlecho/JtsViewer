@@ -9,11 +9,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.axlecho.jtsviewer.JtsApplication;
 import com.axlecho.jtsviewer.R;
+import com.axlecho.jtsviewer.untils.JtsViewerLog;
 import com.axlecho.jtsviewer.widget.RecycleViewDivider;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -105,9 +107,26 @@ public class JtsDetailActivity extends AppCompatActivity {
         JtsDetailActivityController.getInstance().initPopMenuAction();
     }
 
-    public void showError(String msg) {
+    public void showError(int resId, String msg) {
         View rootView = findViewById(R.id.comment_layout);
         Snackbar.make(rootView, msg, Snackbar.LENGTH_LONG).show();
+
+        View topView = this.getWindow().getDecorView();
+        if (!(topView instanceof FrameLayout)) {
+            JtsViewerLog.e(TAG, "can not show error message");
+            return;
+        }
+
+        FrameLayout rootLayout = (FrameLayout) topView;
+        ImageView imageView = new ImageView(this);
+        imageView.setImageResource(resId);
+        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+
+        rootLayout.addView(imageView);
+
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(128, 128);
+        params.gravity = Gravity.CENTER;
+        imageView.setLayoutParams(params);
     }
 
     public void showError(int resId) {
