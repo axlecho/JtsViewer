@@ -42,6 +42,7 @@ public class MainActivityController {
         @Override
         public void accept(Throwable throwable) throws Exception {
             JtsViewerLog.e(TAG, throwable.getMessage());
+            stopLoadingProgressBar();
             processShowError(throwable.getMessage());
         }
     };
