@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity
         refreshLayout.setOnRefreshListener(this);
 
         this.controller.loadDefaultScene();
-
+        this.controller.checkForUpdate();
 
         JtsApplication application = (JtsApplication) getApplication();
         mTracker = application.getDefaultTracker();

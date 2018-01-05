@@ -13,34 +13,35 @@ import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.JtsThreadModule;
 import com.axlecho.jtsviewer.module.JtsUserModule;
+import com.axlecho.jtsviewer.module.JtsVersionInfoModule;
 import com.axlecho.jtsviewer.untils.JtsConf;
-import com.axlecho.jtsviewer.untils.JtsViewerLog;
+import com.axlecho.jtsviewer.untils.JtsToolUnitls;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
-import io.reactivex.functions.Function;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class JtsServer {
     private static final String TAG = JtsServer.class.getSimpleName();
     private static final int TIME_OUT = 100;
     private volatile static JtsServer singleton;
     private JtsServerApi service;
+    private JtsGithubApi github;
     private Context context;
     private JtsSchedulers schedulers;
 
+
     private JtsServer(Context context) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         builder.addNetworkInterceptor(logging);
@@ -48,7 +49,6 @@ public class JtsServer {
         builder.readTimeout(TIME_OUT, TimeUnit.SECONDS);
         builder.writeTimeout(TIME_OUT, TimeUnit.SECONDS);
         builder.connectTimeout(TIME_OUT, TimeUnit.SECONDS);
-
         Interceptor headerInterceptor = new Interceptor() {
             @Override
             public okhttp3.Response intercept(Chain chain) throws IOException {
@@ -61,12 +61,19 @@ public class JtsServer {
         builder.addInterceptor(headerInterceptor);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .client(builder.build())
                 .baseUrl(JtsConf.DESKTOP_HOST_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
-
         this.service = retrofit.create(JtsServerApi.class);
+
+        Retrofit githubRetrofit = new Retrofit.Builder()
+                .client(builder.build())
+                .baseUrl(JtsConf.GITHUB_URL)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        this.github = githubRetrofit.create(JtsGithubApi.class);
+
         this.context = context.getApplicationContext();
         this.schedulers = new JtsSchedulers();
     }
@@ -135,6 +142,11 @@ public class JtsServer {
         Observable<String> o = service.postComment(fid, tid, message, System.currentTimeMillis(), formhash, 1, "")
                 .map(new JtsParseCommentFunction());
 
+        return schedulers.switchSchedulers(o);
+    }
+
+    public Observable<JtsVersionInfoModule> getLastVersionInfo() {
+        Observable<JtsVersionInfoModule> o = github.getLastVersion();
         return schedulers.switchSchedulers(o);
     }
 

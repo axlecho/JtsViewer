@@ -18,6 +18,7 @@ import com.axlecho.jtsviewer.activity.cache.HistoryActivity;
 import com.axlecho.jtsviewer.activity.login.JtsLoginActivity;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.JtsUserModule;
+import com.axlecho.jtsviewer.module.JtsVersionInfoModule;
 import com.axlecho.jtsviewer.network.JtsNetworkManager;
 import com.axlecho.jtsviewer.network.JtsServer;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
@@ -270,5 +271,14 @@ public class MainActivityController {
 
     public void stopFooterRefreshing() {
         activity.refreshLayout.setFooterRefreshing(false);
+    }
+
+    public void checkForUpdate() {
+        JtsServer.getSingleton(activity).getLastVersionInfo().subscribe(new Consumer<JtsVersionInfoModule>() {
+            @Override
+            public void accept(JtsVersionInfoModule jtsVersionInfoModule) throws Exception {
+                JtsViewerLog.d(TAG, jtsVersionInfoModule.toString());
+            }
+        }, errorHandler);
     }
 }

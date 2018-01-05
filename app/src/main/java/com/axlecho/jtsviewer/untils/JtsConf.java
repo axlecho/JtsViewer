@@ -5,7 +5,7 @@ public class JtsConf {
     public static String HOST_URL = "http://m.jitashe.org";
     public static String DESKTOP_HOST_URL = "http://www.jitashe.org";
     public static String REGISTER_URL = "/member.php?mod=jitashereg&mobile=2";
-
+    public static String GITHUB_URL = "https://api.github.com";
 
     public static final String WORK_SPACE = "JtsViewer";
     public static final String CRASH_PATH = "crash";

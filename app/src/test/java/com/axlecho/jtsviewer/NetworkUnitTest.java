@@ -7,6 +7,7 @@ import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.JtsThreadModule;
 import com.axlecho.jtsviewer.module.JtsUserModule;
+import com.axlecho.jtsviewer.module.JtsVersionInfoModule;
 import com.axlecho.jtsviewer.network.JtsSchedulers;
 import com.axlecho.jtsviewer.network.JtsSearchHelper;
 import com.axlecho.jtsviewer.network.JtsServer;
@@ -24,6 +25,7 @@ import org.robolectric.shadows.ShadowLog;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
 
 import static org.hamcrest.core.Is.is;
 
@@ -143,6 +145,12 @@ public class NetworkUnitTest {
         MatcherAssert.assertThat("avatar is null", !TextUtils.isEmpty(user.avatarUrl));
     }
 
+    // @Test
+    // failed with CertificateException: Certificates does not conform to algorithm constraints
+    public void testGetNewVersionInfo() {
+        JtsVersionInfoModule versionInfo = server.getLastVersionInfo().blockingFirst();
+        System.out.println(versionInfo);
+    }
 
     private class MockSchedulers extends JtsSchedulers {
         @Override
