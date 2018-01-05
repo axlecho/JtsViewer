@@ -61,6 +61,7 @@ public class JtsServer {
         builder.addInterceptor(headerInterceptor);
 
         Retrofit retrofit = new Retrofit.Builder()
+                .client(builder.build())
                 .baseUrl(JtsConf.DESKTOP_HOST_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
