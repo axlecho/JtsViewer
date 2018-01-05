@@ -80,7 +80,7 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
         JtsViewerLog.d(TAG, "[bindTabInfo] " + model);
 
         TextDrawable defaultDrawable = TextDrawable.builder()
-                .beginConfig().height(200).width(300).bold().endConfig()
+                .beginConfig().height(300).width(200).bold().endConfig()
                 .buildRect(model.title.substring(0, 1), activity.getResources().getColor(R.color.colorPrimary));
         Glide.with(activity).load(JtsTextUnitls.getResizePicUrl(model.avatar, 200, 300))
                 .error(defaultDrawable).into(activity.avatar);
