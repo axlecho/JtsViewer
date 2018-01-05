@@ -139,7 +139,7 @@ public class JtsDetailActivity extends AppCompatActivity {
         }
     }
 
-    public void showError(int resId) {
+    public void showMessage(int resId) {
         View rootView = findViewById(R.id.comment_layout);
         Snackbar.make(rootView, resId, Snackbar.LENGTH_LONG).show();
     }

@@ -196,7 +196,7 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
         String comment = activity.comment.getText().toString();
         if (TextUtils.isEmpty(comment)) {
             JtsToolUnitls.hideSoftInput(activity, activity.comment);
-            activity.showError(R.string.error_comment_null);
+            activity.showMessage(R.string.error_comment_null);
             return;
         }
 
@@ -273,9 +273,9 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
         if (result.equals(JtsConf.STATUS_SUCCESSED)) {
             activity.comment.setText("");
             getTabDetail();
-            activity.showError(R.string.comment_success);
+            activity.showMessage(R.string.comment_success);
         } else {
-            activity.showError(R.string.comment_failed);
+            activity.showMessage(R.string.comment_failed);
         }
 
 
@@ -309,7 +309,7 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
             action = new JtsBaseAction() {
                 @Override
                 public void processAction() {
-                    activity.showError(R.string.error_comment_null);
+                    activity.showMessage(R.string.error_comment_null);
                 }
             };
         }
