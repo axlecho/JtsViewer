@@ -145,7 +145,7 @@ public class NetworkUnitTest {
         MatcherAssert.assertThat("avatar is null", !TextUtils.isEmpty(user.avatarUrl));
     }
 
-    // @Test
+    @Test
     // failed with CertificateException: Certificates does not conform to algorithm constraints
     public void testGetNewVersionInfo() {
         JtsVersionInfoModule versionInfo = server.getLastVersionInfo().blockingFirst();

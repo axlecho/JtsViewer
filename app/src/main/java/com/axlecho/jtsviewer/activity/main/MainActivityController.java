@@ -285,15 +285,28 @@ public class MainActivityController {
                 AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                 builder.setTitle(R.string.title_update);
 
+                int size = 0;
+                String download_url = jtsVersionInfoModule.getHtml_url();
+                for (JtsVersionInfoModule.Assets asset : jtsVersionInfoModule.getAssets()) {
+                    if (asset.getName().endsWith(".apk")) {
+                        size = asset.getSize();
+                        download_url = asset.getBrowser_download_url();
+                    }
+                }
                 StringBuilder messageBuilder = new StringBuilder();
                 messageBuilder.append(jtsVersionInfoModule.getTag_name());
+                messageBuilder.append("\n");
+                messageBuilder.append(size);
                 messageBuilder.append("\n\n");
+
                 messageBuilder.append(jtsVersionInfoModule.getBody());
                 builder.setMessage(messageBuilder.toString());
+
+                final String finalDownload_url = download_url;
                 builder.setPositiveButton(R.string.tip_update_confirm, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        JtsToolUnitls.openUrl(activity, jtsVersionInfoModule.getHtml_url());
+                        JtsToolUnitls.openUrl(activity, finalDownload_url);
                     }
                 });
                 builder.show();

@@ -2,11 +2,14 @@ package com.axlecho.jtsviewer.module;
 
 import com.google.gson.Gson;
 
+import java.util.List;
+
 public class JtsVersionInfoModule {
     private String html_url;
     private String tag_name;
     private String name;
     private String body;
+    private List<Assets> assets;
 
     @Override
     public String toString() {
@@ -17,17 +20,11 @@ public class JtsVersionInfoModule {
         return html_url;
     }
 
-    public void setHtml_url(String html_url) {
-        this.html_url = html_url;
-    }
 
     public String getTag_name() {
         return tag_name;
     }
 
-    public void setTag_name(String tag_name) {
-        this.tag_name = tag_name;
-    }
 
     public String getName() {
         return name;
@@ -41,7 +38,30 @@ public class JtsVersionInfoModule {
         return body;
     }
 
-    public void setBody(String body) {
-        this.body = body;
+    public List<Assets> getAssets() {
+        return assets;
+    }
+
+    public class Assets {
+        private String name;
+        private int size;
+        private String browser_download_url;
+
+        @Override
+        public String toString() {
+            return new Gson().toJson(this);
+        }
+        
+        public String getName() {
+            return name;
+        }
+
+        public int getSize() {
+            return size;
+        }
+
+        public String getBrowser_download_url() {
+            return browser_download_url;
+        }
     }
 }
