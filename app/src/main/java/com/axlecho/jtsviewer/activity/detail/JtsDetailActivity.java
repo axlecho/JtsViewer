@@ -1,8 +1,6 @@
 package com.axlecho.jtsviewer.activity.detail;
 
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -13,24 +11,20 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.axlecho.jtsviewer.JtsApplication;
 import com.axlecho.jtsviewer.R;
-import com.axlecho.jtsviewer.untils.JtsViewerLog;
 import com.axlecho.jtsviewer.widget.RecycleViewDivider;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.hippo.refreshlayout.RefreshLayout;
-
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 public class JtsDetailActivity extends AppCompatActivity {
     private static final String TAG = "detail-scene";
@@ -44,6 +38,7 @@ public class JtsDetailActivity extends AppCompatActivity {
     public EditText comment;
     public ImageView send;
     public FloatingActionButton play;
+    public View commentLayout;
 
 
     public PopupMenu popupMenu;
@@ -72,6 +67,7 @@ public class JtsDetailActivity extends AppCompatActivity {
         comment = (EditText) findViewById(R.id.comment_edittext);
         send = (ImageView) findViewById(R.id.comment_send);
         play = (FloatingActionButton) findViewById(R.id.tab_detail_play);
+        commentLayout = findViewById(R.id.comment_layout);
 
         otherActions = findViewById(R.id.tab_detail_other_actions);
 
@@ -121,6 +117,7 @@ public class JtsDetailActivity extends AppCompatActivity {
         popupMenu.getMenuInflater().inflate(R.menu.scene_tab_detail, popupMenu.getMenu());
         JtsDetailActivityController.getInstance().initPopMenuAction();
     }
+
     public void showError(String msg) {
         ViewGroup rootView = (ViewGroup) findViewById(R.id.activity_content_layout);
         View errorLayout = findViewById(R.id.error_tip_layout);
@@ -152,13 +149,28 @@ public class JtsDetailActivity extends AppCompatActivity {
     }
 
     public void showPlayBtn() {
-        Animation mShowAnim = new ScaleAnimation(0.1f, Animation.RELATIVE_TO_SELF,
-                0.1f, Animation.RELATIVE_TO_SELF,
-                Animation.RELATIVE_TO_SELF, 0.5f,
-                Animation.RELATIVE_TO_SELF, 0.5f);
-        mShowAnim.setDuration(500);
+        // Animation animation = new ScaleAnimation(0.1f, Animation.RELATIVE_TO_SELF,
+        //        0.1f, Animation.RELATIVE_TO_SELF,
+        //        Animation.RELATIVE_TO_SELF, 0.5f,
+        //        Animation.RELATIVE_TO_SELF, 0.5f);
 
-        play.startAnimation(mShowAnim);
+        // AlphaAnimation animation = new AlphaAnimation(0.1f, 1.0f);
+        // animation.setDuration(200);
+
+        // play.startAnimation(animation);
         play.setVisibility(View.VISIBLE);
+    }
+
+    public void showCommentEdittext() {
+        // TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0f,
+        //        Animation.RELATIVE_TO_SELF, 0f,
+        //        Animation.RELATIVE_TO_SELF, 1.0f,
+        //        Animation.RELATIVE_TO_SELF, 0.0f);
+
+        // animation.setDuration(500);
+        // AlphaAnimation animation = new AlphaAnimation(0.1f, 1.0f);
+        // animation.setStartTime(200);
+        // commentLayout.startAnimation(animation);
+        commentLayout.setVisibility(View.VISIBLE);
     }
 }

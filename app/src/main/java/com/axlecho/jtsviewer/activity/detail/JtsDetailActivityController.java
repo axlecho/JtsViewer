@@ -239,6 +239,7 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
             }
         });
         activity.showPlayBtn();
+        activity.showCommentEdittext();
     }
 
     public void processLoadMoreThread(List<JtsThreadModule> threads) {
