@@ -23,6 +23,7 @@ import com.axlecho.jtsviewer.module.JtsUserModule;
 import com.axlecho.jtsviewer.module.JtsVersionInfoModule;
 import com.axlecho.jtsviewer.network.JtsNetworkManager;
 import com.axlecho.jtsviewer.network.JtsServer;
+import com.axlecho.jtsviewer.untils.JtsDeviceUnitls;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsToolUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
@@ -279,38 +280,45 @@ public class MainActivityController {
     public void checkForUpdate() {
         JtsServer.getSingleton(activity).getLastVersionInfo().subscribe(new Consumer<JtsVersionInfoModule>() {
             @Override
-            public void accept(final JtsVersionInfoModule jtsVersionInfoModule) throws Exception {
-                JtsViewerLog.d(TAG, jtsVersionInfoModule.toString());
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                builder.setTitle(R.string.title_update);
+            public void accept(final JtsVersionInfoModule version) throws Exception {
+                JtsViewerLog.d(TAG, version.toString());
+                if (JtsTextUnitls.compareVersion(JtsDeviceUnitls.getVersionName(activity),
+                        version.getTag_name()) <= 0) {
+                    return;
+                }
 
                 int size = 0;
-                String download_url = jtsVersionInfoModule.getHtml_url();
-                for (JtsVersionInfoModule.Assets asset : jtsVersionInfoModule.getAssets()) {
+                String download_url = version.getHtml_url();
+
+                for (JtsVersionInfoModule.Assets asset : version.getAssets()) {
                     if (asset.getName().endsWith(".apk")) {
                         size = asset.getSize();
                         download_url = asset.getBrowser_download_url();
+                        break;
                     }
                 }
                 StringBuilder messageBuilder = new StringBuilder();
-                messageBuilder.append(jtsVersionInfoModule.getTag_name());
+                messageBuilder.append(String.format(activity.getResources().getString(R.string.tip_update_version), version.getTag_name()));
                 messageBuilder.append("\n");
-                messageBuilder.append(size);
+                messageBuilder.append(String.format(activity.getResources().getString(R.string.tip_update_size), JtsTextUnitls.sizeFormat(size)));
                 messageBuilder.append("\n\n");
-
-                messageBuilder.append(jtsVersionInfoModule.getBody());
-                builder.setMessage(messageBuilder.toString());
-
-                final String finalDownload_url = download_url;
-                builder.setPositiveButton(R.string.tip_update_confirm, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        JtsToolUnitls.openUrl(activity, finalDownload_url);
-                    }
-                });
-                builder.show();
+                messageBuilder.append(version.getBody());
+                String message = messageBuilder.toString();
+                buildUpdateDialog(message, download_url);
             }
         }, errorHandler);
+    }
+
+    public void buildUpdateDialog(String msg, final String downloadUrl) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle(R.string.title_update);
+        builder.setMessage(msg);
+        builder.setPositiveButton(R.string.tip_update_confirm, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                JtsToolUnitls.openUrl(activity, downloadUrl);
+            }
+        });
+        builder.show();
     }
 }

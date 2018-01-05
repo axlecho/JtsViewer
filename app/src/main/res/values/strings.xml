@@ -39,7 +39,9 @@
     <string name="detail_comment_hint">Say some thing…</string>
 
     <string name="title_update"> Update</string>
-    <string name="tip_update_confirm">ok</string>
+    <string name="tip_update_confirm">OK</string>
+    <string name="tip_update_version">Version: %s</string>
+    <string name="tip_update_size">Size: %s</string>
     <!-- Strings related to Settings -->
     <string name="pref_header_about">About</string>
     <string name="pref_aboutme_key">author</string>
