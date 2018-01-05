@@ -1,5 +1,7 @@
 package com.axlecho.jtsviewer.activity.main;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
@@ -22,6 +24,7 @@ import com.axlecho.jtsviewer.module.JtsVersionInfoModule;
 import com.axlecho.jtsviewer.network.JtsNetworkManager;
 import com.axlecho.jtsviewer.network.JtsServer;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
+import com.axlecho.jtsviewer.untils.JtsToolUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 import com.bumptech.glide.Glide;
 
@@ -276,8 +279,24 @@ public class MainActivityController {
     public void checkForUpdate() {
         JtsServer.getSingleton(activity).getLastVersionInfo().subscribe(new Consumer<JtsVersionInfoModule>() {
             @Override
-            public void accept(JtsVersionInfoModule jtsVersionInfoModule) throws Exception {
+            public void accept(final JtsVersionInfoModule jtsVersionInfoModule) throws Exception {
                 JtsViewerLog.d(TAG, jtsVersionInfoModule.toString());
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                builder.setTitle(R.string.title_update);
+
+                StringBuilder messageBuilder = new StringBuilder();
+                messageBuilder.append(jtsVersionInfoModule.getTag_name());
+                messageBuilder.append("\n\n");
+                messageBuilder.append(jtsVersionInfoModule.getBody());
+                builder.setMessage(messageBuilder.toString());
+                builder.setPositiveButton(R.string.tip_update_confirm, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        JtsToolUnitls.openUrl(activity, jtsVersionInfoModule.getHtml_url());
+                    }
+                });
+                builder.show();
             }
         }, errorHandler);
     }
