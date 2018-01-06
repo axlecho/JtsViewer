@@ -2,6 +2,7 @@ package com.axlecho.jtsviewer.network;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
+import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -9,6 +10,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 public interface JtsServerApi {
     String TAG = JtsServerApi.class.getSimpleName();
@@ -18,7 +20,7 @@ public interface JtsServerApi {
     Observable<ResponseBody> index();
 
     @GET("/tab/{id}/{page}")
-    Observable<ResponseBody> getDetail(@Path("id") long id,@Path("page") int page);
+    Observable<ResponseBody> getDetail(@Path("id") long id, @Path("page") int page);
 
     @GET("/guide/newtab/{page}")
     Observable<ResponseBody> getNewTab(@Path("page") int page);
@@ -27,7 +29,7 @@ public interface JtsServerApi {
     Observable<ResponseBody> getHotTab(@Path("page") int page);
 
     @GET("/artist/{id}/{page}")
-    Observable<ResponseBody> getArtist(@Path("id") int id,@Path("page")int page);
+    Observable<ResponseBody> getArtist(@Path("id") int id, @Path("page") int page);
 
     @GET("/search/tab/{keyword}")
     Observable<ResponseBody> search(@Path("keyword") String keyword);
@@ -46,10 +48,13 @@ public interface JtsServerApi {
     @FormUrlEncoded
     @POST("/forum.php?mod=post&action=reply&extra=page%3D1&replysubmit=yes&infloat=yes&handlekey=fastpost&inajax=1")
     Observable<ResponseBody> postComment(@Query("fid") int fid,
-                                                   @Query("tid") long tid,
-                                                   @Field("message") String message,
-                                                   @Field("posttime") long posttime,
-                                                   @Field("formhash") String formhash,
-                                                   @Field("usesig") int usesig,
-                                                   @Field("subject") String subject);
+                                         @Query("tid") long tid,
+                                         @Field("message") String message,
+                                         @Field("posttime") long posttime,
+                                         @Field("formhash") String formhash,
+                                         @Field("usesig") int usesig,
+                                         @Field("subject") String subject);
+
+    @GET
+    Observable<Response<ResponseBody>> download(@Url String fileUrl);
 }

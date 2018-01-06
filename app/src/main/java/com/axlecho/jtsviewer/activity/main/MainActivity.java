@@ -169,7 +169,10 @@ public class MainActivity extends AppCompatActivity
         errorTextView.setText(msg);
 
         errorLayout.setVisibility(View.VISIBLE);
-        // Snackbar.make(this.getWindow().getDecorView(), msg, Snackbar.LENGTH_LONG).show();
+    }
+
+    public void showMessage(String msg) {
+        Snackbar.make(this.getWindow().getDecorView(), msg, Snackbar.LENGTH_LONG).show();
     }
 
     public void hideError() {

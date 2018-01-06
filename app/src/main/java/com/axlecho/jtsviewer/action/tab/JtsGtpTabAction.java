@@ -3,13 +3,20 @@ package com.axlecho.jtsviewer.action.tab;
 import android.content.Context;
 
 import com.axlecho.jtsviewer.action.JtsBaseAction;
-import com.axlecho.jtsviewer.action.download.DownloadAction;
 import com.axlecho.jtsviewer.action.ui.JtsShowGtpTabAction;
-import com.axlecho.jtsviewer.network.download.DownloadListener;
-import com.axlecho.jtsviewer.untils.JtsViewerLog;
+import com.axlecho.jtsviewer.cache.CacheManager;
+import com.axlecho.jtsviewer.module.CacheModule;
+import com.axlecho.jtsviewer.network.JtsServer;
+
+import java.io.File;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.functions.Consumer;
 
 
-public class JtsGtpTabAction extends JtsBaseAction implements DownloadListener {
+public class JtsGtpTabAction extends JtsBaseAction {
 
     private static final String TAG = JtsGtpTabAction.class.getSimpleName();
     private Context context;
@@ -24,35 +31,27 @@ public class JtsGtpTabAction extends JtsBaseAction implements DownloadListener {
 
     @Override
     public void processAction() {
-        DownloadAction action = new DownloadAction(context, gtpUrl, gid);
-        action.setDownloadHandler(this);
-        action.processAction();
-    }
+        Observable<String> cache = Observable.create(new ObservableOnSubscribe<String>() {
+            @Override
+            public void subscribe(ObservableEmitter<String> e) throws Exception {
+                CacheModule module = CacheManager.getInstance(context).getModule(gid);
+                if (module != null) {
+                    e.onNext(module.path + File.separator + module.fileName);
+                }
+                e.onComplete();
+            }
+        });
 
+        String path = CacheManager.getInstance(context).getCachePath() + File.separator + gid;
+        Observable<String> network = JtsServer.getSingleton(context).download(gtpUrl, path);
 
-    @Override
-    public void onStart(long size) {
-        JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, "[download] size " + size);
-    }
-
-    @Override
-    public void onFinish(String result) {
-        this.processDownloadFinish(result);
-    }
-
-    @Override
-    public void onError(String msg) {
-        JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, "[download] error " + msg);
-    }
-
-    @Override
-    public void onProgress(long progress) {
-        JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, "[download] progress " + progress);
-    }
-
-    public void processDownloadFinish(String result) {
-        JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, "[download] result " + result);
-        JtsShowGtpTabAction action = new JtsShowGtpTabAction(context, result);
-        action.processAction();
+        Observable.concat(cache, network).take(1)
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String result) throws Exception {
+                        JtsShowGtpTabAction action = new JtsShowGtpTabAction(context, result);
+                        action.processAction();
+                    }
+                });
     }
 }

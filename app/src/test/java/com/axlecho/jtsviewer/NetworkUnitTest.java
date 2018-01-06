@@ -3,6 +3,7 @@ package com.axlecho.jtsviewer;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.axlecho.jtsviewer.cache.CacheManager;
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.JtsThreadModule;
@@ -12,6 +13,7 @@ import com.axlecho.jtsviewer.network.JtsSchedulers;
 import com.axlecho.jtsviewer.network.JtsSearchHelper;
 import com.axlecho.jtsviewer.network.JtsServer;
 import com.axlecho.jtsviewer.untils.JtsConf;
+import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 
 import org.hamcrest.MatcherAssert;
 import org.junit.Before;
@@ -22,6 +24,7 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowLog;
 
+import java.io.File;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -72,7 +75,6 @@ public class NetworkUnitTest {
         MatcherAssert.assertThat("check uid failed", user.uid, is(0L));
         MatcherAssert.assertThat("check username failed", TextUtils.isEmpty(user.userName));
     }
-
 
 
     @Test
@@ -151,7 +153,16 @@ public class NetworkUnitTest {
         System.out.println(versionInfo);
     }
 
+    @Test
+    public void testDownload() {
+        long gid = 172292;
+        JtsTabDetailModule detail = server.getDetail(172292).blockingFirst();
+        MatcherAssert.assertThat("gtp url not null", detail.gtpUrl != null);
 
+        String path = CacheManager.getInstance(context).getCachePath() + File.separator + gid;
+        String result = server.download(detail.gtpUrl, path).blockingFirst();
+        System.out.println(result);
+    }
 
     private class MockSchedulers extends JtsSchedulers {
         @Override

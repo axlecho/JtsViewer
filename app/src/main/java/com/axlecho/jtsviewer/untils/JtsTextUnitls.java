@@ -15,6 +15,10 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import okhttp3.Headers;
+import retrofit2.Response;
+
+
 public class JtsTextUnitls {
     private static final String TAG = JtsTextUnitls.class.getSimpleName();
     public static int CONST_PLAYER_ID = 100001;
@@ -117,8 +121,8 @@ public class JtsTextUnitls {
     public static int compareVersion(String version1, String version2) throws Exception {
 
 
-        version1 = findByPatternOnce(version1,"[.\\d]+");
-        version2 = findByPatternOnce(version2,"[.\\d]+");
+        version1 = findByPatternOnce(version1, "[.\\d]+");
+        version2 = findByPatternOnce(version2, "[.\\d]+");
         if (version1 == null || version2 == null) {
             throw new IllegalArgumentException("compareVersion error:illegal params.");
         }
@@ -156,5 +160,24 @@ public class JtsTextUnitls {
             s = String.format(Locale.CHINA, "%d B", size);
         }
         return s;
+    }
+
+    public static String getFileNameFromResponse(Response response) {
+        Headers headers = response.headers();
+        List<String> contentDispoition = headers.values("Content-Disposition");
+        String fileName = null;
+        for (String s : contentDispoition) {
+            List<String> fileNameGroup = findByPattern(s, "(?<=filename=\").*?(?=\")");
+            if (fileNameGroup.size() > 0) {
+                fileName = fileNameGroup.get(0);
+                break;
+            }
+        }
+
+        if (fileName == null) {
+            fileName = getRandomUUID();
+        }
+
+        return fileName;
     }
 }

@@ -13,11 +13,14 @@ import android.widget.TextView;
 
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.action.JtsBaseAction;
+import com.axlecho.jtsviewer.action.tab.JtsGtpTabAction;
+import com.axlecho.jtsviewer.action.tab.JtsImgTabAction;
 import com.axlecho.jtsviewer.action.user.JtsShowLoginAction;
 import com.axlecho.jtsviewer.activity.detail.JtsDetailActivity;
 import com.axlecho.jtsviewer.activity.JtsSettingsActivity;
 import com.axlecho.jtsviewer.activity.cache.HistoryActivity;
 import com.axlecho.jtsviewer.activity.login.JtsLoginActivity;
+import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.JtsUserModule;
 import com.axlecho.jtsviewer.module.JtsVersionInfoModule;
@@ -320,5 +323,20 @@ public class MainActivityController {
             }
         });
         builder.show();
+    }
+
+    public void generateShortcut(JtsTabInfoModel model) {
+        // activity.showMessage("create shotcut for " + model.title);
+        final long tabKey = JtsTextUnitls.getTabKeyFromUrl(model.url);
+        JtsServer.getSingleton(activity).getDetail(tabKey).subscribe(new Consumer<JtsTabDetailModule>() {
+            @Override
+            public void accept(JtsTabDetailModule detail) throws Exception {
+                JtsBaseAction action;
+                if (detail.gtpUrl != null) {
+                    action = new JtsGtpTabAction(activity, tabKey, detail.gtpUrl);
+                    action.execute();
+                }
+            }
+        });
     }
 }

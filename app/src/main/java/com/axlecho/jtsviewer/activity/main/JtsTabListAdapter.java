@@ -70,7 +70,7 @@ public class JtsTabListAdapter extends RecyclerView.Adapter<JtsTabListAdapter.Ta
     }
 
 
-    class TabViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class TabViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         private TextView title;
         private TextView author;
@@ -94,6 +94,7 @@ public class JtsTabListAdapter extends RecyclerView.Adapter<JtsTabListAdapter.Ta
 
             View cardView = view.findViewById(R.id.tab_item_view);
             cardView.setOnClickListener(this);
+            cardView.setOnLongClickListener(this);
         }
 
         public void setData(JtsTabInfoModel model) {
@@ -128,6 +129,14 @@ public class JtsTabListAdapter extends RecyclerView.Adapter<JtsTabListAdapter.Ta
             JtsTabInfoModel model = content.get(getAdapterPosition());
             JtsViewerLog.d(TAG, model.url);
             MainActivityController.getInstance().startDetailActivity(model, avatar);
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            JtsTabInfoModel model = content.get(getAdapterPosition());
+            JtsViewerLog.d(TAG, model.url);
+            MainActivityController.getInstance().generateShortcut(model);
+            return true;
         }
     }
 }

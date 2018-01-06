@@ -1,7 +1,9 @@
 package com.axlecho.jtsviewer.network;
 
 import android.content.Context;
+import android.util.Log;
 
+import com.axlecho.jtsviewer.action.download.JtsDownloadFunction;
 import com.axlecho.jtsviewer.action.parser.JtsParseCommentFunction;
 import com.axlecho.jtsviewer.action.parser.JtsParseLoginFunction;
 import com.axlecho.jtsviewer.action.parser.JtsParseSearchKeyConsumer;
@@ -22,9 +24,11 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -148,6 +152,11 @@ public class JtsServer {
 
     public Observable<JtsVersionInfoModule> getLastVersionInfo() {
         Observable<JtsVersionInfoModule> o = github.getLastVersion();
+        return schedulers.switchSchedulers(o);
+    }
+
+    public Observable<String> download(String url, String path) {
+        Observable<String> o = service.download(url).map(new JtsDownloadFunction(path));
         return schedulers.switchSchedulers(o);
     }
 
