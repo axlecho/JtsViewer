@@ -3,7 +3,9 @@ package com.axlecho.jtsviewer.cache;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.axlecho.jtsviewer.activity.main.MainActivityController;
 import com.axlecho.jtsviewer.module.CacheModule;
+import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 
 import org.json.JSONException;
@@ -98,5 +100,36 @@ public class CacheManager {
     public void reloadModule() {
         moduleList.clear();
         loadCacheModule();
+    }
+
+    public void cacheInfo(long gid, String path, String fileName, JtsTabInfoModel tabInfo) {
+        if (findCacheByGid(gid)) {
+            return;
+        }
+        CacheModule cacheInfo = new CacheModule();
+        cacheInfo.path = path;
+        cacheInfo.fileName = fileName;
+        cacheInfo.gid = String.valueOf(gid);
+        cacheInfo.type = "gtp";
+        cacheInfo.frequency = 0;
+        cacheInfo.tabInfo = tabInfo;
+        try {
+            cacheInfo.writeToFile();
+        } catch (IOException e) {
+            JtsViewerLog.e(TAG, "cache info failed " + e.getMessage());
+        }
+
+        reloadModule();
+    }
+
+
+    private boolean findCacheByGid(long gid) {
+        for (CacheModule cache : moduleList) {
+            if (cache.gid.equals(String.valueOf(gid))) {
+                return true;
+            }
+
+        }
+        return false;
     }
 }

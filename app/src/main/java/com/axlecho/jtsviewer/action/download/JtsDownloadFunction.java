@@ -21,26 +21,18 @@ public class JtsDownloadFunction implements Function<Response<ResponseBody>, Str
 
     @Override
     public String apply(Response<ResponseBody> res) throws Exception {
-        boolean result = false;
         File dir = new File(path);
         if (!dir.exists()) {
-            result = dir.mkdirs();
-        }
-        if (!result) {
-            return null;
+            dir.mkdirs();
         }
 
         File output = new File(path, JtsTextUnitls.getFileNameFromResponse(res));
-        result = writeResponseBodyToDisk(res.body(), output);
-        if (!result) {
-            return null;
-        }
-
-        return output.getAbsolutePath();
+        writeResponseBodyToDisk(res.body(), output);
+        return output.getName();
     }
 
     // refer to https://www.jianshu.com/p/92bb85fc07e8
-    private boolean writeResponseBodyToDisk(ResponseBody body, File output) throws Exception {
+    private void writeResponseBodyToDisk(ResponseBody body, File output) throws Exception {
         InputStream inputStream = null;
         OutputStream outputStream = null;
         byte[] fileReader = new byte[4096];
@@ -57,6 +49,5 @@ public class JtsDownloadFunction implements Function<Response<ResponseBody>, Str
             fileSizeDownloaded += read;
         }
         outputStream.flush();
-        return true;
     }
 }
