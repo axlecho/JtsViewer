@@ -27,7 +27,10 @@ import com.hippo.refreshlayout.RefreshLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
@@ -238,8 +241,25 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
                 sendComment();
             }
         });
-        activity.showPlayBtn();
-        activity.showCommentEdittext();
+
+        Observable.timer(50, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(Long aLong) throws Exception {
+                        activity.showPlayBtn();
+                    }
+                });
+
+        Observable.timer(100, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(Long aLong) throws Exception {
+                        activity.showCommentEdittext();
+                    }
+                });
+
     }
 
     public void processLoadMoreThread(List<JtsThreadModule> threads) {

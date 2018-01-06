@@ -149,28 +149,28 @@ public class JtsDetailActivity extends AppCompatActivity {
     }
 
     public void showPlayBtn() {
-        // Animation animation = new ScaleAnimation(0.1f, Animation.RELATIVE_TO_SELF,
-        //        0.1f, Animation.RELATIVE_TO_SELF,
-        //        Animation.RELATIVE_TO_SELF, 0.5f,
-        //        Animation.RELATIVE_TO_SELF, 0.5f);
+        Animation animation = new ScaleAnimation(0.1f, Animation.RELATIVE_TO_SELF,
+                0.1f, Animation.RELATIVE_TO_SELF,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f);
 
         // AlphaAnimation animation = new AlphaAnimation(0.1f, 1.0f);
-        // animation.setDuration(200);
 
-        // play.startAnimation(animation);
+        animation.setDuration(50);
+        play.startAnimation(animation);
         play.setVisibility(View.VISIBLE);
     }
 
     public void showCommentEdittext() {
-        // TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0f,
-        //        Animation.RELATIVE_TO_SELF, 0f,
-        //        Animation.RELATIVE_TO_SELF, 1.0f,
-        //        Animation.RELATIVE_TO_SELF, 0.0f);
+        TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0f,
+                Animation.RELATIVE_TO_SELF, 0f,
+                Animation.RELATIVE_TO_SELF, 1.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f);
 
-        // animation.setDuration(500);
         // AlphaAnimation animation = new AlphaAnimation(0.1f, 1.0f);
-        // animation.setStartTime(200);
-        // commentLayout.startAnimation(animation);
+
+        animation.setDuration(50);
+        commentLayout.startAnimation(animation);
         commentLayout.setVisibility(View.VISIBLE);
     }
 }
