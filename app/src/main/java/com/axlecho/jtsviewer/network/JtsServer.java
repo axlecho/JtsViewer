@@ -187,7 +187,7 @@ public class JtsServer {
                     public void accept(String result) throws Exception {
                         JtsViewerLog.d(TAG, "save " + gid + " to cache");
                         JtsTabInfoModel tabInfo = MainActivityController.getInstance().findTabInfoByGid(gid);
-                        CacheManager.getInstance(context).cacheInfo(gid, path + File.separator + result, tabInfo);
+                        CacheManager.getInstance(context).cacheInfo(gid, result, tabInfo);
                     }
                 });
 
