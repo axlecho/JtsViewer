@@ -71,7 +71,7 @@ public class JtsDetailActivity extends AppCompatActivity {
 
         otherActions = findViewById(R.id.tab_detail_other_actions);
 
-        this.controller = JtsDetailActivityController.getInstance();
+        this.controller = new JtsDetailActivityController();
         this.controller.attachToActivity(this);
 
         refreshLayout = (RefreshLayout) findViewById(R.id.main_swip_refresh_layout);
@@ -97,7 +97,7 @@ public class JtsDetailActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        JtsDetailActivityController.getInstance().detachFromActivity();
+        controller.detachFromActivity();
     }
 
 
@@ -115,7 +115,7 @@ public class JtsDetailActivity extends AppCompatActivity {
 
         popupMenu = new PopupMenu(this, otherActions, Gravity.TOP);
         popupMenu.getMenuInflater().inflate(R.menu.scene_tab_detail, popupMenu.getMenu());
-        JtsDetailActivityController.getInstance().initPopMenuAction();
+        controller.initPopMenuAction();
     }
 
     public void showError(String msg) {

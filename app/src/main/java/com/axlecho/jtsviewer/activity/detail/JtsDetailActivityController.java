@@ -49,27 +49,13 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
 
     private List<Disposable> disposables = new ArrayList<>();
 
-    private static JtsDetailActivityController instance;
-
     private Consumer<Throwable> errorHandler = new Consumer<Throwable>() {
         @Override
         public void accept(Throwable throwable) throws Exception {
             throwable.printStackTrace();
             activity.showError(JtsTextUnitls.getErrorMessageFromException(activity, throwable));
-
         }
     };
-
-    public static JtsDetailActivityController getInstance() {
-        if (instance == null) {
-            synchronized (JtsDetailActivity.class) {
-                if (instance == null) {
-                    instance = new JtsDetailActivityController();
-                }
-            }
-        }
-        return instance;
-    }
 
 
     public void attachToActivity(JtsDetailActivity activity) {
@@ -115,8 +101,8 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
         }
         disposables.clear();
 
-        this.activity = null;
-        this.adapter = null;
+        // this.activity = null;
+        // this.adapter = null;
     }
 
     public void initPopMenuAction() {
