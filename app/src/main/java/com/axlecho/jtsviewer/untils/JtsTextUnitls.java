@@ -85,6 +85,11 @@ public class JtsTextUnitls {
         }
     }
 
+    public static String getTitleFromPath(String path) {
+        String fileName = getFileNameFromPath(path);
+        return removePostfixFromFileName(fileName);
+    }
+
     public static String removePostfixFromFileName(String fileName) {
         int end = fileName.lastIndexOf(".");
         if (end == -1) {

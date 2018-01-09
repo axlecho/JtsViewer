@@ -3,7 +3,6 @@ package com.axlecho.jtsviewer.cache;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.axlecho.jtsviewer.activity.main.MainActivityController;
 import com.axlecho.jtsviewer.module.CacheModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
@@ -11,6 +10,7 @@ import com.axlecho.jtsviewer.untils.JtsViewerLog;
 import org.json.JSONException;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +18,8 @@ import java.util.List;
 public class CacheManager {
 
     private static final String TAG = CacheManager.class.getSimpleName();
+    private final static String INFO_FILE_NAME = "info.json";
+
     private static CacheManager instance;
     private Context context;
     private String cachePath;
@@ -102,19 +104,18 @@ public class CacheManager {
         loadCacheModule();
     }
 
-    public void cacheInfo(long gid, String path, String fileName, JtsTabInfoModel tabInfo) {
+    public void cacheInfo(long gid, String path, JtsTabInfoModel tabInfo) {
         if (findCacheByGid(gid)) {
             return;
         }
         CacheModule cacheInfo = new CacheModule();
         cacheInfo.path = path;
-        cacheInfo.fileName = fileName;
         cacheInfo.gid = String.valueOf(gid);
         cacheInfo.type = "gtp";
         cacheInfo.frequency = 0;
         cacheInfo.tabInfo = tabInfo;
         try {
-            cacheInfo.writeToFile();
+            writeToFile(cacheInfo);
         } catch (IOException e) {
             JtsViewerLog.e(TAG, "cache info failed " + e.getMessage());
         }
@@ -122,6 +123,37 @@ public class CacheManager {
         reloadModule();
     }
 
+    public void writeToFile(CacheModule cache) throws IOException {
+        String infoString = cache.toJson();
+
+        JtsViewerLog.d(TAG, "cache to json " + infoString);
+
+        if (infoString == null) {
+            JtsViewerLog.e(TAG, "prase info to json failed");
+            return;
+        }
+
+        String path = getCachePath() + File.separator + cache.gid;
+
+        if (!new File(path).exists()) {
+            JtsViewerLog.e(TAG, "path " + path + " is not exists");
+            return;
+        }
+
+        File info = new File(path, INFO_FILE_NAME);
+        if (info.exists()) {
+            info.delete();
+        }
+
+        if (!info.createNewFile()) {
+            JtsViewerLog.e(TAG, "create info file failed " + info.getAbsolutePath());
+            return;
+        }
+
+        FileWriter writer = new FileWriter(info);
+        writer.write(infoString);
+        writer.close();
+    }
 
     private boolean findCacheByGid(long gid) {
         for (CacheModule cache : moduleList) {

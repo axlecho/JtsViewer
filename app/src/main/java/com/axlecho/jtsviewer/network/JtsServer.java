@@ -1,7 +1,6 @@
 package com.axlecho.jtsviewer.network;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.axlecho.jtsviewer.action.download.JtsDownloadFunction;
 import com.axlecho.jtsviewer.action.parser.JtsParseCommentFunction;
@@ -11,24 +10,30 @@ import com.axlecho.jtsviewer.action.parser.JtsParseTabDetailFunction;
 import com.axlecho.jtsviewer.action.parser.JtsParseTabListFunction;
 import com.axlecho.jtsviewer.action.parser.JtsParseThreadFunction;
 import com.axlecho.jtsviewer.action.parser.JtsParseUserInfoFunction;
+import com.axlecho.jtsviewer.activity.main.MainActivityController;
+import com.axlecho.jtsviewer.cache.CacheManager;
+import com.axlecho.jtsviewer.module.CacheModule;
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.JtsThreadModule;
 import com.axlecho.jtsviewer.module.JtsUserModule;
 import com.axlecho.jtsviewer.module.JtsVersionInfoModule;
 import com.axlecho.jtsviewer.untils.JtsConf;
-import com.axlecho.jtsviewer.untils.JtsToolUnitls;
+import com.axlecho.jtsviewer.untils.JtsViewerLog;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Single;
 import io.reactivex.functions.Consumer;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -158,6 +163,35 @@ public class JtsServer {
     public Observable<String> download(String url, String path) {
         Observable<String> o = service.download(url).map(new JtsDownloadFunction(path));
         return schedulers.switchSchedulers(o);
+    }
+
+    public Single<String> downloadWithCache(final long gid, String gtpUrl) {
+
+        Observable<String> cache = Observable.create(new ObservableOnSubscribe<String>() {
+            @Override
+            public void subscribe(ObservableEmitter<String> e) throws Exception {
+                CacheModule module = CacheManager.getInstance(context).getModule(gid);
+                JtsViewerLog.d(TAG, "find " + gid + " from cache" + module);
+                if (module != null) {
+                    e.onNext(module.path);
+                    JtsViewerLog.d(TAG, "get " + gid + " from cache");
+                }
+                e.onComplete();
+            }
+        });
+
+        final String path = CacheManager.getInstance(context).getCachePath() + File.separator + gid;
+        Observable<String> network = JtsServer.getSingleton(context).download(gtpUrl, path)
+                .doOnNext(new Consumer<String>() {
+                    @Override
+                    public void accept(String result) throws Exception {
+                        JtsViewerLog.d(TAG, "save " + gid + " to cache");
+                        JtsTabInfoModel tabInfo = MainActivityController.getInstance().findTabInfoByGid(gid);
+                        CacheManager.getInstance(context).cacheInfo(gid, path + File.separator + result, tabInfo);
+                    }
+                });
+
+        return Observable.concat(cache, network).first("");
     }
 
     public void setSchedulers(JtsSchedulers schedulers) {

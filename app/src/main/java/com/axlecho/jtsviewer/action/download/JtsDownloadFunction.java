@@ -28,7 +28,7 @@ public class JtsDownloadFunction implements Function<Response<ResponseBody>, Str
 
         File output = new File(path, JtsTextUnitls.getFileNameFromResponse(res));
         writeResponseBodyToDisk(res.body(), output);
-        return output.getName();
+        return output.getAbsolutePath();
     }
 
     // refer to https://www.jianshu.com/p/92bb85fc07e8

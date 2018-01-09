@@ -81,7 +81,7 @@ public class CacheViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         if (tabModel != null) {
             ((CacheViewHolder) holder).setData(tabModel);
         } else {
-            ((CacheViewHolder) holder).title.setText(JtsTextUnitls.removePostfixFromFileName(module.fileName));
+            ((CacheViewHolder) holder).title.setText(JtsTextUnitls.getTitleFromPath(module.path));
         }
     }
 

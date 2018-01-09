@@ -90,13 +90,12 @@ public class HistoryActivity extends AppCompatActivity implements CacheViewAdapt
 
         module.frequency++;
         try {
-            module.writeToFile();
+            CacheManager.getInstance(this).writeToFile(module);
         } catch (IOException e) {
             JtsViewerLog.e(TAG, "update tab info failed");
         }
 
-        JtsShowGtpTabAction action = new JtsShowGtpTabAction(this.getApplicationContext(),
-                module.path + File.separator + module.fileName);
+        JtsShowGtpTabAction action = new JtsShowGtpTabAction(this.getApplicationContext(), module.path);
         action.processAction();
     }
 
@@ -104,7 +103,7 @@ public class HistoryActivity extends AppCompatActivity implements CacheViewAdapt
         Intent launcherIntent = new Intent();
         launcherIntent.setAction("android.intent.action.VIEW");
         launcherIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        launcherIntent.setData(Uri.fromFile(new File(module.path + File.separator + module.fileName)));
+        launcherIntent.setData(Uri.fromFile(new File(module.path)));
         launcherIntent.addCategory("android.intent.category.DEFAULT");
         launcherIntent.setComponent(new ComponentName("com.axlecho.jtsviewer", "org.herac.tuxguitar.android.activity.TGActivity"));
 
