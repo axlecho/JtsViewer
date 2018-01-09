@@ -100,75 +100,10 @@ public class HistoryActivity extends AppCompatActivity implements CacheViewAdapt
     }
 
     private void processLongClickAction(final CacheModule module) {
-        Intent launcherIntent = new Intent();
-        launcherIntent.setAction("android.intent.action.VIEW");
-        launcherIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        launcherIntent.setData(Uri.fromFile(new File(module.path)));
-        launcherIntent.addCategory("android.intent.category.DEFAULT");
-        launcherIntent.setComponent(new ComponentName("com.axlecho.jtsviewer", "org.herac.tuxguitar.android.activity.TGActivity"));
-
-        final Intent addShortcutIntent = new Intent();
-        addShortcutIntent.putExtra("duplicate", false);
-        addShortcutIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, module.tabInfo.title);
-        addShortcutIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
-                Intent.ShortcutIconResource.fromContext(this, R.mipmap.ic_launcher));
-        addShortcutIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, launcherIntent);
-        addShortcutIntent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
-
-
-        Observable<Bitmap> network = Observable.create(new ObservableOnSubscribe<Bitmap>() {
-            @Override
-            public void subscribe(final ObservableEmitter<Bitmap> emitter) throws Exception {
-                Target<Bitmap> target = new SimpleTarget<Bitmap>(144, 144) {
-                    @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        emitter.onNext(resource);
-                        emitter.onComplete();
-                    }
-
-                    @Override
-                    public void onLoadFailed(Exception e, Drawable errorDrawable) {
-                        e.printStackTrace();
-                        emitter.onComplete();
-                    }
-                };
-
-                Glide.with(HistoryActivity.this).load(module.tabInfo.avatar).asBitmap()
-                        .transform(new GlideRoundTransform(HistoryActivity.this))
-                        .into(target);
-            }
-        });
-
-        Observable<Bitmap> location = Observable.create(new ObservableOnSubscribe<Bitmap>() {
-            @Override
-            public void subscribe(final ObservableEmitter<Bitmap> emitter) throws Exception {
-                TextDrawable defaultDrawable = TextDrawable.builder()
-                        .beginConfig().height(128).width(128).bold().endConfig()
-                        .buildRoundRect(module.tabInfo.title.substring(0, 1),
-                                HistoryActivity.this.getResources().getColor(R.color.colorPrimary),8);
-
-                Bitmap bitmap = Bitmap.createBitmap(
-                        defaultDrawable.getIntrinsicWidth(),
-                        defaultDrawable.getIntrinsicHeight(),
-                        defaultDrawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
-                                : Bitmap.Config.RGB_565);
-
-                Canvas canvas = new Canvas(bitmap);
-                defaultDrawable.setBounds(0, 0, defaultDrawable.getIntrinsicWidth(),
-                        defaultDrawable.getIntrinsicHeight());
-                defaultDrawable.draw(canvas);
-                emitter.onNext(bitmap);
-                emitter.onComplete();
-            }
-        });
-
-        Observable.concat(network, location)
-                .take(1)
+        CacheManager.getInstance(this).generateShortcutFromCache(module)
                 .subscribe(new Consumer<Bitmap>() {
                     @Override
                     public void accept(Bitmap bitmap) throws Exception {
-                        addShortcutIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON, bitmap);
-                        HistoryActivity.this.sendBroadcast(addShortcutIntent);
                         Snackbar.make(HistoryActivity.this.getWindow().getDecorView(),
                                 HistoryActivity.this.getResources().getString(R.string.add_short_cut),
                                 Snackbar.LENGTH_LONG).show();

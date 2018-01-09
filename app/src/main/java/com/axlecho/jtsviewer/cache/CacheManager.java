@@ -1,11 +1,26 @@
 package com.axlecho.jtsviewer.cache;
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.PixelFormat;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.axlecho.jtsviewer.R;
+import com.axlecho.jtsviewer.activity.cache.HistoryActivity;
 import com.axlecho.jtsviewer.module.CacheModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
+import com.axlecho.jtsviewer.widget.GlideRoundTransform;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
 
 import org.json.JSONException;
 
@@ -14,6 +29,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.functions.Consumer;
 
 public class CacheManager {
 
@@ -163,5 +183,77 @@ public class CacheManager {
 
         }
         return false;
+    }
+
+    public Observable<Bitmap> generateShortcutFromCache(final CacheModule cache) {
+        Intent launcherIntent = new Intent();
+        launcherIntent.setAction("android.intent.action.VIEW");
+        launcherIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        launcherIntent.setData(Uri.fromFile(new File(cache.path)));
+        launcherIntent.addCategory("android.intent.category.DEFAULT");
+        launcherIntent.setComponent(new ComponentName("com.axlecho.jtsviewer", "org.herac.tuxguitar.android.activity.TGActivity"));
+
+        final Intent addShortcutIntent = new Intent();
+        addShortcutIntent.putExtra("duplicate", false);
+        addShortcutIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, cache.tabInfo.title);
+        addShortcutIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
+                Intent.ShortcutIconResource.fromContext(context, R.mipmap.ic_launcher));
+        addShortcutIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, launcherIntent);
+        addShortcutIntent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
+
+
+        Observable<Bitmap> network = Observable.create(new ObservableOnSubscribe<Bitmap>() {
+            @Override
+            public void subscribe(final ObservableEmitter<Bitmap> emitter) throws Exception {
+                Target<Bitmap> target = new SimpleTarget<Bitmap>(144, 144) {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        emitter.onNext(resource);
+                        emitter.onComplete();
+                    }
+
+                    @Override
+                    public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                        e.printStackTrace();
+                        emitter.onComplete();
+                    }
+                };
+
+                Glide.with(context).load(cache.tabInfo.avatar).asBitmap()
+                        .transform(new GlideRoundTransform(context))
+                        .into(target);
+            }
+        });
+
+        Observable<Bitmap> location = Observable.create(new ObservableOnSubscribe<Bitmap>() {
+            @Override
+            public void subscribe(final ObservableEmitter<Bitmap> emitter) throws Exception {
+                TextDrawable defaultDrawable = TextDrawable.builder()
+                        .beginConfig().height(128).width(128).bold().endConfig()
+                        .buildRoundRect(cache.tabInfo.title.substring(0, 1),
+                                context.getResources().getColor(R.color.colorPrimary), 8);
+
+                Bitmap bitmap = Bitmap.createBitmap(
+                        defaultDrawable.getIntrinsicWidth(),
+                        defaultDrawable.getIntrinsicHeight(),
+                        defaultDrawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
+                                : Bitmap.Config.RGB_565);
+
+                Canvas canvas = new Canvas(bitmap);
+                defaultDrawable.setBounds(0, 0, defaultDrawable.getIntrinsicWidth(),
+                        defaultDrawable.getIntrinsicHeight());
+                defaultDrawable.draw(canvas);
+                emitter.onNext(bitmap);
+                emitter.onComplete();
+            }
+        });
+
+        return Observable.concat(network, location).take(1).doOnNext(new Consumer<Bitmap>() {
+            @Override
+            public void accept(Bitmap bitmap) throws Exception {
+                addShortcutIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON, bitmap);
+                context.sendBroadcast(addShortcutIntent);
+            }
+        });
     }
 }

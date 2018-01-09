@@ -334,8 +334,14 @@ public class MainActivityController {
                 JtsBaseAction action;
                 if (detail.gtpUrl != null) {
                     action = new JtsGtpTabAction(activity, tabKey, detail.gtpUrl);
-                    action.execute();
+                    JtsServer.getSingleton(activity).downloadWithCache(tabKey,detail.gtpUrl).subscribe(new Consumer<String>() {
+                        @Override
+                        public void accept(String s) throws Exception {
+
+                        }
+                    });
                 }
+
             }
         });
     }
