@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.SearchView;
@@ -20,6 +21,8 @@ import com.axlecho.jtsviewer.activity.detail.JtsDetailActivity;
 import com.axlecho.jtsviewer.activity.JtsSettingsActivity;
 import com.axlecho.jtsviewer.activity.cache.HistoryActivity;
 import com.axlecho.jtsviewer.activity.login.JtsLoginActivity;
+import com.axlecho.jtsviewer.cache.CacheManager;
+import com.axlecho.jtsviewer.module.CacheModule;
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.JtsUserModule;
@@ -326,20 +329,24 @@ public class MainActivityController {
     }
 
     public void generateShortcut(JtsTabInfoModel model) {
-        // activity.showMessage("create shotcut for " + model.title);
         final long tabKey = JtsTextUnitls.getTabKeyFromUrl(model.url);
         JtsServer.getSingleton(activity).getDetail(tabKey).subscribe(new Consumer<JtsTabDetailModule>() {
             @Override
             public void accept(JtsTabDetailModule detail) throws Exception {
-                JtsBaseAction action;
                 if (detail.gtpUrl != null) {
-                    action = new JtsGtpTabAction(activity, tabKey, detail.gtpUrl);
-                    JtsServer.getSingleton(activity).downloadWithCache(tabKey,detail.gtpUrl).subscribe(new Consumer<String>() {
-                        @Override
-                        public void accept(String s) throws Exception {
-
-                        }
-                    });
+                    JtsServer.getSingleton(activity).downloadWithCache(tabKey, detail.gtpUrl)
+                            .subscribe(new Consumer<String>() {
+                                @Override
+                                public void accept(String s) throws Exception {
+                                    CacheModule cache = CacheManager.getInstance(activity).getModule(tabKey);
+                                    CacheManager.getInstance(activity).generateShortcutFromCache(cache).subscribe(new Consumer<Bitmap>() {
+                                        @Override
+                                        public void accept(Bitmap bitmap) throws Exception {
+                                            activity.showMessage(activity.getResources().getString(R.string.add_short_cut));
+                                        }
+                                    });
+                                }
+                            });
                 }
 
             }
