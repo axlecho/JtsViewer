@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/item_click_effect"
     android:clickable="true"
+    android:focusable="true"
     android:paddingBottom="@dimen/item_cache_vertical_margin"
     android:paddingEnd="@dimen/activity_horizontal_margin"
     android:paddingStart="@dimen/activity_horizontal_margin"

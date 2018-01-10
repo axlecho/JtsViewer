@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
@@ -201,7 +202,7 @@ public class JtsNetworkManager {
             Response response = chain.proceed(request);
 
             long t2 = System.nanoTime();
-            JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, String.format("Received response for %s in %.1fms%n%s",
+            JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, String.format(Locale.CHINA,"Received response for %s in %.1fms%n%s",
                     response.request().url(), (t2 - t1) / 1e6d, response.headers()));
 
             return response;

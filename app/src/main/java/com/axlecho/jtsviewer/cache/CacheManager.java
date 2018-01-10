@@ -56,7 +56,7 @@ public class CacheManager {
         if (instance == null) {
             synchronized (CacheManager.class) {
                 if (instance == null) {
-                    instance = new CacheManager(context.getApplicationContext());
+                    instance = new CacheManager(context);
                 }
             }
         }
