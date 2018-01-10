@@ -133,6 +133,7 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
                         page = 1;
                         if (adapter != null) {
                             adapter.clear();
+                            adapter.notifyDataSetChanged();
                         }
                         activity.hideError();
                         startLoading();
@@ -215,6 +216,7 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
         }
 
         adapter.addData(detail.threadList);
+        adapter.notifyDataSetChanged();
         activity.play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
