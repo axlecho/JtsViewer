@@ -26,6 +26,8 @@ public class JtsTagHandler implements HtmlCompat.TagHandler {
     private Context context;
     private TextView parent;
 
+    private int mark;
+
     public JtsTagHandler(Context context, TextView parent) {
         this.context = context;
         this.parent = parent;
@@ -34,9 +36,11 @@ public class JtsTagHandler implements HtmlCompat.TagHandler {
     @Override
     public void handleTag(boolean opening, String tag, Attributes attributes, Editable output, XMLReader xmlReader) {
 
+
         if (tag.equalsIgnoreCase("script")) {
 
             if (opening) {
+                mark = output.length();
                 return;
             }
 
@@ -58,13 +62,13 @@ public class JtsTagHandler implements HtmlCompat.TagHandler {
                 }
             };
 
-            output.clear();
-            output.append("[" + videoUrl + "]");
+            // output.clear();
+            output.replace(mark, output.length(), "\n[" + videoUrl + "]\n");
 
-            if(videoUrl == null) {
+            if (videoUrl == null) {
                 return;
             }
-            output.setSpan(s, 0, ("[" + videoUrl + "]").length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            output.setSpan(s, mark, mark + ("[" + videoUrl + "]").length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
     }
 
@@ -79,7 +83,7 @@ public class JtsTagHandler implements HtmlCompat.TagHandler {
     }
 
     private String parserAidForYouku(String context) {
-        JtsViewerLog.d(TAG,context);
+        JtsViewerLog.d(TAG, context);
         Pattern p = Pattern.compile("vid:\\s+\"([a-zA-Z0-9=]+)\"");
         Matcher m = p.matcher(context);
         if (m.find()) {
