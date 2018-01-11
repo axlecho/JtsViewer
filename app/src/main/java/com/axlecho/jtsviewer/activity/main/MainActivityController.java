@@ -127,6 +127,7 @@ public class MainActivityController {
         TextView userNameTextView = (TextView) headerView.findViewById(R.id.nav_user_name);
 
         if (user.avatarUrl != null) {
+            user.avatarUrl = user.avatarUrl.replace("small", "big");
             Glide.with(activity).load(user.avatarUrl).into(drawerUserInfoImageView);
         }
 
