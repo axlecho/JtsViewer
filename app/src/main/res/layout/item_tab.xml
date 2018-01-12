@@ -13,14 +13,13 @@
     android:paddingTop="@dimen/item_cache_vertical_margin">
 
     <ImageView
-        android:transitionName="@string/detail_transition"
         android:id="@+id/tab_item_avatar"
         android:layout_width="@dimen/item_icon_size"
         android:layout_height="@dimen/item_icon_size"
+        android:layout_margin="4dp"
         android:contentDescription="icon of avatar"
-        android:paddingBottom="4dp"
-        android:paddingTop="4dp"
         android:src="@mipmap/ic_launcher"
+        android:transitionName="@string/detail_transition"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -29,7 +28,7 @@
         android:id="@+id/tab_item_type"
         android:layout_width="@dimen/item_icon_small_size"
         android:layout_height="@dimen/item_icon_small_size"
-        android:layout_marginTop="4dp"
+        android:layout_marginLeft="4dp"
         android:padding="4dp"
         android:src="@mipmap/ic_gtp"
         app:layout_constraintLeft_toRightOf="@id/tab_item_avatar"
@@ -83,9 +82,10 @@
         android:id="@+id/tab_item_reply"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="4dp"
         android:padding="4dp"
         android:text="~reply"
+
         android:textColor="@color/subtitle_black"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/tab_item_avatar"
