@@ -313,7 +313,12 @@ public class MainActivityController {
                 String message = messageBuilder.toString();
                 buildUpdateDialog(message, download_url);
             }
-        }, errorHandler);
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+                // do nothing if update error
+            }
+        });
     }
 
     public void buildUpdateDialog(String msg, final String downloadUrl) {
