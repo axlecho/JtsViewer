@@ -1,6 +1,8 @@
 JtsViewer
 ===
 
+![logo](/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png)
+
 这是一个 [吉他社](http://www.jitashe.org/) Android 平台的浏览器。
 
 Screenshot
@@ -12,14 +14,14 @@ Build
 
 Windows
 
-    > git clone https://github.com/seven332/EhViewer
-    > cd EhViewer
+    > git clone https://github.com/axlecho/JtsViewer.git
+    > cd JtsViewer
     > gradlew app:assembleDebug
 
 Linux
 
-    $ git clone https://github.com/seven332/EhViewer
-    $ cd EhViewer
+    $ git clone https://github.com/axlecho/JtsViewer.git
+    $ cd JtsViewer
     $ ./gradlew app:assembleDebug
 
 其他
@@ -34,7 +36,9 @@ Thanks
 本项目受到了诸多开源项目的帮助
 
 *   [gson](https://github.com/google/gson)
+*   [retrofit](https://github.com/square/retrofit)
 *   [okhttp](https://github.com/square/okhttp)
+*   [Rxjava](https://github.com/ReactiveX/RxJava)
 *   [jsoup](https://github.com/jhy/jsoup)
 *   [glide](https://github.com/bumptech/glide)
 *   [ijkplayer](https://github.com/Bilibili/ijkplayer)
