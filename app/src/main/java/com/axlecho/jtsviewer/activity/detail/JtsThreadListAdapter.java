@@ -18,6 +18,7 @@ import com.axlecho.jtsviewer.module.JtsThreadModule;
 import com.axlecho.jtsviewer.untils.JtsImageGetter;
 import com.axlecho.jtsviewer.untils.JtsTagHandler;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.pixplicity.htmlcompat.HtmlCompat;
 
 import java.util.List;
@@ -85,7 +86,10 @@ public class JtsThreadListAdapter extends RecyclerView.Adapter<JtsThreadListAdap
             TextDrawable defaultDrawable = TextDrawable.builder()
                     .beginConfig().height(48).width(48).bold().endConfig()
                     .buildRect(model.authi.substring(0, 1), context.getResources().getColor(R.color.colorPrimary));
-            Glide.with(context).load(model.avatar).error(defaultDrawable).into(avatar);
+            Glide.with(context).load(model.avatar)
+                    .placeholder(defaultDrawable)
+                    .error(defaultDrawable)
+                    .into(avatar);
             auth.setText(model.authi);
             time.setText(model.time);
             message.setText(HtmlCompat.fromHtml(context, model.message, FROM_HTML_MODE_LEGACY, new JtsImageGetter(message), new JtsTagHandler(context, message)));
@@ -114,7 +118,10 @@ public class JtsThreadListAdapter extends RecyclerView.Adapter<JtsThreadListAdap
             TextDrawable defaultDrawable = TextDrawable.builder()
                     .beginConfig().height(48).width(48).bold().endConfig()
                     .buildRect(model.authi.substring(0, 1), context.getResources().getColor(R.color.colorPrimary));
-            Glide.with(context).load(model.avatar).error(defaultDrawable).into(avatar);
+            Glide.with(context).load(model.avatar)
+                    .placeholder(defaultDrawable)
+                    .error(defaultDrawable)
+                    .into(avatar);
             auth.setText(model.authi);
             time.setText(model.time);
             message.setText(model.message);

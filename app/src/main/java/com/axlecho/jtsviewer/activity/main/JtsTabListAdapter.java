@@ -15,6 +15,7 @@ import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.List;
 
@@ -109,7 +110,10 @@ public class JtsTabListAdapter extends RecyclerView.Adapter<JtsTabListAdapter.Ta
             TextDrawable defaultDrawable = TextDrawable.builder()
                     .beginConfig().height(48).width(48).bold().endConfig()
                     .buildRect(model.title.substring(0, 1), context.getResources().getColor(R.color.colorPrimary));
-            Glide.with(context).load(model.avatar).error(defaultDrawable).into(avatar);
+            Glide.with(context).load(JtsTextUnitls.getResizePicUrl(model.avatar, 300, 300))
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(defaultDrawable)
+                    .error(defaultDrawable).into(avatar);
         }
 
         private void setType(String tabType) {

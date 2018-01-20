@@ -23,6 +23,7 @@ import com.axlecho.jtsviewer.untils.JtsToolUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 import com.axlecho.sakura.SakuraPlayerView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hippo.refreshlayout.RefreshLayout;
 
 import java.util.ArrayList;
@@ -71,7 +72,9 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
         TextDrawable defaultDrawable = TextDrawable.builder()
                 .beginConfig().height(300).width(300).bold().endConfig()
                 .buildRect(model.title.substring(0, 1), activity.getResources().getColor(R.color.colorPrimary));
-        Glide.with(activity).load(JtsTextUnitls.getResizePicUrl(model.avatar, 300, 300)).fitCenter()
+        Glide.with(activity).load(JtsTextUnitls.getResizePicUrl(model.avatar, 300, 300))
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .fitCenter()
                 .error(defaultDrawable).into(activity.avatar);
 
         activity.title.setText(model.title);
