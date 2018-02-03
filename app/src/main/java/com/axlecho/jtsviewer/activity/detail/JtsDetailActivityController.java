@@ -139,7 +139,7 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
                             adapter.notifyDataSetChanged();
                         }
                         activity.hideError();
-                        startLoading();
+                        // startLoading();
                     }
                 })
                 .doOnTerminate(new Action() {
@@ -348,7 +348,7 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
     }
 
     public void stopLoading() {
-        activity.findViewById(R.id.detail_loading_progressbar).setVisibility(View.INVISIBLE);
+        activity.findViewById(R.id.detail_loading_progressbar).setVisibility(View.GONE);
     }
 
     public void startLoading() {
