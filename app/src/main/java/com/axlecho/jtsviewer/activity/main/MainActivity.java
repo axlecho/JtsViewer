@@ -9,7 +9,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,16 +24,18 @@ import com.axlecho.jtsviewer.widget.RecycleViewDivider;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.hippo.refreshlayout.RefreshLayout;
+import com.wyt.searchbox.SearchFragment;
+import com.wyt.searchbox.custom.IOnSearchClickListener;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, RefreshLayout.OnRefreshListener {
+        implements NavigationView.OnNavigationItemSelectedListener, RefreshLayout.OnRefreshListener, IOnSearchClickListener {
     private String TAG = MainActivity.class.getSimpleName();
     public NavigationView navigationView;
-    public SearchView searchView;
     public MenuItem searchItem;
     public RecyclerView recyclerView;
     public RefreshLayout refreshLayout;
     public Toolbar toolbar;
+    private SearchFragment searchFragment;
     private MainActivityController controller;
 
 
@@ -73,8 +74,11 @@ public class MainActivity extends AppCompatActivity
                 android.R.color.holo_orange_light, android.R.color.holo_red_light);
         refreshLayout.setOnRefreshListener(this);
 
+        searchFragment = SearchFragment.newInstance();
+        searchFragment.setOnSearchClickListener(this);
         this.controller.loadDefaultScene();
         this.controller.checkForUpdate();
+
 
         JtsApplication application = (JtsApplication) getApplication();
         mTracker = application.getDefaultTracker();
@@ -100,23 +104,23 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        this.searchItem = menu.findItem(R.id.action_search);
-        if (searchItem != null) {
-            this.searchView = (SearchView) searchItem.getActionView();
-        }
-
-        controller.processSearchView();
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                searchFragment.show(getSupportFragmentManager(), SearchFragment.TAG);
+                break;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void OnSearchClick(String keyword) {
+        controller.processSearch(keyword);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

@@ -58,7 +58,9 @@ dependencies {
     compile 'com.github.axlecho.tuxguitar:tuxguitar-widget:v0.0.9'
     compile 'com.github.axlecho:ImageTab:0.0.12'
     compile 'com.github.axlecho:SakuraPlayer:1.0.2'
+    compile 'com.github.axlecho:SearchDialog:0.0.1'
     compile 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
+
 
     compile 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.4'
     compile 'tv.danmaku.ijk.media:ijkplayer-armv5:0.8.4'

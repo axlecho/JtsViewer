@@ -179,28 +179,8 @@ public class MainActivityController {
         adapter.notifyDataSetChanged();
     }
 
-    public void processSearchView() {
-        if (activity.searchView == null) {
-            return;
-        }
-
-        activity.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                if (!activity.searchView.isIconified()) {
-                    activity.searchView.setIconified(true);
-                }
-                activity.searchItem.collapseActionView();
-                switchSenceToSearch(query);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                // UserFeedback.show( "SearchOnQueryTextChanged: " + s);
-                return false;
-            }
-        });
+    public void processSearch(String keyword) {
+        switchSenceToSearch(keyword);
     }
 
     public void loadDefaultScene() {
