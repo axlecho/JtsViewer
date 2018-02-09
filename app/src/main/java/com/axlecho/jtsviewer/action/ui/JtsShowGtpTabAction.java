@@ -9,6 +9,8 @@ import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 
+import java.io.File;
+
 import org.herac.tuxguitar.android.activity.TGActivity;
 
 public class JtsShowGtpTabAction extends JtsBaseAction {
@@ -30,7 +32,8 @@ public class JtsShowGtpTabAction extends JtsBaseAction {
             return;
         }
 
-        Uri gtpUri = Uri.parse("file://" + filePath);
+        // Uri gtpUri = Uri.parse("file://" + filePath);
+		Uri gtpUri = Uri.fromFile(new File(filePath));
         Intent intent = new Intent();
         intent.setData(gtpUri);
 
