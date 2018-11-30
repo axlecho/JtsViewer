@@ -230,13 +230,16 @@ public class JtsPageParser {
         if (html == null) return null;
 
         Document doc = Jsoup.parse(html);
-        Elements tbodys = doc.select("table.plhin");
+        Elements tbodys = doc.select("div.post-item");
         List<JtsThreadModule> moduleList = new ArrayList<>();
 
         Iterator it = tbodys.iterator();
         while (it.hasNext()) {
             Element c = (Element) it.next();
             JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE, TAG, c.toString());
+            if(!c.attr("id").matches("post_\\d+")) {
+                continue;
+            }
             JtsThreadModule module = parserThraed(c);
             JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE, TAG, "[parserThread]" + module);
             moduleList.add(module);
@@ -256,13 +259,13 @@ public class JtsPageParser {
         Iterator it = comments.iterator();
         while (it.hasNext()) {
             Element c = (Element) it.next();
-            JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE, TAG, "[parserComment]" + c.toString());
+            // JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE, TAG, "[parserComment]" + c.toString());
             JtsThreadCommentModule comment = new JtsThreadCommentModule();
             comment.time = c.select("span.xg1").first().text();
             comment.avatar = c.select("img[src*=avatar.php]").attr("src");
             comment.authi = c.select("a.xi2").first().text();
             comment.message = c.select("dd:not(.m)").first().text();
-            JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE, TAG, "[parserComment]" + comment.toString());
+            // JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE, TAG, "[parserComment]" + comment.toString());
             module.comments.add(comment);
 
         }
