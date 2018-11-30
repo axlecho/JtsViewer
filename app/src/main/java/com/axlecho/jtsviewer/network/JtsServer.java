@@ -19,6 +19,7 @@ import com.axlecho.jtsviewer.module.JtsThreadModule;
 import com.axlecho.jtsviewer.module.JtsUserModule;
 import com.axlecho.jtsviewer.module.JtsVersionInfoModule;
 import com.axlecho.jtsviewer.untils.JtsConf;
+import com.axlecho.jtsviewer.untils.JtsHttpsUtils;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 
 import java.io.File;
@@ -48,11 +49,12 @@ public class JtsServer {
     private Context context;
     private JtsSchedulers schedulers;
 
-
     private JtsServer(Context context) {
+
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
         builder.addNetworkInterceptor(logging);
         builder.cookieJar(new JtsCookieJar(context));
         builder.readTimeout(TIME_OUT, TimeUnit.SECONDS);
@@ -67,17 +69,22 @@ public class JtsServer {
                 return chain.proceed(newRequest);
             }
         };
-        builder.addInterceptor(headerInterceptor);
 
+        // for https
+        builder.hostnameVerifier(JtsHttpsUtils.getSingleton().createHostnameVerifier());
+        builder.sslSocketFactory(JtsHttpsUtils.getSingleton().createSSLSocketFactory(),
+                JtsHttpsUtils.getSingleton().getTrustManager());
+
+        OkHttpClient client = builder.build();
         Retrofit retrofit = new Retrofit.Builder()
-                .client(builder.build())
+                .client(client)
                 .baseUrl(JtsConf.DESKTOP_HOST_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
         this.service = retrofit.create(JtsServerApi.class);
 
         Retrofit githubRetrofit = new Retrofit.Builder()
-                .client(builder.build())
+                .client(client)
                 .baseUrl(JtsConf.GITHUB_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())

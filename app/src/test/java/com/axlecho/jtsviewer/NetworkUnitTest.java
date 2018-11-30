@@ -25,10 +25,19 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowLog;
 
 import java.io.File;
+import java.security.cert.CertificateException;
 import java.util.List;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
+import okhttp3.OkHttpClient;
 
 import static org.hamcrest.core.Is.is;
 
@@ -53,7 +62,7 @@ public class NetworkUnitTest {
     }
 
     @Test
-    public void testLogin() throws Exception {
+    public void testLogin() {
         String cookies = server.login("d39", "123456789").blockingFirst();
         MatcherAssert.assertThat("login cookie should not be null", !TextUtils.isEmpty(cookies));
     }
@@ -146,8 +155,7 @@ public class NetworkUnitTest {
         MatcherAssert.assertThat("comment with login", result.equals(JtsConf.STATUS_SUCCESSED));
     }
 
-    // @Test
-    // failed with CertificateException: Certificates does not conform to algorithm constraints
+     @Test
     public void testGetNewVersionInfo() {
         JtsVersionInfoModule versionInfo = server.getLastVersionInfo().blockingFirst();
         System.out.println(versionInfo);
