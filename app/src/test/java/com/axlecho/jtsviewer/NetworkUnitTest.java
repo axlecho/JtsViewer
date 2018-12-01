@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.axlecho.jtsviewer.cache.CacheManager;
+import com.axlecho.jtsviewer.module.JtsCollectionInfo;
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.JtsThreadModule;
@@ -172,6 +173,12 @@ public class NetworkUnitTest {
         System.out.println(result);
     }
 
+    @Test
+    public void testCollection() {
+        server.login("d39", "123456789").blockingSubscribe();
+        List<JtsCollectionInfo> infos = server.getCollection().blockingFirst();
+        MatcherAssert.assertThat(infos.size(),is(2));
+    }
     private class MockSchedulers extends JtsSchedulers {
         @Override
         public <T> Observable<T> switchSchedulers(Observable<T> a) {

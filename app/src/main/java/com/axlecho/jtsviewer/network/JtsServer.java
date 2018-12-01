@@ -3,6 +3,7 @@ package com.axlecho.jtsviewer.network;
 import android.content.Context;
 
 import com.axlecho.jtsviewer.action.download.JtsDownloadFunction;
+import com.axlecho.jtsviewer.action.parser.JtsParseCollectionFunction;
 import com.axlecho.jtsviewer.action.parser.JtsParseCommentFunction;
 import com.axlecho.jtsviewer.action.parser.JtsParseLoginFunction;
 import com.axlecho.jtsviewer.action.parser.JtsParseSearchKeyConsumer;
@@ -13,6 +14,7 @@ import com.axlecho.jtsviewer.action.parser.JtsParseUserInfoFunction;
 import com.axlecho.jtsviewer.activity.main.MainActivityController;
 import com.axlecho.jtsviewer.cache.CacheManager;
 import com.axlecho.jtsviewer.module.CacheModule;
+import com.axlecho.jtsviewer.module.JtsCollectionInfo;
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.JtsThreadModule;
@@ -159,6 +161,11 @@ public class JtsServer {
         Observable<String> o = service.postComment(fid, tid, message, System.currentTimeMillis(), formhash, 1, "")
                 .map(new JtsParseCommentFunction());
 
+        return schedulers.switchSchedulers(o);
+    }
+
+    public Observable<List<JtsCollectionInfo>> getCollection() {
+        Observable<List<JtsCollectionInfo>> o = service.getCollection().map(new JtsParseCollectionFunction(context));
         return schedulers.switchSchedulers(o);
     }
 

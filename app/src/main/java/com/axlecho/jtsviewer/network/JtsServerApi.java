@@ -37,6 +37,9 @@ public interface JtsServerApi {
     @GET("/search.php?mod=tab&searchsubmit=yes")
     Observable<ResponseBody> searchById(@Query("searchid") int searchId, @Query("page") int page);
 
+    @GET("/collection/my")
+    Observable<ResponseBody> getCollection();
+
     @FormUrlEncoded
     @POST("/member.php?mod=logging&action=login&loginsubmit=yes&handlekey=login&loginhash=LFR1d&inajax=1")
     Observable<Response<ResponseBody>> login(@Field("formhash") String hash,

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.axlecho.jtsviewer.R;
+import com.axlecho.jtsviewer.module.JtsCollectionInfo;
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.JtsThreadCommentModule;
@@ -294,5 +295,30 @@ public class JtsPageParser {
         // String href = doc.select("a[href*=search.php?mod=tab&searchid]").first().attr("href");
         String searchId = SakuraTextUtils.search(html, "searchid=(\\d+)");
         return searchId == null ? -1 : Integer.parseInt(searchId);
+    }
+
+    public List<JtsCollectionInfo> parserCollection() {
+        if (html == null) return null;
+        Document doc = Jsoup.parse(html);
+
+        JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE, TAG,html);
+        Elements tabItems = doc.select("div.xld");
+        Iterator it = tabItems.iterator();
+        List<JtsCollectionInfo> models = new ArrayList<>();
+        while (it.hasNext()) {
+            Element element = (Element) it.next();
+            JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE, TAG, element.toString());
+            JtsCollectionInfo model = parserCollectionByElement(element);
+            JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE, TAG, model.toString());
+            models.add(model);
+        }
+
+        return models;
+    }
+
+    public JtsCollectionInfo parserCollectionByElement(Element e) {
+        if (e == null) return null;
+        JtsCollectionInfo model = new JtsCollectionInfo();
+        return model;
     }
 }
