@@ -28,7 +28,7 @@ import java.util.List;
 public class JtsPageParser {
     private String UID_URL_PATTERN = "(?<=discuz_uid = ')\\d+";
     private String USER_NAME_PATTERN = "(?<=title=\"访问我的空间\">).*?(?=</a>)";
-    private String USER_IMAGE_PATTERN = "http://att.jitashe.org/data/attachment/avatar/.*?.jpg";
+    private String USER_IMAGE_PATTERN = "https://att.jitashe.org/data/attachment/avatar/.*?.jpg";
 
     private static final String IMAGE_PATTERN = "(?<=src=\"http:)//att.jitashe.org/.+?.(?:jpg|png|gif)";
     private static final String IMAGE_PATTERN2 = "(?<=src=\"http:)/data/attachment/forum/.+?.(?:jpg|png|gif)@!tab_thumb";
