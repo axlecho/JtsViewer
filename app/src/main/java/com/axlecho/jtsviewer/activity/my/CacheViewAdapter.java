@@ -1,4 +1,4 @@
-package com.axlecho.jtsviewer.activity.cache;
+package com.axlecho.jtsviewer.activity.my;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

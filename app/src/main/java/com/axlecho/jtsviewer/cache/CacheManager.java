@@ -12,7 +12,6 @@ import android.net.Uri;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.axlecho.jtsviewer.R;
-import com.axlecho.jtsviewer.activity.cache.HistoryActivity;
 import com.axlecho.jtsviewer.module.CacheModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;

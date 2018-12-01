@@ -1,4 +1,4 @@
-package com.axlecho.jtsviewer.activity;
+package com.axlecho.jtsviewer.activity.my;
 
 
 import android.annotation.TargetApi;
@@ -21,6 +21,7 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 
 import com.axlecho.jtsviewer.R;
+import com.axlecho.jtsviewer.activity.AppCompatPreferenceActivity;
 import com.axlecho.jtsviewer.untils.JtsDeviceUnitls;
 
 import java.util.List;

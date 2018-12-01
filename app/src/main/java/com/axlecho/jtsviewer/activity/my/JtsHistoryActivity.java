@@ -1,12 +1,7 @@
-package com.axlecho.jtsviewer.activity.cache;
+package com.axlecho.jtsviewer.activity.my;
 
-import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.PixelFormat;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -17,34 +12,23 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.amulyakhare.textdrawable.TextDrawable;
 import com.axlecho.jtsviewer.R;
-import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.action.ui.JtsShowGtpTabAction;
 import com.axlecho.jtsviewer.activity.detail.JtsDetailActivity;
 import com.axlecho.jtsviewer.cache.CacheManager;
 import com.axlecho.jtsviewer.module.CacheModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
-import com.axlecho.jtsviewer.widget.GlideRoundTransform;
 import com.axlecho.jtsviewer.widget.RecycleViewDivider;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.target.Target;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.functions.Consumer;
 
-public class HistoryActivity extends AppCompatActivity implements CacheViewAdapter.OnItemClickListener, CacheViewAdapter.OnItemLongClickListener {
-    private static final String TAG = HistoryActivity.class.getSimpleName();
+public class JtsHistoryActivity extends AppCompatActivity implements CacheViewAdapter.OnItemClickListener, CacheViewAdapter.OnItemLongClickListener {
+    private static final String TAG = JtsHistoryActivity.class.getSimpleName();
     private List<CacheModule> modules;
     private RecyclerView cacheView;
     private RecyclerView.LayoutManager layoutManager;
@@ -104,8 +88,8 @@ public class HistoryActivity extends AppCompatActivity implements CacheViewAdapt
                 .subscribe(new Consumer<Bitmap>() {
                     @Override
                     public void accept(Bitmap bitmap) throws Exception {
-                        Snackbar.make(HistoryActivity.this.getWindow().getDecorView(),
-                                HistoryActivity.this.getResources().getString(R.string.add_short_cut),
+                        Snackbar.make(JtsHistoryActivity.this.getWindow().getDecorView(),
+                                JtsHistoryActivity.this.getResources().getString(R.string.add_short_cut),
                                 Snackbar.LENGTH_LONG).show();
                     }
                 });

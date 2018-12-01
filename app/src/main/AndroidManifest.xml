@@ -33,7 +33,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.cache.HistoryActivity"
+            android:name=".activity.my.JtsHistoryActivity"
             android:label="@string/title_history"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -47,7 +47,7 @@
             android:label="@string/title_activity_detail"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.JtsSettingsActivity"
+            android:name=".activity.my.JtsSettingsActivity"
             android:label="@string/title_activity_jts_settings" />
 
         <receiver android:name=".JtsBookMarkWidget">

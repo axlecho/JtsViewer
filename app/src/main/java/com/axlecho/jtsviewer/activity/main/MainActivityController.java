@@ -14,12 +14,10 @@ import android.widget.TextView;
 
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.action.JtsBaseAction;
-import com.axlecho.jtsviewer.action.tab.JtsGtpTabAction;
-import com.axlecho.jtsviewer.action.tab.JtsImgTabAction;
 import com.axlecho.jtsviewer.action.user.JtsShowLoginAction;
 import com.axlecho.jtsviewer.activity.detail.JtsDetailActivity;
-import com.axlecho.jtsviewer.activity.JtsSettingsActivity;
-import com.axlecho.jtsviewer.activity.cache.HistoryActivity;
+import com.axlecho.jtsviewer.activity.my.JtsSettingsActivity;
+import com.axlecho.jtsviewer.activity.my.JtsHistoryActivity;
 import com.axlecho.jtsviewer.activity.login.JtsLoginActivity;
 import com.axlecho.jtsviewer.cache.CacheManager;
 import com.axlecho.jtsviewer.module.CacheModule;
@@ -81,7 +79,7 @@ public class MainActivityController {
 
     public void toHistory() {
         Intent intent = new Intent();
-        intent.setClass(activity, HistoryActivity.class);
+        intent.setClass(activity, JtsHistoryActivity.class);
         activity.startActivity(intent);
     }
 
