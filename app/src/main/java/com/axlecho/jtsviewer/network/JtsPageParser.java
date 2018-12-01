@@ -250,9 +250,9 @@ public class JtsPageParser {
     private JtsThreadModule parserThraed(Element e) {
         if (e == null) return null;
         JtsThreadModule module = new JtsThreadModule();
-        module.authi = e.select("div.authi").first().text();
+        module.authi = e.select("span.authi2").first().text();
         module.avatar = e.select("img[src*=http://att.jitashe.org/data/attachment/avatar/]").attr("src");
-        module.time = e.select("em:contains(发表于)").first().text();
+        module.time = e.select("em[id*=authorposton]").first().text();
         module.message = e.select("td.t_f").first().html();
         module.floor = e.select("a[onclick*=setCopy]").first().text();
         Elements comments = e.select("div.cmtl");
