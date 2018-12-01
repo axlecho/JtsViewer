@@ -301,7 +301,7 @@ public class JtsPageParser {
         if (html == null) return null;
         Document doc = Jsoup.parse(html);
 
-        JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE, TAG,html);
+        // JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE, TAG,html);
         Elements tabItems = doc.select("div.xld");
         Iterator it = tabItems.iterator();
         List<JtsCollectionInfo> models = new ArrayList<>();
@@ -319,6 +319,11 @@ public class JtsPageParser {
     public JtsCollectionInfo parserCollectionByElement(Element e) {
         if (e == null) return null;
         JtsCollectionInfo model = new JtsCollectionInfo();
+        model.num = Integer.parseInt(e.select("dd.m").first()
+                .select("strong.xi2").first().text());
+        model.title = e.select("dt.xw1").first()
+                .select("a.xi2").first().text();
+        model.description = "???";
         return model;
     }
 }
