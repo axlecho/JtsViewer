@@ -86,8 +86,9 @@ public class JtsPageParser {
         if (e == null) return null;
         JtsTabInfoModel model = new JtsTabInfoModel();
 
-        model.avatar = e.select("img[src*=images/album]").attr("src");
-        model.author = e.select("a[href*=/artist/]").first().text();
+        model.avatar = e.select("img[src*=http://pic.xiami.net/]").attr("src");
+        // model.author = e.select("a[href*=/artist/]").first().text();
+        model.author = "???";
         model.title = e.select("a[href*=/tab/]").first().text();
         model.url = e.select("a[href*=/tab/]").first().attr("href");
         model.type = e.select("span.tabtype").first().text();
@@ -95,9 +96,10 @@ public class JtsPageParser {
         model.uper = e.select("a[href*=/space/]").first().text();
         model.watch = e.select("span[title*=查看]").first().nextElementSibling().text();
         model.reply = e.select("span[title*=回复]").first().nextElementSibling().text();
+
         // search mode has no time attr
         try {
-            model.time = e.select("span[title*=发布时间]").first().nextElementSibling().text();
+            model.time = e.select("span.time-line").first().text();
         } catch (NullPointerException ex) {
             // ex.printStackTrace();
             model.time = context.getResources().getString(R.string.unknown_time);
