@@ -2,6 +2,7 @@ package com.axlecho.jtsviewer.activity.main;
 
 import android.content.Context;
 
+import com.axlecho.jtsviewer.activity.base.JtsBaseController;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.network.JtsServer;
 
@@ -18,8 +19,9 @@ public class JtsSearchScene extends BaseScene {
 
     private String keyword;
 
-    public JtsSearchScene(Context context, String keyword) {
-        super(context, "搜索:" + keyword);
+    public JtsSearchScene(Context context, String keyword, JtsBaseController controller) {
+        super(context, controller);
+        setTitle("搜索:" + keyword);
         this.keyword = keyword;
     }
 

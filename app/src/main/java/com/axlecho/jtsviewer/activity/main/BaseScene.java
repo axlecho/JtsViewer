@@ -2,6 +2,7 @@ package com.axlecho.jtsviewer.activity.main;
 
 import android.content.Context;
 
+import com.axlecho.jtsviewer.activity.base.JtsBaseController;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 
@@ -13,14 +14,17 @@ import java.util.List;
 
 public abstract class BaseScene {
 
-    protected MainActivityController controller;
+    protected JtsBaseController controller;
     protected Context context;
     protected int currentPage = 1;
 
-    public BaseScene(Context context, String title) {
+    public BaseScene(Context context, JtsBaseController controller) {
         this.context = context;
-        controller = MainActivityController.getInstance();
-        controller.getActivity().setTitle(title);
+        this.controller = controller;
+    }
+
+    public void setTitle(String title) {
+        controller.setTitle(title);
     }
 
     public void loadMore() {
@@ -35,13 +39,13 @@ public abstract class BaseScene {
     }
 
     public void processLoadMore(List<JtsTabInfoModel> data) {
-        controller.processShowHome(data);
+        controller.processDataNotify(data);
         controller.stopFooterRefreshing();
     }
 
     public void processRefreah(List<JtsTabInfoModel> data) {
         controller.clearData();
-        controller.processShowHome(data);
+        controller.processDataNotify(data);
         controller.stopHeaderRefreshing();
         controller.stopLoadingProgressBar();
     }

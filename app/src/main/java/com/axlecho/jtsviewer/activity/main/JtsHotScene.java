@@ -2,6 +2,7 @@ package com.axlecho.jtsviewer.activity.main;
 
 import android.content.Context;
 
+import com.axlecho.jtsviewer.activity.base.JtsBaseController;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.network.JtsServer;
 
@@ -16,8 +17,9 @@ import io.reactivex.functions.Consumer;
 public class JtsHotScene extends BaseScene {
     private static final String TAG = "hot-scene";
 
-    public JtsHotScene(Context context) {
-        super(context, "热门");
+    public JtsHotScene(Context context, JtsBaseController controller) {
+        super(context, controller);
+        setTitle("热门");
     }
 
     @Override

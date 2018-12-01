@@ -2,6 +2,7 @@ package com.axlecho.jtsviewer.activity.main;
 
 import android.content.Context;
 
+import com.axlecho.jtsviewer.activity.base.JtsBaseController;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.network.JtsServer;
 
@@ -17,9 +18,10 @@ public class JtsArtistScene extends BaseScene {
     private static final String TAG = "artist-scene";
     private int artistId;
 
-    public JtsArtistScene(Context context, int artistId, String title) {
-        super(context, title);
+    public JtsArtistScene(Context context, int artistId, String title, JtsBaseController controller) {
+        super(context, controller);
         this.artistId = artistId;
+        setTitle(title);
     }
 
     @Override

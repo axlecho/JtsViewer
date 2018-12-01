@@ -33,6 +33,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activity.base.JtsCommonSingleTabInfoListActivity"
+            android:label="@string/title_common"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".activity.my.JtsHistoryActivity"
             android:label="@string/title_history"
             android:launchMode="singleTop"

@@ -2,6 +2,7 @@ package com.axlecho.jtsviewer.activity.main;
 
 import android.content.Context;
 
+import com.axlecho.jtsviewer.activity.base.JtsBaseController;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.network.JtsServer;
 
@@ -15,8 +16,9 @@ public class JtsDailyScene extends BaseScene {
 
     private static final String TAG = "daily-scene";
 
-    public JtsDailyScene(Context context) {
-        super(context, "最新");
+    public JtsDailyScene(Context context, JtsBaseController controller) {
+        super(context, controller);
+        setTitle("最新");
     }
 
     @Override

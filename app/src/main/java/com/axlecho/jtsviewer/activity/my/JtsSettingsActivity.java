@@ -6,22 +6,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
-import android.preference.RingtonePreference;
 import android.support.v7.app.ActionBar;
-import android.text.TextUtils;
 import android.view.MenuItem;
 
 import com.axlecho.jtsviewer.R;
-import com.axlecho.jtsviewer.activity.AppCompatPreferenceActivity;
+import com.axlecho.jtsviewer.activity.base.AppCompatPreferenceActivity;
 import com.axlecho.jtsviewer.untils.JtsDeviceUnitls;
 
 import java.util.List;

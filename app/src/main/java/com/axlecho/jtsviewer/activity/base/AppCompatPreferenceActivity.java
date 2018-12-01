@@ -1,4 +1,4 @@
-package com.axlecho.jtsviewer.activity;
+package com.axlecho.jtsviewer.activity.base;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

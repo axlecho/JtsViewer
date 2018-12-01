@@ -126,13 +126,13 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            this.controller.switchSenceToDaily();
+            this.controller.toDaily();
         } else if (id == R.id.nav_hot) {
-            this.controller.switchSenceToHot();
+            this.controller.toHot();
         } else if (id == R.id.nav_acg) {
-            this.controller.switchSenceToAcg();
+            this.controller.toAcg();
         } else if (id == R.id.nav_learn) {
-            this.controller.switchSenceToLearn();
+            this.controller.toLearn();
         } else if (id == R.id.nav_history) {
             this.controller.toHistory();
         } else if (id == R.id.nav_setting) {

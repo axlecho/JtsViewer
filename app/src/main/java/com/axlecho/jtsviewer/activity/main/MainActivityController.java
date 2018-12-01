@@ -15,10 +15,12 @@ import android.widget.TextView;
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.action.user.JtsShowLoginAction;
+import com.axlecho.jtsviewer.activity.base.JtsBaseController;
+import com.axlecho.jtsviewer.activity.base.JtsCommonSingleTabInfoListActivity;
 import com.axlecho.jtsviewer.activity.detail.JtsDetailActivity;
-import com.axlecho.jtsviewer.activity.my.JtsSettingsActivity;
-import com.axlecho.jtsviewer.activity.my.JtsHistoryActivity;
 import com.axlecho.jtsviewer.activity.login.JtsLoginActivity;
+import com.axlecho.jtsviewer.activity.my.JtsHistoryActivity;
+import com.axlecho.jtsviewer.activity.my.JtsSettingsActivity;
 import com.axlecho.jtsviewer.cache.CacheManager;
 import com.axlecho.jtsviewer.module.CacheModule;
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
@@ -37,7 +39,7 @@ import java.util.List;
 
 import io.reactivex.functions.Consumer;
 
-public class MainActivityController {
+public class MainActivityController implements JtsBaseController {
     private static final String TAG = MainActivityController.class.getSimpleName();
     private static MainActivityController instance;
     private MainActivity activity;
@@ -77,17 +79,6 @@ public class MainActivityController {
         return this.activity;
     }
 
-    public void toHistory() {
-        Intent intent = new Intent();
-        intent.setClass(activity, JtsHistoryActivity.class);
-        activity.startActivity(intent);
-    }
-
-    public void toSettings() {
-        Intent intent = new Intent();
-        intent.setClass(activity, JtsSettingsActivity.class);
-        activity.startActivity(intent);
-    }
 
     public void verifyStoragePermissions() {
         try {
@@ -159,24 +150,6 @@ public class MainActivityController {
         activity.startActivity(intent);
     }
 
-    public void clearData() {
-        if (adapter == null) {
-            return;
-        }
-        adapter.clearData();
-    }
-
-    public void processShowHome(final List<JtsTabInfoModel> content) {
-        if (adapter == null) {
-            adapter = new JtsTabListAdapter(activity, content);
-            activity.recyclerView.setAdapter(adapter);
-        } else {
-            adapter.addData(content);
-        }
-
-        adapter.notifyDataSetChanged();
-    }
-
     public void processSearchView() {
         if (activity.searchView == null) {
             return;
@@ -189,7 +162,7 @@ public class MainActivityController {
                     activity.searchView.setIconified(true);
                 }
                 activity.searchItem.collapseActionView();
-                switchSenceToSearch(query);
+                toSearch(query);
                 return false;
             }
 
@@ -202,7 +175,7 @@ public class MainActivityController {
     }
 
     public void loadDefaultScene() {
-        this.currentScene = new JtsDailyScene(activity);
+        this.currentScene = new JtsDailyScene(activity, this);
         this.currentScene.refresh();
     }
 
@@ -210,33 +183,44 @@ public class MainActivityController {
         return currentScene;
     }
 
-    public void switchSenceToDaily() {
-        this.currentScene = new JtsDailyScene(activity);
+    public void toDaily() {
+        this.currentScene = new JtsDailyScene(activity, this);
         this.currentScene.refresh();
     }
 
-    public void switchSenceToHot() {
-        this.currentScene = new JtsHotScene(activity);
+    public void toHot() {
+        this.currentScene = new JtsHotScene(activity, this);
         this.currentScene.refresh();
     }
 
-    public void switchSenceToSearch(String keyword) {
-        this.currentScene = new JtsSearchScene(activity, keyword);
+    public void toSearch(String keyword) {
+        Intent intent = new Intent();
+        intent.putExtra("scene-type", "search");
+        intent.putExtra("keyword", keyword);
+        intent.setClass(activity, JtsCommonSingleTabInfoListActivity.class);
+        activity.startActivity(intent);
+    }
+
+    public void toAcg() {
+        this.currentScene = new JtsArtistScene(activity, 19301, "Acg", this);
         this.currentScene.refresh();
     }
 
-    public void switchSenceToAcg() {
-        this.currentScene = new JtsArtistScene(activity, 19301, "Acg");
+    public void toLearn() {
+        this.currentScene = new JtsArtistScene(activity, 101941, "Learn", this);
         this.currentScene.refresh();
     }
 
-    public void switchSenceToLearn() {
-        this.currentScene = new JtsArtistScene(activity, 101941, "Learn");
-        this.currentScene.refresh();
+    public void toHistory() {
+        Intent intent = new Intent();
+        intent.setClass(activity, JtsHistoryActivity.class);
+        activity.startActivity(intent);
     }
 
-    public Consumer<Throwable> getErrorHandler() {
-        return errorHandler;
+    public void toSettings() {
+        Intent intent = new Intent();
+        intent.setClass(activity, JtsSettingsActivity.class);
+        activity.startActivity(intent);
     }
 
     public JtsTabInfoModel findTabInfoByGid(long gid) {
@@ -259,27 +243,6 @@ public class MainActivityController {
         adapter = null;
         currentScene = null;
         // instance = null;
-    }
-
-    public void stopLoadingProgressBar() {
-        activity.findViewById(R.id.main_loading_progressbar).setVisibility(View.GONE);
-    }
-
-    public void stopHeaderRefreshing() {
-        activity.refreshLayout.setHeaderRefreshing(false);
-    }
-
-    public void startHeaderRefreshing() {
-        activity.refreshLayout.setHeaderRefreshing(true);
-        activity.hideError();
-    }
-
-    public void startFooterRefreshing() {
-        activity.refreshLayout.setFooterRefreshing(true);
-    }
-
-    public void stopFooterRefreshing() {
-        activity.refreshLayout.setFooterRefreshing(false);
     }
 
     public void checkForUpdate() {
@@ -356,4 +319,60 @@ public class MainActivityController {
             }
         });
     }
+
+
+    @Override
+    public void setTitle(String title) {
+        activity.setTitle(title);
+    }
+
+    @Override
+    public void stopLoadingProgressBar() {
+        activity.findViewById(R.id.main_loading_progressbar).setVisibility(View.GONE);
+    }
+
+    @Override
+    public void stopHeaderRefreshing() {
+        activity.refreshLayout.setHeaderRefreshing(false);
+    }
+
+    @Override
+    public void startHeaderRefreshing() {
+        activity.refreshLayout.setHeaderRefreshing(true);
+        activity.hideError();
+    }
+
+    @Override
+    public void startFooterRefreshing() {
+        activity.refreshLayout.setFooterRefreshing(true);
+    }
+
+    @Override
+    public void stopFooterRefreshing() {
+        activity.refreshLayout.setFooterRefreshing(false);
+    }
+
+    @Override
+    public Consumer<Throwable> getErrorHandler() {
+        return errorHandler;
+    }
+
+    public void clearData() {
+        if (adapter == null) {
+            return;
+        }
+        adapter.clearData();
+    }
+
+    public void processDataNotify(final List<JtsTabInfoModel> content) {
+        if (adapter == null) {
+            adapter = new JtsTabListAdapter(activity, content);
+            activity.recyclerView.setAdapter(adapter);
+        } else {
+            adapter.addData(content);
+        }
+
+        adapter.notifyDataSetChanged();
+    }
+
 }
