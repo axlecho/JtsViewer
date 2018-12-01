@@ -40,6 +40,9 @@ public interface JtsServerApi {
     @GET("/collection/my")
     Observable<ResponseBody> getCollection();
 
+    @GET("/collection/{id}/{page}")
+    Observable<ResponseBody> getCollectionDetail(@Path("id") int id, @Path("page") int page);
+
     @FormUrlEncoded
     @POST("/member.php?mod=logging&action=login&loginsubmit=yes&handlekey=login&loginhash=LFR1d&inajax=1")
     Observable<Response<ResponseBody>> login(@Field("formhash") String hash,

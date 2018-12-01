@@ -169,6 +169,11 @@ public class JtsServer {
         return schedulers.switchSchedulers(o);
     }
 
+    public Observable<List<JtsTabInfoModel>> getCollectionDetail(int id, int page) {
+        Observable<List<JtsTabInfoModel>> o = service.getCollectionDetail(id,page).map(new JtsParseTabListFunction(context));
+        return schedulers.switchSchedulers(o);
+    }
+
     public Observable<JtsVersionInfoModule> getLastVersionInfo() {
         Observable<JtsVersionInfoModule> o = github.getLastVersion();
         return schedulers.switchSchedulers(o);

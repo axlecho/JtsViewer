@@ -179,6 +179,13 @@ public class NetworkUnitTest {
         List<JtsCollectionInfo> infos = server.getCollection().blockingFirst();
         MatcherAssert.assertThat(infos.size(),is(2));
     }
+
+    @Test
+    public void testCollectionDetail() {
+        List<JtsTabInfoModel> collection = server.getCollectionDetail(244939,1).blockingFirst();
+        MatcherAssert.assertThat(collection.size(),is(3));
+    }
+
     private class MockSchedulers extends JtsSchedulers {
         @Override
         public <T> Observable<T> switchSchedulers(Observable<T> a) {
