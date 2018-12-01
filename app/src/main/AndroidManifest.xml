@@ -10,7 +10,6 @@
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-
     <application
         android:name=".JtsApplication"
         android:allowBackup="true"
@@ -38,12 +37,10 @@
             android:label="@string/title_history"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activity.login.JtsLoginActivity"
             android:label="@string/title_login"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activity.detail.JtsDetailActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -52,6 +49,16 @@
         <activity
             android:name=".activity.JtsSettingsActivity"
             android:label="@string/title_activity_jts_settings" />
+
+        <receiver android:name=".JtsBookMarkWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/jts_book_mark_widget_info" />
+        </receiver>
     </application>
 
 </manifest>
