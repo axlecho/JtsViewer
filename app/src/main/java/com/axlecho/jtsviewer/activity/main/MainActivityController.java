@@ -19,6 +19,7 @@ import com.axlecho.jtsviewer.activity.base.JtsBaseController;
 import com.axlecho.jtsviewer.activity.base.JtsCommonSingleTabInfoListActivity;
 import com.axlecho.jtsviewer.activity.detail.JtsDetailActivity;
 import com.axlecho.jtsviewer.activity.login.JtsLoginActivity;
+import com.axlecho.jtsviewer.activity.my.JtsCollectionActivity;
 import com.axlecho.jtsviewer.activity.my.JtsHistoryActivity;
 import com.axlecho.jtsviewer.activity.my.JtsSettingsActivity;
 import com.axlecho.jtsviewer.cache.CacheManager;
@@ -214,6 +215,12 @@ public class MainActivityController implements JtsBaseController {
     public void toHistory() {
         Intent intent = new Intent();
         intent.setClass(activity, JtsHistoryActivity.class);
+        activity.startActivity(intent);
+    }
+
+    public void toCollection() {
+        Intent intent = new Intent();
+        intent.setClass(activity, JtsCollectionActivity.class);
         activity.startActivity(intent);
     }
 

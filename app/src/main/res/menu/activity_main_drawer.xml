@@ -32,7 +32,14 @@
         android:title="@string/title_history" />
 
     <item
+        android:id="@+id/nav_collection"
+        android:icon="@drawable/ic_menu_collection"
+        android:title="@string/title_collection" />
+
+    <item
         android:id="@+id/nav_setting"
         android:icon="@drawable/ic_menu_settings"
         android:title="@string/action_settings" />
+
+
 </menu>

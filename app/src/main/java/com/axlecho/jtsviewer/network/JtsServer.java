@@ -14,7 +14,7 @@ import com.axlecho.jtsviewer.action.parser.JtsParseUserInfoFunction;
 import com.axlecho.jtsviewer.activity.main.MainActivityController;
 import com.axlecho.jtsviewer.cache.CacheManager;
 import com.axlecho.jtsviewer.module.CacheModule;
-import com.axlecho.jtsviewer.module.JtsCollectionInfo;
+import com.axlecho.jtsviewer.module.JtsCollectionInfoModel;
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.JtsThreadModule;
@@ -164,8 +164,8 @@ public class JtsServer {
         return schedulers.switchSchedulers(o);
     }
 
-    public Observable<List<JtsCollectionInfo>> getCollection() {
-        Observable<List<JtsCollectionInfo>> o = service.getCollection().map(new JtsParseCollectionFunction(context));
+    public Observable<List<JtsCollectionInfoModel>> getCollection() {
+        Observable<List<JtsCollectionInfoModel>> o = service.getCollection().map(new JtsParseCollectionFunction(context));
         return schedulers.switchSchedulers(o);
     }
 

@@ -54,6 +54,10 @@
             android:name=".activity.my.JtsSettingsActivity"
             android:label="@string/title_activity_jts_settings" />
 
+        <activity
+            android:name=".activity.my.JtsCollectionActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <receiver android:name=".JtsBookMarkWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

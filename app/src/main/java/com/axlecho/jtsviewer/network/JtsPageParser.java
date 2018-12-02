@@ -4,7 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.axlecho.jtsviewer.R;
-import com.axlecho.jtsviewer.module.JtsCollectionInfo;
+import com.axlecho.jtsviewer.module.JtsCollectionInfoModel;
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.JtsThreadCommentModule;
@@ -14,7 +14,6 @@ import com.axlecho.jtsviewer.untils.JtsConf;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 import com.axlecho.sakura.utils.SakuraTextUtils;
-import com.axlecho.tabgallery.ImageTabInfo;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -133,7 +132,7 @@ public class JtsPageParser {
         detail.threadList = parserThread();
         detail.gtpUrl = parserGtpUrl();
         detail.imgUrls = parserImgUrl();
-        if(detail.imgUrls.size() == 0) {
+        if (detail.imgUrls == null || detail.imgUrls.size() == 0) {
             detail.imgUrls = parserPdfUrl();
         }
         return detail;
@@ -240,7 +239,7 @@ public class JtsPageParser {
         while (it.hasNext()) {
             Element c = (Element) it.next();
             JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE, TAG, c.toString());
-            if(!c.attr("id").matches("post_\\d+")) {
+            if (!c.attr("id").matches("post_\\d+")) {
                 continue;
             }
             JtsThreadModule module = parserThraed(c);
@@ -297,18 +296,18 @@ public class JtsPageParser {
         return searchId == null ? -1 : Integer.parseInt(searchId);
     }
 
-    public List<JtsCollectionInfo> parserCollection() {
+    public List<JtsCollectionInfoModel> parserCollection() {
         if (html == null) return null;
         Document doc = Jsoup.parse(html);
 
         // JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE, TAG,html);
         Elements tabItems = doc.select("div.xld");
         Iterator it = tabItems.iterator();
-        List<JtsCollectionInfo> models = new ArrayList<>();
+        List<JtsCollectionInfoModel> models = new ArrayList<>();
         while (it.hasNext()) {
             Element element = (Element) it.next();
             JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE, TAG, element.toString());
-            JtsCollectionInfo model = parserCollectionByElement(element);
+            JtsCollectionInfoModel model = parserCollectionByElement(element);
             JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE, TAG, model.toString());
             models.add(model);
         }
@@ -316,9 +315,9 @@ public class JtsPageParser {
         return models;
     }
 
-    public JtsCollectionInfo parserCollectionByElement(Element e) {
+    public JtsCollectionInfoModel parserCollectionByElement(Element e) {
         if (e == null) return null;
-        JtsCollectionInfo model = new JtsCollectionInfo();
+        JtsCollectionInfoModel model = new JtsCollectionInfoModel();
         model.num = Integer.parseInt(e.select("dd.m").first()
                 .select("strong.xi2").first().text());
         model.title = e.select("dt.xw1").first()

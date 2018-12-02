@@ -137,6 +137,8 @@ public class MainActivity extends AppCompatActivity
             this.controller.toHistory();
         } else if (id == R.id.nav_setting) {
             this.controller.toSettings();
+        } else if (id == R.id.nav_collection) {
+            this.controller.toCollection();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.axlecho.jtsviewer.cache.CacheManager;
-import com.axlecho.jtsviewer.module.JtsCollectionInfo;
+import com.axlecho.jtsviewer.module.JtsCollectionInfoModel;
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.JtsThreadModule;
@@ -14,7 +14,6 @@ import com.axlecho.jtsviewer.network.JtsSchedulers;
 import com.axlecho.jtsviewer.network.JtsSearchHelper;
 import com.axlecho.jtsviewer.network.JtsServer;
 import com.axlecho.jtsviewer.untils.JtsConf;
-import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 
 import org.hamcrest.MatcherAssert;
 import org.junit.Before;
@@ -26,19 +25,9 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowLog;
 
 import java.io.File;
-import java.security.cert.CertificateException;
 import java.util.List;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-
 import io.reactivex.Observable;
-import io.reactivex.functions.Consumer;
-import okhttp3.OkHttpClient;
 
 import static org.hamcrest.core.Is.is;
 
@@ -176,7 +165,7 @@ public class NetworkUnitTest {
     @Test
     public void testCollection() {
         server.login("d39", "123456789").blockingSubscribe();
-        List<JtsCollectionInfo> infos = server.getCollection().blockingFirst();
+        List<JtsCollectionInfoModel> infos = server.getCollection().blockingFirst();
         MatcherAssert.assertThat(infos.size(),is(2));
     }
 
