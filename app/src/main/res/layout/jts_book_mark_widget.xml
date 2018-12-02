@@ -1,21 +1,106 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#09C"
-    android:padding="@dimen/widget_margin">
+    android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/appwidget_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_margin="8dp"
-        android:background="#09C"
-        android:contentDescription="@string/appwidget_text"
-        android:text="@string/appwidget_text"
-        android:textColor="#ffffff"
-        android:textSize="24sp"
-        android:textStyle="bold|italic" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
 
-</RelativeLayout>
+        <Button
+            android:id="@+id/btn_listview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="listview" />
+
+        <Button
+            android:id="@+id/btn_gridview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="gridview" />
+
+        <Button
+            android:id="@+id/btn_stackview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="stackview" />
+
+        <Button
+            android:id="@+id/btn_viewflipper"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="viewflipper" />
+    </LinearLayout>
+
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000" >
+
+        <ListView
+            android:id="@+id/listview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+
+        <GridView
+            android:id="@+id/gridview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:numColumns="2"
+            android:visibility="gone" />
+
+        <StackView
+            android:id="@+id/stackview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:visibility="gone" />
+
+        <ViewFlipper
+            android:id="@+id/viewflipper"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:autoStart="true"
+            android:flipInterval="2000"
+            android:visibility="gone" >
+            <!--
+            autoStart=true  <==>	startFlipping()
+            flipInterval=2000 <==> How long to wait before flipping to the next view
+             -->
+            <ImageView
+                android:id="@+id/iv1"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@mipmap/ic_gtp"/>
+            <ImageView
+                android:id="@+id/iv2"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@mipmap/ic_img"/>
+            <ImageView
+                android:id="@+id/iv3"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@mipmap/ic_chord" />
+            <ImageView
+                android:id="@+id/iv4"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@mipmap/ic_chord" />
+        </ViewFlipper>
+
+        <TextView
+            android:id="@+id/tv_empty"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:text="Empty List"
+            android:visibility="gone" />
+    </FrameLayout>
+
+</LinearLayout>
