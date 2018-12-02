@@ -53,7 +53,7 @@ public class JtsTextUnitls {
         }
 
         String path = Uri.parse(url).getPath();
-        if (!path.contains("/tab/")) {
+        if (path == null || !path.contains("/tab/")) {
             JtsViewerLog.e(TAG, "get tabkey from url failed -- url is not a tab page");
             return -1;
         }
@@ -66,6 +66,29 @@ public class JtsTextUnitls {
         }
 
         JtsViewerLog.e(TAG, "get tabkey from url failed -- path error " + path);
+        return -1;
+    }
+
+    public static long getCollectionIdFromUrl(String url) {
+        if (url == null) {
+            JtsViewerLog.e(TAG, "get collection id from url failed -- url is null");
+            return -1;
+        }
+
+        String path = Uri.parse(url).getPath();
+        if (path == null || !path.contains("/collection/")) {
+            JtsViewerLog.e(TAG, "get collection id from url failed -- url is not a collection page");
+            return -1;
+        }
+
+        JtsViewerLog.d(TAG, "url path -- " + path);
+        for (String s : path.split("/")) {
+            if (s.matches("\\d+")) {
+                return Long.parseLong(s);
+            }
+        }
+
+        JtsViewerLog.e(TAG, "get collection id  from url failed -- path error " + path);
         return -1;
     }
 

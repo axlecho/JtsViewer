@@ -1,5 +1,6 @@
 package com.axlecho.jtsviewer.activity.my;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,8 +9,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.axlecho.jtsviewer.R;
+import com.axlecho.jtsviewer.activity.base.JtsCommonSingleTabInfoListActivity;
 import com.axlecho.jtsviewer.module.JtsCollectionInfoModel;
 import com.axlecho.jtsviewer.network.JtsServer;
+import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.widget.RecycleViewDivider;
 
 import java.util.ArrayList;
@@ -18,7 +21,7 @@ import java.util.List;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
-public class JtsCollectionActivity extends AppCompatActivity {
+public class JtsCollectionActivity extends AppCompatActivity implements JtsCollectionListAdapter.OnItemClickListener, JtsCollectionListAdapter.OnItemLongClickListener {
     // implements CacheViewAdapter.OnItemClickListener, CacheViewAdapter.OnItemLongClickListener {
     private static final String TAG = JtsCollectionActivity.class.getSimpleName();
 
@@ -50,8 +53,8 @@ public class JtsCollectionActivity extends AppCompatActivity {
 
 
         cacheViewAdapter = new JtsCollectionListAdapter(this, modules);
-        // cacheViewAdapter.addOnItemClickListener(this);
-        // cacheViewAdapter.addOnItemLongClickListener(this);
+        cacheViewAdapter.addOnItemClickListener(this);
+        cacheViewAdapter.addOnItemLongClickListener(this);
         recyclerView.setAdapter(cacheViewAdapter);
 
         disposable = JtsServer.getSingleton(this).getCollection()
@@ -69,5 +72,25 @@ public class JtsCollectionActivity extends AppCompatActivity {
     protected void onDestroy() {
         disposable.dispose();
         super.onDestroy();
+    }
+
+    @Override
+    public void onItemClick(JtsCollectionInfoModel module) {
+        long collectionId = JtsTextUnitls.getCollectionIdFromUrl(module.url);
+        Intent intent = new Intent();
+        intent.putExtra("scene-type", "collection");
+        intent.putExtra("collection-id", collectionId);
+        intent.setClass(this, JtsCommonSingleTabInfoListActivity.class);
+        this.startActivity(intent);
+    }
+
+    @Override
+    public void onItemAvatarClick(JtsCollectionInfoModel module, View shareView) {
+
+    }
+
+    @Override
+    public void onItemLongClick(JtsCollectionInfoModel module) {
+
     }
 }

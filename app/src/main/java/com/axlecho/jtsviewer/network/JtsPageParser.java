@@ -323,6 +323,8 @@ public class JtsPageParser {
         model.title = e.select("dt.xw1").first()
                 .select("a.xi2").first().text();
         model.description = "???";
+        model.url = e.select("a[href*=/collection/]").first().attr("href");
+
         return model;
     }
 }

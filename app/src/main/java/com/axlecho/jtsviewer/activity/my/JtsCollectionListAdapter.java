@@ -19,8 +19,8 @@ public class JtsCollectionListAdapter extends RecyclerView.Adapter<RecyclerView.
     private static final String TAG = JtsCollectionListAdapter.class.getSimpleName();
     private List<JtsCollectionInfoModel> modules;
     private Context context;
-    private List<CacheViewAdapter.OnItemClickListener> clickListenerList;
-    private List<CacheViewAdapter.OnItemLongClickListener> longClickListenerList;
+    private List<JtsCollectionListAdapter.OnItemClickListener> clickListenerList;
+    private List<JtsCollectionListAdapter.OnItemLongClickListener> longClickListenerList;
 
     public JtsCollectionListAdapter(Context context, List<JtsCollectionInfoModel> modules) {
         this.context = context;
@@ -42,10 +42,18 @@ public class JtsCollectionListAdapter extends RecyclerView.Adapter<RecyclerView.
             return;
         }
 
-
         final JtsCollectionListAdapter.JtsCollectionListViewHolder viewHolder = (JtsCollectionListAdapter.JtsCollectionListViewHolder) holder;
         final JtsCollectionInfoModel module = modules.get(position);
         viewHolder.setData(module);
+
+        viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (JtsCollectionListAdapter.OnItemClickListener listener : clickListenerList) {
+                    listener.onItemClick(module);
+                }
+            }
+        });
     }
 
     @Override
@@ -82,5 +90,23 @@ public class JtsCollectionListAdapter extends RecyclerView.Adapter<RecyclerView.
             this.title.setText(model.title);
             this.reply.setText(String.valueOf(model.num));
         }
+    }
+
+    public void addOnItemLongClickListener(JtsCollectionListAdapter.OnItemLongClickListener listener) {
+        this.longClickListenerList.add(listener);
+    }
+
+    public void addOnItemClickListener(JtsCollectionListAdapter.OnItemClickListener listener) {
+        this.clickListenerList.add(listener);
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(JtsCollectionInfoModel module);
+
+        void onItemAvatarClick(JtsCollectionInfoModel module, View shareView);
+    }
+
+    public interface OnItemLongClickListener {
+        void onItemLongClick(JtsCollectionInfoModel module);
     }
 }

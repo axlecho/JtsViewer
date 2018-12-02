@@ -169,7 +169,7 @@ public class JtsServer {
         return schedulers.switchSchedulers(o);
     }
 
-    public Observable<List<JtsTabInfoModel>> getCollectionDetail(int id, int page) {
+    public Observable<List<JtsTabInfoModel>> getCollectionDetail(long id, int page) {
         Observable<List<JtsTabInfoModel>> o = service.getCollectionDetail(id,page).map(new JtsParseTabListFunction(context));
         return schedulers.switchSchedulers(o);
     }

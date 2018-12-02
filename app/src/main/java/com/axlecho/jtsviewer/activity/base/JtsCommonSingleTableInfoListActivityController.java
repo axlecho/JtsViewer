@@ -11,6 +11,7 @@ import com.axlecho.jtsviewer.activity.detail.JtsDetailActivity;
 import com.axlecho.jtsviewer.activity.main.BaseScene;
 import com.axlecho.jtsviewer.activity.main.JtsSearchScene;
 import com.axlecho.jtsviewer.activity.main.JtsTabListAdapter;
+import com.axlecho.jtsviewer.activity.my.JtsCollectionScene;
 import com.axlecho.jtsviewer.cache.CacheManager;
 import com.axlecho.jtsviewer.module.CacheModule;
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
@@ -60,6 +61,11 @@ public class JtsCommonSingleTableInfoListActivityController implements JtsBaseCo
         if (sceneType.equals("search")) {
             String keyword = activity.getIntent().getStringExtra("keyword");
             this.scene = new JtsSearchScene(activity, keyword, this);
+            this.scene.refresh();
+        } else if (sceneType.equals("collection")) {
+            long collectionId = activity.getIntent().getLongExtra("collection-id",-1);
+            JtsViewerLog.d(TAG,"collection id is "+ collectionId);
+            this.scene = new JtsCollectionScene(activity, collectionId, this);
             this.scene.refresh();
         } else {
             activity.showError("scene not defind");
