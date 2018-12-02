@@ -30,7 +30,7 @@ public class JtsCommonSingleTabInfoListActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_common);
 
-        this.controller = JtsCommonSingleTableInfoListActivityController.getInstance();
+        this.controller = new JtsCommonSingleTableInfoListActivityController();
         this.controller.setActivity(this);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);

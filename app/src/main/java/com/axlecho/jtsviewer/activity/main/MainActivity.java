@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        this.controller = MainActivityController.getInstance();
+        this.controller = new MainActivityController();
         this.controller.setActivity(this);
         this.controller.verifyStoragePermissions();
 

@@ -27,17 +27,18 @@ public class JtsGtpTabAction extends JtsBaseAction {
     private Context context;
     private long gid;
     private String gtpUrl;
-
-    public JtsGtpTabAction(Context context, long gid, String gtpUrl) {
+    private JtsTabInfoModel tabInfo;
+    public JtsGtpTabAction(Context context, long gid, String gtpUrl,JtsTabInfoModel tabInfo) {
         this.context = context;
         this.gid = gid;
         this.gtpUrl = gtpUrl;
+        this.tabInfo = tabInfo;
     }
 
     @Override
     public void processAction() {
 
-        JtsServer.getSingleton(context).downloadWithCache(gid, gtpUrl).subscribe(new Consumer<String>() {
+        JtsServer.getSingleton(context).downloadWithCache(gid, gtpUrl,tabInfo).subscribe(new Consumer<String>() {
             @Override
             public void accept(String result) throws Exception {
                 if (TextUtils.isEmpty(result)) {

@@ -310,7 +310,7 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
         JtsBaseAction action;
         long gid = JtsTextUnitls.getTabKeyFromUrl(info.url);
         if (detail.gtpUrl != null) {
-            action = new JtsGtpTabAction(activity, gid, detail.gtpUrl);
+            action = new JtsGtpTabAction(activity, gid, detail.gtpUrl,info);
         } else if (detail.imgUrls != null && detail.imgUrls.size() != 0) {
             action = new JtsImgTabAction(activity, gid, detail.imgUrls);
         } else {

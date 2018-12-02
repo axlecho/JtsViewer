@@ -30,7 +30,6 @@ public class JtsCommonSingleTableInfoListActivityController implements JtsBaseCo
     private static final String TAG = "common";
     private JtsTabListAdapter adapter;
     private BaseScene scene;
-    private static JtsCommonSingleTableInfoListActivityController instance;
     private JtsCommonSingleTabInfoListActivity activity;
     private List<Disposable> disposables = new ArrayList<>();
 
@@ -42,17 +41,6 @@ public class JtsCommonSingleTableInfoListActivityController implements JtsBaseCo
             activity.showError(JtsTextUnitls.getErrorMessageFromException(activity, throwable));
         }
     };
-
-    public static JtsCommonSingleTableInfoListActivityController getInstance() {
-        if (instance == null) {
-            synchronized (JtsCommonSingleTabInfoListActivity.class) {
-                if (instance == null) {
-                    instance = new JtsCommonSingleTableInfoListActivityController();
-                }
-            }
-        }
-        return instance;
-    }
 
     public void setActivity(JtsCommonSingleTabInfoListActivity activity) {
         this.activity = activity;
@@ -134,13 +122,13 @@ public class JtsCommonSingleTableInfoListActivityController implements JtsBaseCo
     }
 
     @Override
-    public void generateShortcut(JtsTabInfoModel model) {
+    public void generateShortcut(final JtsTabInfoModel model) {
         final long tabKey = JtsTextUnitls.getTabKeyFromUrl(model.url);
         Disposable disposable = JtsServer.getSingleton(activity).getDetail(tabKey).subscribe(new Consumer<JtsTabDetailModule>() {
             @Override
             public void accept(JtsTabDetailModule detail) throws Exception {
                 if (detail.gtpUrl != null) {
-                    JtsServer.getSingleton(activity).downloadWithCache(tabKey, detail.gtpUrl)
+                    JtsServer.getSingleton(activity).downloadWithCache(tabKey, detail.gtpUrl, model)
                             .subscribe(new Consumer<String>() {
                                 @Override
                                 public void accept(String s) throws Exception {

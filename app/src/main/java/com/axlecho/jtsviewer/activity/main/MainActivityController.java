@@ -42,7 +42,6 @@ import io.reactivex.functions.Consumer;
 
 public class MainActivityController implements JtsBaseController {
     private static final String TAG = MainActivityController.class.getSimpleName();
-    private static MainActivityController instance;
     private MainActivity activity;
     private JtsTabListAdapter adapter;
     private BaseScene currentScene;
@@ -59,18 +58,6 @@ public class MainActivityController implements JtsBaseController {
             activity.showError(JtsTextUnitls.getErrorMessageFromException(activity, throwable));
         }
     };
-
-
-    public static MainActivityController getInstance() {
-        if (instance == null) {
-            synchronized (MainActivity.class) {
-                if (instance == null) {
-                    instance = new MainActivityController();
-                }
-            }
-        }
-        return instance;
-    }
 
     public void setActivity(MainActivity activity) {
         this.activity = activity;
@@ -295,13 +282,13 @@ public class MainActivityController implements JtsBaseController {
     }
 
     @Override
-    public void generateShortcut(JtsTabInfoModel model) {
+    public void generateShortcut(final JtsTabInfoModel model) {
         final long tabKey = JtsTextUnitls.getTabKeyFromUrl(model.url);
         JtsServer.getSingleton(activity).getDetail(tabKey).subscribe(new Consumer<JtsTabDetailModule>() {
             @Override
             public void accept(JtsTabDetailModule detail) throws Exception {
                 if (detail.gtpUrl != null) {
-                    JtsServer.getSingleton(activity).downloadWithCache(tabKey, detail.gtpUrl)
+                    JtsServer.getSingleton(activity).downloadWithCache(tabKey, detail.gtpUrl,model)
                             .subscribe(new Consumer<String>() {
                                 @Override
                                 public void accept(String s) throws Exception {

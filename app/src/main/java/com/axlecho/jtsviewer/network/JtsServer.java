@@ -184,7 +184,7 @@ public class JtsServer {
         return schedulers.switchSchedulers(o);
     }
 
-    public Single<String> downloadWithCache(final long gid, String gtpUrl) {
+    public Single<String> downloadWithCache(final long gid, String gtpUrl,final JtsTabInfoModel tabInfo) {
 
         Observable<String> cache = Observable.create(new ObservableOnSubscribe<String>() {
             @Override
@@ -205,7 +205,7 @@ public class JtsServer {
                     @Override
                     public void accept(String result) throws Exception {
                         JtsViewerLog.d(TAG, "save " + gid + " to cache");
-                        JtsTabInfoModel tabInfo = MainActivityController.getInstance().findTabInfoByGid(gid);
+                        // JtsTabInfoModel tabInfo = MainActivityController.getInstance().findTabInfoByGid(gid);
                         CacheManager.getInstance(context).cacheInfo(gid, result, tabInfo);
                     }
                 });
