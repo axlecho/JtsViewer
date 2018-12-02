@@ -1,17 +1,29 @@
 package com.axlecho.jtsviewer.activity.base;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.view.View;
 
 import com.axlecho.jtsviewer.R;
+import com.axlecho.jtsviewer.activity.detail.JtsDetailActivity;
 import com.axlecho.jtsviewer.activity.main.BaseScene;
 import com.axlecho.jtsviewer.activity.main.JtsSearchScene;
 import com.axlecho.jtsviewer.activity.main.JtsTabListAdapter;
+import com.axlecho.jtsviewer.cache.CacheManager;
+import com.axlecho.jtsviewer.module.CacheModule;
+import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
+import com.axlecho.jtsviewer.network.JtsNetworkManager;
+import com.axlecho.jtsviewer.network.JtsServer;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 public class JtsCommonSingleTableInfoListActivityController implements JtsBaseController {
@@ -20,6 +32,7 @@ public class JtsCommonSingleTableInfoListActivityController implements JtsBaseCo
     private BaseScene scene;
     private static JtsCommonSingleTableInfoListActivityController instance;
     private JtsCommonSingleTabInfoListActivity activity;
+    private List<Disposable> disposables = new ArrayList<>();
 
     private Consumer<Throwable> errorHandler = new Consumer<Throwable>() {
         @Override
@@ -109,9 +122,9 @@ public class JtsCommonSingleTableInfoListActivityController implements JtsBaseCo
     }
 
     public void processDataNotify(final List<JtsTabInfoModel> content) {
-        JtsViewerLog.i(JtsViewerLog.DEFAULT_MODULE,TAG,content.toString());
+        JtsViewerLog.i(JtsViewerLog.DEFAULT_MODULE, TAG, content.toString());
         if (adapter == null) {
-            adapter = new JtsTabListAdapter(activity, content);
+            adapter = new JtsTabListAdapter(activity, content, this);
             activity.recyclerView.setAdapter(adapter);
         } else {
             adapter.addData(content);
@@ -120,4 +133,55 @@ public class JtsCommonSingleTableInfoListActivityController implements JtsBaseCo
         adapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void generateShortcut(JtsTabInfoModel model) {
+        final long tabKey = JtsTextUnitls.getTabKeyFromUrl(model.url);
+        Disposable disposable = JtsServer.getSingleton(activity).getDetail(tabKey).subscribe(new Consumer<JtsTabDetailModule>() {
+            @Override
+            public void accept(JtsTabDetailModule detail) throws Exception {
+                if (detail.gtpUrl != null) {
+                    JtsServer.getSingleton(activity).downloadWithCache(tabKey, detail.gtpUrl)
+                            .subscribe(new Consumer<String>() {
+                                @Override
+                                public void accept(String s) throws Exception {
+                                    CacheModule cache = CacheManager.getInstance(activity).getModule(tabKey);
+                                    CacheManager.getInstance(activity).generateShortcutFromCache(cache).subscribe(new Consumer<Bitmap>() {
+                                        @Override
+                                        public void accept(Bitmap bitmap) throws Exception {
+                                            activity.showMessage(activity.getResources().getString(R.string.add_short_cut));
+                                        }
+                                    });
+                                }
+                            });
+                }
+
+            }
+        });
+        disposables.add(disposable);
+    }
+
+    @Override
+    public void startDetailActivity(JtsTabInfoModel model, View shareView) {
+        String transition_name = activity.getResources().getString(R.string.detail_transition);
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, shareView, transition_name);
+
+        Intent intent = new Intent();
+        intent.putExtra("tabinfo", model);
+        intent.setClass(activity, JtsDetailActivity.class);
+        ActivityCompat.startActivity(activity, intent, options.toBundle());
+    }
+
+    public void detachFromActivity() {
+        JtsNetworkManager.getInstance(activity).cancelAll();
+
+        for (Disposable disposable : disposables) {
+            if (disposable != null && !disposable.isDisposed()) {
+                disposable.dispose();
+            }
+        }
+        disposables.clear();
+
+        // this.activity = null;
+        // this.adapter = null;
+    }
 }

@@ -227,15 +227,7 @@ public class MainActivityController implements JtsBaseController {
         return adapter.findTabInfoByGid(gid);
     }
 
-    public void startDetailActivity(JtsTabInfoModel model, View shareView) {
-        String transition_name = activity.getResources().getString(R.string.detail_transition);
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, shareView, transition_name);
 
-        Intent intent = new Intent();
-        intent.putExtra("tabinfo", model);
-        intent.setClass(activity, JtsDetailActivity.class);
-        ActivityCompat.startActivity(activity, intent, options.toBundle());
-    }
 
     public void detachFromActivity() {
         JtsNetworkManager.getInstance(activity).cancelAll();
@@ -295,6 +287,7 @@ public class MainActivityController implements JtsBaseController {
         builder.show();
     }
 
+    @Override
     public void generateShortcut(JtsTabInfoModel model) {
         final long tabKey = JtsTextUnitls.getTabKeyFromUrl(model.url);
         JtsServer.getSingleton(activity).getDetail(tabKey).subscribe(new Consumer<JtsTabDetailModule>() {
@@ -320,6 +313,16 @@ public class MainActivityController implements JtsBaseController {
         });
     }
 
+    @Override
+    public void startDetailActivity(JtsTabInfoModel model, View shareView) {
+        String transition_name = activity.getResources().getString(R.string.detail_transition);
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, shareView, transition_name);
+
+        Intent intent = new Intent();
+        intent.putExtra("tabinfo", model);
+        intent.setClass(activity, JtsDetailActivity.class);
+        ActivityCompat.startActivity(activity, intent, options.toBundle());
+    }
 
     @Override
     public void setTitle(String title) {
@@ -366,7 +369,7 @@ public class MainActivityController implements JtsBaseController {
 
     public void processDataNotify(final List<JtsTabInfoModel> content) {
         if (adapter == null) {
-            adapter = new JtsTabListAdapter(activity, content);
+            adapter = new JtsTabListAdapter(activity, content,this);
             activity.recyclerView.setAdapter(adapter);
         } else {
             adapter.addData(content);

@@ -64,6 +64,12 @@ public class JtsCommonSingleTabInfoListActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        controller.detachFromActivity();
+    }
+
+    @Override
     public void onHeaderRefresh() {
         this.controller.getScene().refresh();
     }

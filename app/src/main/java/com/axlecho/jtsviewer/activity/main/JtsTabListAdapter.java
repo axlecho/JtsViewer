@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.axlecho.jtsviewer.R;
+import com.axlecho.jtsviewer.activity.base.JtsBaseController;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
@@ -23,10 +24,12 @@ public class JtsTabListAdapter extends RecyclerView.Adapter<JtsTabListAdapter.Ta
     private static final String TAG = JtsTabListAdapter.class.getSimpleName();
     private List<JtsTabInfoModel> content;
     private Context context;
+    private JtsBaseController controller;
 
-    public JtsTabListAdapter(Context context, List<JtsTabInfoModel> content) {
+    public JtsTabListAdapter(Context context, List<JtsTabInfoModel> content,JtsBaseController controller) {
         this.context = context;
         this.content = content;
+        this.controller = controller;
     }
 
     public void addData(List<JtsTabInfoModel> content) {
@@ -128,14 +131,14 @@ public class JtsTabListAdapter extends RecyclerView.Adapter<JtsTabListAdapter.Ta
         public void onClick(View v) {
             JtsTabInfoModel model = content.get(getAdapterPosition());
             JtsViewerLog.d(TAG, model.url);
-            MainActivityController.getInstance().startDetailActivity(model, avatar);
+            controller.startDetailActivity(model, avatar);
         }
 
         @Override
         public boolean onLongClick(View view) {
             JtsTabInfoModel model = content.get(getAdapterPosition());
             JtsViewerLog.d(TAG, model.url);
-            MainActivityController.getInstance().generateShortcut(model);
+            controller.generateShortcut(model);
             return true;
         }
     }
