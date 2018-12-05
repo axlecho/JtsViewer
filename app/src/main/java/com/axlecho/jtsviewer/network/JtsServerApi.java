@@ -61,6 +61,16 @@ public interface JtsServerApi {
                                          @Field("usesig") int usesig,
                                          @Field("subject") String subject);
 
+    @FormUrlEncoded
+    @POST("/forum.php?mod=collection&action=edit&op=ad")
+    Observable<ResponseBody> favorite(@Field("ctid")long ctid,
+                                      @Field("reason") String reason,
+                                      @Field("tids[]")long tid,
+                                      @Field("inajax")int inajax,
+                                      @Field("handlekey") String handlekey,
+                                      @Field("formhash") String formhash,
+                                      @Field("addthread") int addthread);
+
     @GET
     Observable<Response<ResponseBody>> download(@Url String fileUrl);
 }

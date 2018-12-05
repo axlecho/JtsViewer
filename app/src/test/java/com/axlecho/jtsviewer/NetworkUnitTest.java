@@ -175,6 +175,13 @@ public class NetworkUnitTest {
         MatcherAssert.assertThat(collection.size(),is(3));
     }
 
+    @Test
+    public void testFavorites() {
+        server.login("d39", "123456789").blockingSubscribe();
+        String result = server.favorite(244939,1332451).blockingFirst();
+        MatcherAssert.assertThat(result,is(JtsConf.STATUS_SUCCESSED));
+    }
+
     private class MockSchedulers extends JtsSchedulers {
         @Override
         public <T> Observable<T> switchSchedulers(Observable<T> a) {

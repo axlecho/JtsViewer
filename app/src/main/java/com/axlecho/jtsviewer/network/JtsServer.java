@@ -5,6 +5,7 @@ import android.content.Context;
 import com.axlecho.jtsviewer.action.download.JtsDownloadFunction;
 import com.axlecho.jtsviewer.action.parser.JtsParseCollectionFunction;
 import com.axlecho.jtsviewer.action.parser.JtsParseCommentFunction;
+import com.axlecho.jtsviewer.action.parser.JtsParseFavoriteFunction;
 import com.axlecho.jtsviewer.action.parser.JtsParseLoginFunction;
 import com.axlecho.jtsviewer.action.parser.JtsParseSearchKeyConsumer;
 import com.axlecho.jtsviewer.action.parser.JtsParseTabDetailFunction;
@@ -152,6 +153,17 @@ public class JtsServer {
         return schedulers.switchSchedulers(o);
     }
 
+    public Observable<String> favorite(long ctid,long tid) {
+        String reason = "";
+        int inajax = 1;
+        String handlekey = "k_collect";
+        String formhash = "6cd24b3a";
+        int addthread = 1;
+
+        Observable<String> o = service.favorite(ctid,reason,tid,inajax,handlekey,formhash,addthread).map(new JtsParseFavoriteFunction());
+        return schedulers.switchSchedulers(o);
+    }
+
     public Observable<JtsUserModule> getUserInfo() {
         Observable<JtsUserModule> o = service.index().map(new JtsParseUserInfoFunction(context));
         return schedulers.switchSchedulers(o);
@@ -173,6 +185,7 @@ public class JtsServer {
         Observable<List<JtsTabInfoModel>> o = service.getCollectionDetail(id,page).map(new JtsParseTabListFunction(context));
         return schedulers.switchSchedulers(o);
     }
+
 
     public Observable<JtsVersionInfoModule> getLastVersionInfo() {
         Observable<JtsVersionInfoModule> o = github.getLastVersion();
