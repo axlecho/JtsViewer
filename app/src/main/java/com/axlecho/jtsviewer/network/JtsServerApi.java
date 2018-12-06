@@ -2,11 +2,11 @@ package com.axlecho.jtsviewer.network;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
-import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -62,8 +62,10 @@ public interface JtsServerApi {
                                          @Field("subject") String subject);
 
     @FormUrlEncoded
-    @POST("/forum.php?mod=collection&action=edit&op=ad")
-    Observable<ResponseBody> favorite(@Field("ctid")long ctid,
+    @POST("/forum.php?mod=collection&action=edit&op=addthread&inajax=1")
+    Observable<ResponseBody> favorite(
+                                       @Header("Referer") String referer,
+                                      @Field("ctid")long ctid,
                                       @Field("reason") String reason,
                                       @Field("tids[]")long tid,
                                       @Field("inajax")int inajax,

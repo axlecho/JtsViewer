@@ -27,6 +27,7 @@
     <string name="unknown_uper">吉他爱好者</string>
     <string name="unknown_time">未知</string>
     <string name="refresh">刷新</string>
+    <string name="favorite">收藏</string>
 
     <string name="login">登录</string>
     <string name="login_tip">登录中</string>

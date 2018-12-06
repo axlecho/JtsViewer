@@ -32,6 +32,7 @@
     <string name="unknown_time">未知</string>
     <string name="title_activity_detail">DetailActivity</string>
     <string name="refresh">refresh</string>
+    <string name="favorite">favorite</string>
     <string name="open_in_other_app">open in other app</string>
     <string name="title_activity_jts_settings">Settings</string>
     <string name="detail_transition">detail_transition</string>

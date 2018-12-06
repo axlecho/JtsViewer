@@ -11,7 +11,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
@@ -142,6 +141,11 @@ public class JtsDetailActivity extends AppCompatActivity {
     public void showMessage(int resId) {
         View rootView = findViewById(R.id.comment_layout);
         Snackbar.make(rootView, resId, Snackbar.LENGTH_LONG).show();
+    }
+
+    public void showMessage(String msg) {
+        View rootView = findViewById(R.id.comment_layout);
+        Snackbar.make(rootView, msg, Snackbar.LENGTH_LONG).show();
     }
 
     public void popMenu() {

@@ -159,8 +159,8 @@ public class JtsServer {
         String handlekey = "k_collect";
         String formhash = "6cd24b3a";
         int addthread = 1;
-
-        Observable<String> o = service.favorite(ctid,reason,tid,inajax,handlekey,formhash,addthread).map(new JtsParseFavoriteFunction());
+        String refer = "https://www.jitashe.org/tab/" + tid + "/";
+        Observable<String> o = service.favorite(refer,ctid,reason,tid,inajax,handlekey,formhash,addthread).map(new JtsParseFavoriteFunction());
         return schedulers.switchSchedulers(o);
     }
 

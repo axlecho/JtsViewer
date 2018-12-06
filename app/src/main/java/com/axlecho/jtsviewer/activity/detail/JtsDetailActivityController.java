@@ -1,5 +1,8 @@
 package com.axlecho.jtsviewer.activity.detail;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -12,6 +15,7 @@ import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.action.tab.JtsGtpTabAction;
 import com.axlecho.jtsviewer.action.tab.JtsImgTabAction;
 import com.axlecho.jtsviewer.action.ui.JtsStopVideoAction;
+import com.axlecho.jtsviewer.module.JtsCollectionInfoModel;
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.JtsThreadModule;
@@ -116,12 +120,76 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
                     case R.id.action_refresh:
                         getTabDetail();
                         break;
+                    case R.id.action_favorite:
+                        showCollectionDialog();
+                        break;
                 }
                 return true;
             }
         });
     }
 
+    public void showCollectionDialog(){
+        final ProgressDialog loadingProgressDialog;
+        loadingProgressDialog = new ProgressDialog(activity);
+        loadingProgressDialog.setTitle(null);
+        loadingProgressDialog.setMessage(activity.getResources().getString(R.string.login_tip));
+        loadingProgressDialog.show();
+        Disposable disposable = JtsServer.getSingleton(activity).getCollection().subscribe(new Consumer<List<JtsCollectionInfoModel>>() {
+            @Override
+            public void accept(List<JtsCollectionInfoModel> jtsCollectionInfoModels) throws Exception {
+                loadingProgressDialog.dismiss();
+                showCollectionDialog(jtsCollectionInfoModels);
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+                activity.showMessage(throwable.getMessage());
+            }
+        });
+        disposables.add(disposable);
+    }
+
+    public void showCollectionDialog(final List<JtsCollectionInfoModel> collectionInfoModels) {
+            List<String> itemList = new ArrayList<>();
+            for(JtsCollectionInfoModel model:collectionInfoModels) {
+                itemList.add(model.title);
+            }
+            AlertDialog.Builder listDialog =new AlertDialog.Builder(activity);
+            listDialog.setTitle(activity.getResources().getString(R.string.title_collection));
+            listDialog.setItems(itemList.toArray(new String[0]), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    favorite(collectionInfoModels.get(which));
+                }
+            });
+            listDialog.show();
+    }
+
+    public void favorite(JtsCollectionInfoModel collection) {
+        final ProgressDialog loadingProgressDialog;
+        loadingProgressDialog = new ProgressDialog(activity);
+        loadingProgressDialog.setTitle(null);
+        loadingProgressDialog.setMessage(activity.getResources().getString(R.string.login_tip));
+        loadingProgressDialog.show();
+        final long tabKey = JtsTextUnitls.getTabKeyFromUrl(info.url);
+        final long collectionId = JtsTextUnitls.getCollectionIdFromUrl(collection.url);
+        Disposable disposable = JtsServer.getSingleton(activity).favorite(collectionId,tabKey)
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Exception {
+                        activity.showMessage(s);
+                        loadingProgressDialog.dismiss();
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        activity.showMessage(throwable.getMessage());
+                        loadingProgressDialog.dismiss();
+                    }
+                });
+        disposables.add(disposable);
+    }
 
     public void getTabDetail() {
         this.info = (JtsTabInfoModel) activity.getIntent().getSerializableExtra("tabinfo");
