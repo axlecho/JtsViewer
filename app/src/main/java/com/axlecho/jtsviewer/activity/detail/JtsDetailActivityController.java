@@ -174,7 +174,7 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
         loadingProgressDialog.show();
         final long tabKey = JtsTextUnitls.getTabKeyFromUrl(info.url);
         final long collectionId = JtsTextUnitls.getCollectionIdFromUrl(collection.url);
-        Disposable disposable = JtsServer.getSingleton(activity).favorite(collectionId,tabKey)
+        Disposable disposable = JtsServer.getSingleton(activity).favorite(collectionId,tabKey,detail.formhash)
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(String s) throws Exception {

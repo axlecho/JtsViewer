@@ -153,14 +153,12 @@ public class JtsServer {
         return schedulers.switchSchedulers(o);
     }
 
-    public Observable<String> favorite(long ctid,long tid) {
+    public Observable<String> favorite(long ctid,long tid,String formhash) {
         String reason = "";
         int inajax = 1;
         String handlekey = "k_collect";
-        String formhash = "6cd24b3a";
         int addthread = 1;
-        String refer = "https://www.jitashe.org/tab/" + tid + "/";
-        Observable<String> o = service.favorite(refer,ctid,reason,tid,inajax,handlekey,formhash,addthread).map(new JtsParseFavoriteFunction());
+        Observable<String> o = service.favorite(ctid,reason,tid,inajax,handlekey,formhash,addthread).map(new JtsParseFavoriteFunction());
         return schedulers.switchSchedulers(o);
     }
 

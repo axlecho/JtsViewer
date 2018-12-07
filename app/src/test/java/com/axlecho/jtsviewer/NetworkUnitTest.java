@@ -178,7 +178,8 @@ public class NetworkUnitTest {
     @Test
     public void testFavorites() {
         server.login("d39", "123456789").blockingSubscribe();
-        String result = server.favorite(244939,1332451).blockingFirst();
+        JtsTabDetailModule detail = server.getDetail(1332451).blockingFirst();
+        String result = server.favorite(244939,1332451,detail.formhash).blockingFirst();
         MatcherAssert.assertThat(result,is(JtsConf.STATUS_SUCCESSED));
     }
 

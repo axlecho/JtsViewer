@@ -64,7 +64,6 @@ public interface JtsServerApi {
     @FormUrlEncoded
     @POST("/forum.php?mod=collection&action=edit&op=addthread&inajax=1")
     Observable<ResponseBody> favorite(
-                                       @Header("Referer") String referer,
                                       @Field("ctid")long ctid,
                                       @Field("reason") String reason,
                                       @Field("tids[]")long tid,

@@ -23,8 +23,8 @@ public class JtsCookieJar implements CookieJar {
     public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
 
         for (Cookie cookie : cookies) {
-            if (cookie.name().contains("auth")) {
-                JtsViewerLog.d(TAG, "save for url " + url.host());
+            if (cookie.name().contains("auth") || cookie.name().contains("saltkey")) {
+                JtsViewerLog.d(TAG, "save for url " + url.host() + " - " + cookie.name());
                 cookieStore.put(url, cookies);
                 break;
             }
