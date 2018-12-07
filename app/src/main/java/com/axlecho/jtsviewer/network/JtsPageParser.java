@@ -87,8 +87,6 @@ public class JtsPageParser {
         JtsTabInfoModel model = new JtsTabInfoModel();
 
         model.avatar = e.select("img[src*=http://pic.xiami.net/]").attr("src");
-        // model.author = e.select("a[href*=/artist/]").first().text();
-        model.author = "???";
         model.title = e.select("a[href*=/tab/]").first().text();
         model.url = e.select("a[href*=/tab/]").first().attr("href");
         model.type = e.select("span.tabtype").first().text();
@@ -98,11 +96,21 @@ public class JtsPageParser {
         model.reply = e.select("span[title*=回复]").first().nextElementSibling().text();
 
         // search mode has no time attr
-        try {
-            model.time = e.select("span.time-line").first().text();
-        } catch (NullPointerException ex) {
-            // ex.printStackTrace();
+        Element timeObject = e.select("span.time-line").first();
+        Element time2Object = e.select("span[title~=\\d{4}\\-\\d{2}\\-\\d+]").first();
+        if (timeObject != null){
+            model.time = timeObject.text();
+        } else if(time2Object!=null) {
+            model.time = time2Object.text();
+        } else {
             model.time = context.getResources().getString(R.string.unknown_time);
+        }
+
+        Element authorObject = e.select("a[href*=/artist/]").first();
+        if(authorObject!=null) {
+            model.author = authorObject.text();
+        } else {
+            model.author = context.getResources().getString(R.string.unknown_author);
         }
 
         if (TextUtils.isEmpty(model.avatar)) {
@@ -252,7 +260,8 @@ public class JtsPageParser {
     private JtsThreadModule parserThraed(Element e) {
         if (e == null) return null;
         JtsThreadModule module = new JtsThreadModule();
-        module.authi = e.select("span.authi2").first().text();
+        Element authiObject = e.select("span.authi2").first();
+        module.authi = authiObject != null? authiObject.text(): context.getResources().getString(R.string.unknown_author);
         module.avatar = e.select("img[src*=http://att.jitashe.org/data/attachment/avatar/]").attr("src");
         module.time = e.select("em[id*=authorposton]").first().text();
         module.message = e.select("td.t_f").first().html();
