@@ -43,7 +43,7 @@ import io.reactivex.functions.Consumer;
  * Created by Administrator on 2017/11/7.
  */
 
-public class JtsDetailActivityController implements RefreshLayout.OnRefreshListener {
+public class JtsDetailActivityController {
     private static final String TAG = "detail";
     private JtsDetailActivity activity;
     private JtsThreadListAdapter adapter;
@@ -104,9 +104,6 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
             }
         }
         disposables.clear();
-
-        // this.activity = null;
-        // this.adapter = null;
     }
 
     public void initPopMenuAction() {
@@ -204,13 +201,13 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
                             adapter.notifyDataSetChanged();
                         }
                         activity.hideError();
-                        startLoading();
+                        activity.startLoading();
                     }
                 })
                 .doOnTerminate(new Action() {
                     @Override
                     public void run() throws Exception {
-                        stopLoading();
+                        activity.stopLoading();
                     }
                 })
                 .subscribe(new Consumer<JtsTabDetailModule>() {
@@ -222,7 +219,7 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
         disposables.add(disposable);
     }
 
-    private void loadMoreThread() {
+    public void loadMoreThread() {
         page++;
         this.info = (JtsTabInfoModel) activity.getIntent().getSerializableExtra("tabinfo");
         long tabKey = JtsTextUnitls.getTabKeyFromUrl(info.url);
@@ -392,17 +389,6 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
         action.execute();
     }
 
-
-    @Override
-    public void onHeaderRefresh() {
-        activity.refreshLayout.setHeaderRefreshing(false);
-    }
-
-    @Override
-    public void onFooterRefresh() {
-        loadMoreThread();
-    }
-
     private void stopVideoPlayer() {
         JtsStopVideoAction action = new JtsStopVideoAction(activity);
         action.execute();
@@ -412,11 +398,6 @@ public class JtsDetailActivityController implements RefreshLayout.OnRefreshListe
         JtsToolUnitls.openUrl(activity, JtsConf.HOST_URL + info.url);
     }
 
-    public void stopLoading() {
-        activity.findViewById(R.id.detail_loading_progressbar).setVisibility(View.INVISIBLE);
-    }
 
-    public void startLoading() {
-        activity.findViewById(R.id.detail_loading_progressbar).setVisibility(View.VISIBLE);
-    }
+
 }

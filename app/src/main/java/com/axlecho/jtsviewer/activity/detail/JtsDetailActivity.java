@@ -25,7 +25,7 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.hippo.refreshlayout.RefreshLayout;
 
-public class JtsDetailActivity extends AppCompatActivity {
+public class JtsDetailActivity extends AppCompatActivity implements RefreshLayout.OnRefreshListener {
     private static final String TAG = "detail-scene";
     public RecyclerView recyclerView;
 
@@ -67,7 +67,6 @@ public class JtsDetailActivity extends AppCompatActivity {
         send = (ImageView) findViewById(R.id.comment_send);
         play = (FloatingActionButton) findViewById(R.id.tab_detail_play);
         commentLayout = findViewById(R.id.comment_layout);
-
         otherActions = findViewById(R.id.tab_detail_other_actions);
 
         this.controller = new JtsDetailActivityController();
@@ -78,7 +77,7 @@ public class JtsDetailActivity extends AppCompatActivity {
                 android.R.color.holo_orange_light, android.R.color.holo_red_light);
         refreshLayout.setHeaderColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
                 android.R.color.holo_orange_light, android.R.color.holo_red_light);
-        refreshLayout.setOnRefreshListener(controller);
+        refreshLayout.setOnRefreshListener(this);
 
         this.controller.getTabDetail();
 
@@ -99,7 +98,6 @@ public class JtsDetailActivity extends AppCompatActivity {
         controller.detachFromActivity();
     }
 
-
     @Override
     public void onBackPressed() {
         if (controller.processBackPressed()) {
@@ -107,14 +105,12 @@ public class JtsDetailActivity extends AppCompatActivity {
         }
     }
 
-    public void initPopMenu() {
-        if (popupMenu != null) {
-            return;
-        }
+    public void startLoading() {
+        findViewById(R.id.detail_loading_progressbar).setVisibility(View.VISIBLE);
+    }
 
-        popupMenu = new PopupMenu(this, otherActions, Gravity.TOP);
-        popupMenu.getMenuInflater().inflate(R.menu.scene_tab_detail, popupMenu.getMenu());
-        controller.initPopMenuAction();
+    public void stopLoading() {
+        findViewById(R.id.detail_loading_progressbar).setVisibility(View.GONE);
     }
 
     public void showError(String msg) {
@@ -148,6 +144,16 @@ public class JtsDetailActivity extends AppCompatActivity {
         Snackbar.make(rootView, msg, Snackbar.LENGTH_LONG).show();
     }
 
+    public void initPopMenu() {
+        if (popupMenu != null) {
+            return;
+        }
+
+        popupMenu = new PopupMenu(this, otherActions, Gravity.TOP);
+        popupMenu.getMenuInflater().inflate(R.menu.scene_tab_detail, popupMenu.getMenu());
+        controller.initPopMenuAction();
+    }
+
     public void popMenu() {
         popupMenu.show();
     }
@@ -176,5 +182,15 @@ public class JtsDetailActivity extends AppCompatActivity {
         animation.setDuration(50);
         commentLayout.startAnimation(animation);
         commentLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onHeaderRefresh() {
+        refreshLayout.setHeaderRefreshing(false);
+    }
+
+    @Override
+    public void onFooterRefresh() {
+        controller.loadMoreThread();
     }
 }
