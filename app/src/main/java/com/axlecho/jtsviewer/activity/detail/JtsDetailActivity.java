@@ -93,6 +93,11 @@ public class JtsDetailActivity extends AppCompatActivity implements RefreshLayou
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        stopLoading();
+    }
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         controller.detachFromActivity();

@@ -27,7 +27,6 @@ import com.axlecho.jtsviewer.untils.JtsToolUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 import com.axlecho.sakura.SakuraPlayerView;
 import com.bumptech.glide.Glide;
-import com.hippo.refreshlayout.RefreshLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -354,7 +353,7 @@ public class JtsDetailActivityController {
 
     }
 
-    public boolean processBackPressed() {
+    public boolean  processBackPressed() {
         SakuraPlayerView player = (SakuraPlayerView) activity.findViewById(R.id.player);
         if (player != null) {
             if (player.isFullScreen) {
