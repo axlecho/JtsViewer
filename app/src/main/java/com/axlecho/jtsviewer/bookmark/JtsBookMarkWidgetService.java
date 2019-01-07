@@ -1,6 +1,7 @@
 package com.axlecho.jtsviewer.bookmark;
 
 
+import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,13 +22,12 @@ public class JtsBookMarkWidgetService extends RemoteViewsService {
     public class WidgetFactory implements RemoteViewsService.RemoteViewsFactory {
         private static final int mCount = 10;
         private Context mContext;
-        private List<String> mWidgetItems = new ArrayList<String>();
-
+        private List<String> mWidgetItems = new ArrayList<>();
+        private int mAppWidgetId;
 
         public WidgetFactory(Context context, Intent intent) {
             mContext = context;
-//	        mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-//	                AppWidgetManager.INVALID_APPWIDGET_ID);
+            mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         }
 
         @Override
@@ -39,10 +39,6 @@ public class JtsBookMarkWidgetService extends RemoteViewsService {
 
         @Override
         public void onDataSetChanged() {
-            /*
-             * appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listview);
-             * 使用该通知更新数据源，会调用onDataSetChanged
-             */
             System.out.println("----onDataSetChanged----");
         }
 
@@ -79,10 +75,6 @@ public class JtsBookMarkWidgetService extends RemoteViewsService {
 
         @Override
         public RemoteViews getLoadingView() {
-            /* 在更新界面的时候如果耗时就会显示 正在加载... 的默认字样，但是你可以更改这个界面
-             * 如果返回null 显示默认界面
-             * 否则 加载自定义的，返回RemoteViews
-             */
             return null;
         }
 

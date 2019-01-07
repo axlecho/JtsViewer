@@ -5,5 +5,4 @@
     android:updatePeriodMillis="5000"
     android:previewImage="@drawable/ic_launcher"
     android:initialLayout="@layout/jts_book_mark_widget"
-    android:resizeMode="horizontal|vertical"
-    android:autoAdvanceViewId="@id/viewflipper"  />
+    android:resizeMode="horizontal|vertical" />
