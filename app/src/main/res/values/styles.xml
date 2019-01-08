@@ -40,4 +40,13 @@
         <item name="android:windowNoTitle">true</item>　
         <item name="windowNoTitle">true</item>
     </style>
+
+
+    <style name="DetailDialogStyleAnime" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/zoomout</item>
+        <item name="android:activityCloseExitAnimation">@anim/zoomout</item>
+        <item name="android:activityOpenExitAnimation">@anim/zoomin</item>
+        <item name="android:activityCloseEnterAnimation">@anim/zoomin</item>
+    </style>
+
 </resources>
