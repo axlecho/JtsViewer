@@ -4,9 +4,11 @@ package com.axlecho.jtsviewer.bookmark;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
+
+import com.axlecho.jtsviewer.module.JtsTabInfoModel;
+import com.axlecho.jtsviewer.network.JtsServer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +20,9 @@ public class JtsBookMarkWidgetService extends RemoteViewsService {
         return new WidgetFactory(this.getApplicationContext(), intent);
     }
 
-
     public class WidgetFactory implements RemoteViewsService.RemoteViewsFactory {
-        private static final int mCount = 10;
         private Context mContext;
-        private List<String> mWidgetItems = new ArrayList<>();
+        private List<JtsTabInfoModel> mWidgetItems = new ArrayList<>();
         private int mAppWidgetId;
 
         public WidgetFactory(Context context, Intent intent) {
@@ -32,14 +32,12 @@ public class JtsBookMarkWidgetService extends RemoteViewsService {
 
         @Override
         public void onCreate() {
-            for (int i = 0; i < mCount; i++) {
-                mWidgetItems.add("item:" + i + "!");
-            }
         }
 
         @Override
         public void onDataSetChanged() {
-            System.out.println("----onDataSetChanged----");
+            mWidgetItems = JtsServer.getSingleton(mContext).getCollectionDetail(244939, 1).blockingFirst();
+
         }
 
         @Override
@@ -49,28 +47,21 @@ public class JtsBookMarkWidgetService extends RemoteViewsService {
 
         @Override
         public int getCount() {
-            return mCount;
+            return mWidgetItems.size();
         }
 
         @Override
         public RemoteViews getViewAt(int position) {
-            RemoteViews views = new RemoteViews(mContext.getPackageName(), android.R.layout.simple_list_item_1);
-            views.setTextViewText(android.R.id.text1, "item:" + position);
-            System.out.println("RemoteViewsService----getViewAt" + position);
 
+            JtsTabInfoModel item = mWidgetItems.get(position);
+            RemoteViews rv = new RemoteViews(mContext.getPackageName(), android.R.layout.simple_list_item_1);
+            rv.setTextViewText(android.R.id.text1, item.title);
 
-            Bundle extras = new Bundle();
-            extras.putInt(JtsBookMarkWidget.EXTRA_ITEM, position);
-            Intent fillInIntent = new Intent();
-            fillInIntent.putExtras(extras);
-            /*
-             * android.R.layout.simple_list_item_1 --- id --- text1
-             * listview的item click：将fillInIntent发送，
-             * fillInIntent它默认的就有action 是provider中使用 setPendingIntentTemplate 设置的action
-             */
-            views.setOnClickFillInIntent(android.R.id.text1, fillInIntent);
-
-            return views;
+            // set list view item action
+            Intent intent = new Intent();
+            intent.putExtra("tabinfo", item);
+            rv.setOnClickFillInIntent(android.R.id.text1, intent);
+            return rv;
         }
 
         @Override

@@ -3,29 +3,34 @@ package com.axlecho.jtsviewer.bookmark;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.axlecho.jtsviewer.R;
-import com.axlecho.jtsviewer.activity.login.JtsLoginActivity;
+import com.axlecho.jtsviewer.activity.detail.JtsDetailActivity;
 
-/**
- * Implementation of App Widget functionality.
- */
+
 public class JtsBookMarkWidget extends AppWidgetProvider {
 
-    public final static String CLICK_ACTION = "com.stone.action.clickset";
-    public final static String CLICK_ITEM_ACTION = "com.stone.action.clickset.item";
-    public final static String EXTRA_ITEM = "extra_item";
+    public final static String UPDATE_BOOKMARK_ACTION = "com.axlecho.action.update_bookmark";
+
+    public void updateWidget(Context context) {
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context.getApplicationContext());
+        ComponentName thisWidget = new ComponentName(context, JtsBookMarkWidget.class);
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.bookmark_listview);
+    }
 
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-        Log.d("XXXX",intent.getAction());
+        if (intent.getAction() != null && intent.getAction().equals(UPDATE_BOOKMARK_ACTION)) {
+            updateWidget(context);
+        }
     }
 
     @Override
@@ -33,28 +38,27 @@ public class JtsBookMarkWidget extends AppWidgetProvider {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
 
         final int N = appWidgetIds.length;
-
-        // Perform this loop procedure for each App Widget that belongs to this provider
-        for (int i=0; i<N; i++) {
+        for (int i = 0; i < N; i++) {
             int appWidgetId = appWidgetIds[i];
+            RemoteViews bookmark = new RemoteViews(context.getPackageName(), R.layout.jts_book_mark_widget);
 
-            // Create an Intent to launch ExampleActivity
-            Intent intent = new Intent(context, JtsLoginActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+            // set button action
+            Intent clickIntent = new Intent(UPDATE_BOOKMARK_ACTION);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, clickIntent, 0);
+            bookmark.setOnClickPendingIntent(R.id.btn_test_widget, pendingIntent);
 
-            // Get the layout for the App Widget and attach an on-click listener
-            // to the button
-            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.jts_book_mark_widget);
-            views.setOnClickPendingIntent(R.id.btn_test_widget, pendingIntent);
+            // set list view template action
+            Intent listDataSrc = new Intent(context, JtsBookMarkWidgetService.class);
+            listDataSrc.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+            listDataSrc.setData(Uri.parse(listDataSrc.toUri(Intent.URI_INTENT_SCHEME)));
+            bookmark.setRemoteAdapter(appWidgetId, R.id.bookmark_listview, listDataSrc);
+            bookmark.setEmptyView(R.id.bookmark_listview, R.id.empty_view);
 
-            Intent list = new Intent(context, JtsBookMarkWidgetService.class);
-            list.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-            list.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
-            views.setRemoteAdapter(appWidgetId, R.id.bookmark_listview, list);
-            views.setEmptyView(R.id.bookmark_listview, R.id.empty_view);
+            Intent toastIntent = new Intent(context, JtsDetailActivity.class);
+            PendingIntent toastPendingIntent = PendingIntent.getActivity(context, 0, toastIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            bookmark.setPendingIntentTemplate(R.id.bookmark_listview, toastPendingIntent);
 
-            // Tell the AppWidgetManager to perform an update on the current app widget
-            appWidgetManager.updateAppWidget(appWidgetId, views);
+            appWidgetManager.updateAppWidget(appWidgetId, bookmark);
         }
     }
 

@@ -62,7 +62,7 @@
         <receiver android:name=".bookmark.JtsBookMarkWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.stone.action.clickset" />
+                <action android:name="com.axlecho.action.update_bookmark" />
                 <action android:name="com.stone.action.clickset.item" />
             </intent-filter>
 
