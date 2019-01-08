@@ -12,6 +12,7 @@ import android.widget.RemoteViews;
 
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.activity.detail.JtsDetailActivity;
+import com.axlecho.jtsviewer.activity.detail.JtsDetailDialogActivity;
 
 
 public class JtsBookMarkWidget extends AppWidgetProvider {
@@ -54,7 +55,7 @@ public class JtsBookMarkWidget extends AppWidgetProvider {
             bookmark.setRemoteAdapter(appWidgetId, R.id.bookmark_listview, listDataSrc);
             bookmark.setEmptyView(R.id.bookmark_listview, R.id.empty_view);
 
-            Intent toastIntent = new Intent(context, JtsDetailActivity.class);
+            Intent toastIntent = new Intent(context, JtsDetailDialogActivity.class);
             toastIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
             PendingIntent toastPendingIntent = PendingIntent.getActivity(context, 0, toastIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             bookmark.setPendingIntentTemplate(R.id.bookmark_listview, toastPendingIntent);

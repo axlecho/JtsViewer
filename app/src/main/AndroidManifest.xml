@@ -54,10 +54,12 @@
         <activity
             android:name=".activity.my.JtsSettingsActivity"
             android:label="@string/title_activity_jts_settings" />
-
         <activity
             android:name=".activity.my.JtsCollectionActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity android:name=".activity.detail.JtsDetailDialogActivity"
+            android:theme="@style/DetailDialogStyle"/>
 
         <receiver android:name=".bookmark.JtsBookMarkWidget">
             <intent-filter>
@@ -71,9 +73,11 @@
                 android:resource="@xml/jts_book_mark_widget_info" />
         </receiver>
 
-        <service android:name=".bookmark.JtsBookMarkWidgetService"
+        <service
+            android:name=".bookmark.JtsBookMarkWidgetService"
             android:exported="false"
-            android:permission="android.permission.BIND_REMOTEVIEWS"/>
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
     </application>
 
 </manifest>

@@ -1,7 +1,5 @@
 package com.axlecho.jtsviewer.bookmark;
 
-
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
@@ -25,11 +23,9 @@ public class JtsBookMarkWidgetService extends RemoteViewsService {
     public class WidgetFactory implements RemoteViewsService.RemoteViewsFactory {
         private Context mContext;
         private List<JtsTabInfoModel> mWidgetItems = new ArrayList<>();
-        private int mAppWidgetId;
 
         public WidgetFactory(Context context, Intent intent) {
             mContext = context;
-            mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         }
 
         @Override
