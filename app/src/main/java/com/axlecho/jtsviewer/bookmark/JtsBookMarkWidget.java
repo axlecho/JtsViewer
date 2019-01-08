@@ -55,6 +55,7 @@ public class JtsBookMarkWidget extends AppWidgetProvider {
             bookmark.setEmptyView(R.id.bookmark_listview, R.id.empty_view);
 
             Intent toastIntent = new Intent(context, JtsDetailActivity.class);
+            toastIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
             PendingIntent toastPendingIntent = PendingIntent.getActivity(context, 0, toastIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             bookmark.setPendingIntentTemplate(R.id.bookmark_listview, toastPendingIntent);
 
