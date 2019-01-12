@@ -103,11 +103,13 @@ public class MainActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         this.searchItem = menu.findItem(R.id.action_search);
-        if (searchItem != null) {
-            this.searchView = (SearchView) searchItem.getActionView();
-        }
-
-        controller.processSearchView();
+        searchItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                controller.processSearch();
+                return false;
+            }
+        });
         return true;
     }
 

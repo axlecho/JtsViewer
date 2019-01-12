@@ -30,34 +30,35 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
 
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:design:25.3.1'
-    compile 'com.android.support:cardview-v7:25.3.1'
-    compile 'com.android.support:support-v4:25.3.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.android.support:appcompat-v7:25.3.1'
+    implementation 'com.android.support:design:25.3.1'
+    implementation 'com.android.support:cardview-v7:25.3.1'
+    implementation 'com.android.support:support-v4:25.3.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 
-    compile 'com.google.android.gms:play-services-analytics:11.6.2'
-    compile 'com.google.code.gson:gson:2.8.2'
-    compile "io.reactivex.rxjava2:rxjava:2.1.7"
-    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    compile 'com.squareup.retrofit2:retrofit:2.3.0'
-    compile 'com.squareup.okhttp3:okhttp:3.8.1'
-    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
-    compile 'com.pixplicity.htmlcompat:library:1.1.0'
-    compile 'org.jsoup:jsoup:1.10.3'
+    implementation 'com.google.android.gms:play-services-analytics:11.6.2'
+    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation "io.reactivex.rxjava2:rxjava:2.1.7"
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.8.1'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
+    implementation 'com.pixplicity.htmlcompat:library:1.1.0'
+    implementation 'org.jsoup:jsoup:1.10.3'
 
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.github.seven332:refreshlayout:0.1.0'
-    compile 'com.github.axlecho:ImageTab:0.0.12'
-    compile 'com.github.axlecho:SakuraPlayer:1.0.1'
-    compile 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    implementation 'com.github.seven332:refreshlayout:0.1.0'
+    implementation 'com.github.axlecho:ImageTab:0.0.12'
+    implementation 'com.github.axlecho:SakuraPlayer:1.0.1'
+    implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
+    implementation 'com.wenwenwen888:searchbox:1.0.1'
 
     api 'com.github.axlecho.tuxguitar:tuxguitar-ptb:v0.1.1'
     api 'com.github.axlecho.tuxguitar:tuxguitar-gtp:v0.1.1'
@@ -68,12 +69,12 @@ dependencies {
     api 'com.github.axlecho.tuxguitar:tuxguitar-widget:v0.1.1'
     api 'com.github.axlecho.tuxguitar:tuxguitar-android-gervill:v0.1.1'
 
-    compile 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.4'
-    compile 'tv.danmaku.ijk.media:ijkplayer-armv5:0.8.4'
-    compile 'tv.danmaku.ijk.media:ijkplayer-arm64:0.8.4'
-    compile 'tv.danmaku.ijk.media:ijkplayer-x86:0.8.4'
-    compile 'tv.danmaku.ijk.media:ijkplayer-x86_64:0.8.4'
-    testCompile 'junit:junit:4.12'
+    implementation 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.4'
+    implementation 'tv.danmaku.ijk.media:ijkplayer-armv5:0.8.4'
+    implementation 'tv.danmaku.ijk.media:ijkplayer-arm64:0.8.4'
+    implementation 'tv.danmaku.ijk.media:ijkplayer-x86:0.8.4'
+    implementation 'tv.danmaku.ijk.media:ijkplayer-x86_64:0.8.4'
+    testImplementation 'junit:junit:4.12'
     testImplementation 'org.robolectric:robolectric:3.4'
     testImplementation 'org.bouncycastle:bcprov-jdk15on:1.57'
 

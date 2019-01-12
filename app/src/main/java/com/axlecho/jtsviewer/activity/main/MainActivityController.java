@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v7.widget.SearchView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,6 +34,8 @@ import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsToolUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 import com.bumptech.glide.Glide;
+import com.wyt.searchbox.SearchFragment;
+import com.wyt.searchbox.custom.IOnSearchClickListener;
 
 import java.util.List;
 
@@ -138,28 +139,15 @@ public class MainActivityController implements JtsBaseController {
         activity.startActivity(intent);
     }
 
-    public void processSearchView() {
-        if (activity.searchView == null) {
-            return;
-        }
-
-        activity.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+    public void processSearch() {
+        SearchFragment searchFragment = SearchFragment.newInstance();
+        searchFragment.setOnSearchClickListener(new IOnSearchClickListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                if (!activity.searchView.isIconified()) {
-                    activity.searchView.setIconified(true);
-                }
-                activity.searchItem.collapseActionView();
-                toSearch(query);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                // UserFeedback.show( "SearchOnQueryTextChanged: " + s);
-                return false;
+            public void OnSearchClick(String keyword) {
+                toSearch(keyword);
             }
         });
+        searchFragment.showFragment(activity.getSupportFragmentManager(),SearchFragment.TAG);
     }
 
     public void loadDefaultScene() {
