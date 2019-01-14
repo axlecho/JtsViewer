@@ -73,4 +73,7 @@
     <string name="error_network">网络错误</string>
     <string name="error_network_unknow_host">未知主机</string>
     <string name="error_network_time_out">连接超时</string>
+
+    <string name="mentronome">节拍器</string>
+    <string name="tuner">调音器</string>
 </resources>

@@ -6,20 +6,48 @@
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_corner_up"
+        android:gravity="center"
+        android:padding="@dimen/activity_margin">
 
         <Button xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/btn_test_widget"
-            android:layout_width="match_parent"
+            android:id="@+id/btn_setting"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="测试" />
+            android:layout_weight="1"
+            android:background="@color/transparent"
+            android:text="@string/action_settings"
+            android:textColor="@color/white" />
+
+        <Button xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/btn_metronome"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/transparent"
+            android:text="@string/mentronome"
+            android:textColor="@color/white" />
+
+        <Button xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/btn_tuner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/transparent"
+            android:text="@string/tuner"
+            android:textColor="@color/white" />
     </LinearLayout>
 
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="4dp"-->
+        <!--android:background="@color/white" />-->
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/bg_f2">
+        android:background="@drawable/shape_corner_down">
 
         <ListView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/bookmark_listview"
@@ -31,8 +59,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="nobody"
-            android:textColor="#ffffff"
+            android:text="@string/error_empty"
+            android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold" />
     </FrameLayout>

@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.widget.RemoteViews;
 
 import com.axlecho.jtsviewer.R;
-import com.axlecho.jtsviewer.activity.detail.JtsDetailActivity;
 import com.axlecho.jtsviewer.activity.detail.JtsDetailDialogActivity;
 
 
@@ -46,7 +45,7 @@ public class JtsBookMarkWidget extends AppWidgetProvider {
             // set button action
             Intent clickIntent = new Intent(UPDATE_BOOKMARK_ACTION);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, clickIntent, 0);
-            bookmark.setOnClickPendingIntent(R.id.btn_test_widget, pendingIntent);
+            bookmark.setOnClickPendingIntent(R.id.btn_setting, pendingIntent);
 
             // set list view template action
             Intent listDataSrc = new Intent(context, JtsBookMarkWidgetService.class);
