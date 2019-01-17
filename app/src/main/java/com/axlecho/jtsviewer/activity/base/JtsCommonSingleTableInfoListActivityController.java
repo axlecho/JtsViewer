@@ -2,8 +2,8 @@ package com.axlecho.jtsviewer.activity.base;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
 import android.view.View;
 
 import com.axlecho.jtsviewer.R;

@@ -1,6 +1,6 @@
 package com.axlecho.jtsviewer.module;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 import com.google.gson.Gson;

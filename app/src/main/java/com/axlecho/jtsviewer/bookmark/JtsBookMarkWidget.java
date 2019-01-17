@@ -13,6 +13,8 @@ import android.widget.RemoteViews;
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.activity.detail.JtsDetailDialogActivity;
 
+ import james.metronome.activities.MetronomeActivity;
+
 
 public class JtsBookMarkWidget extends AppWidgetProvider {
 
@@ -46,6 +48,10 @@ public class JtsBookMarkWidget extends AppWidgetProvider {
             Intent clickIntent = new Intent(UPDATE_BOOKMARK_ACTION);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, clickIntent, 0);
             bookmark.setOnClickPendingIntent(R.id.btn_setting, pendingIntent);
+
+            Intent intent = new Intent(context, MetronomeActivity.class);
+            PendingIntent metronomeIntent = PendingIntent.getActivity(context,0,intent,0);
+            bookmark.setOnClickPendingIntent(R.id.btn_metronome, metronomeIntent);
 
             // set list view template action
             Intent listDataSrc = new Intent(context, JtsBookMarkWidgetService.class);
