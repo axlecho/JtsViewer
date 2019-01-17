@@ -42,7 +42,7 @@ public class JtsBookMarkWidget extends AppWidgetProvider {
         final int N = appWidgetIds.length;
         for (int i = 0; i < N; i++) {
             int appWidgetId = appWidgetIds[i];
-            RemoteViews bookmark = new RemoteViews(context.getPackageName(), R.layout.jts_book_mark_widget);
+            RemoteViews bookmark = new RemoteViews(context.getPackageName(), R.layout.widget_bookmark);
 
             // set button action
             Intent clickIntent = new Intent(UPDATE_BOOKMARK_ACTION);

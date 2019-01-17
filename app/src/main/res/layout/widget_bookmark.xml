@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/shape_corner_up"
         android:gravity="center"
-        android:padding="@dimen/activity_margin">
+        android:padding="4dp">
 
         <Button xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/btn_setting"

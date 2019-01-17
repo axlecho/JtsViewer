@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.module.JtsCollectionInfoModel;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.network.JtsServer;
@@ -58,13 +59,13 @@ public class JtsBookMarkWidgetService extends RemoteViewsService {
         @Override
         public RemoteViews getViewAt(int position) {
             JtsTabInfoModel item = mWidgetItems.get(position);
-            RemoteViews rv = new RemoteViews(mContext.getPackageName(), android.R.layout.simple_list_item_1);
-            rv.setTextViewText(android.R.id.text1, item.title);
+            RemoteViews rv = new RemoteViews(mContext.getPackageName(), R.layout.widget_bookmark_item);
+            rv.setTextViewText(R.id.bookmark_item_title, item.title);
 
             // set list view item action
             Intent intent = new Intent();
             intent.putExtra("tabinfo", item);
-            rv.setOnClickFillInIntent(android.R.id.text1, intent);
+            rv.setOnClickFillInIntent(R.id.bookmark_item_title, intent);
             return rv;
         }
 

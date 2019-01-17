@@ -4,5 +4,5 @@
     android:minHeight="180dp"
     android:updatePeriodMillis="5000"
     android:previewImage="@drawable/ic_launcher"
-    android:initialLayout="@layout/jts_book_mark_widget"
+    android:initialLayout="@layout/widget_bookmark"
     android:resizeMode="horizontal|vertical" />
