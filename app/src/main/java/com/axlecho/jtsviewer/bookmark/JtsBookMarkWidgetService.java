@@ -38,8 +38,10 @@ public class JtsBookMarkWidgetService extends RemoteViewsService {
             try {
                 List<JtsCollectionInfoModel> collectionInfoModelList = JtsServer.getSingleton(mContext).getCollection().blockingFirst();
                 if (collectionInfoModelList != null && collectionInfoModelList.size() != 0) {
-                    long id = JtsTextUnitls.getCollectionIdFromUrl(collectionInfoModelList.get(0).url);
-                    mWidgetItems = JtsServer.getSingleton(mContext).getCollectionDetail(id, 1).blockingFirst();
+                    for (JtsCollectionInfoModel collection : collectionInfoModelList) {
+                        long id = JtsTextUnitls.getCollectionIdFromUrl(collection.url);
+                        mWidgetItems.addAll(JtsServer.getSingleton(mContext).getCollectionDetail(id, 1).blockingFirst());
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
