@@ -94,17 +94,7 @@ public class JtsPageParser {
         model.uper = e.select("a[href*=/space/]").first().text();
         model.watch = e.select("span[title*=查看]").first().nextElementSibling().text();
         model.reply = e.select("span[title*=回复]").first().nextElementSibling().text();
-
-        // search mode has no time attr
-        Element timeObject = e.select("span.time-line").first();
-        Element time2Object = e.select("span[title~=\\d{4}\\-\\d{2}\\-\\d+]").first();
-        if (timeObject != null){
-            model.time = timeObject.text();
-        } else if(time2Object!=null) {
-            model.time = time2Object.text();
-        } else {
-            model.time = context.getResources().getString(R.string.unknown_time);
-        }
+        model.time  = e.select("span[title*=发布时间]").first().nextElementSibling().text();
 
         Element authorObject = e.select("a[href*=/artist/]").first();
         if(authorObject!=null) {
