@@ -55,9 +55,9 @@
         <activity
             android:name=".activity.my.JtsCollectionActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity android:name=".activity.detail.JtsDetailDialogActivity"
-            android:theme="@style/DetailDialogStyle"/>
+        <activity
+            android:name=".activity.detail.JtsDetailDialogActivity"
+            android:theme="@style/DetailDialogStyle" />
 
         <receiver android:name=".bookmark.JtsBookMarkWidget">
             <intent-filter>
@@ -75,7 +75,6 @@
             android:name=".bookmark.JtsBookMarkWidgetService"
             android:exported="false"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
-
     </application>
 
 </manifest>

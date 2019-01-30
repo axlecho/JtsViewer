@@ -1,6 +1,7 @@
 package com.axlecho.jtsviewer;
 
 import android.content.Context;
+import android.os.Build;
 import android.text.TextUtils;
 
 import com.axlecho.jtsviewer.cache.CacheManager;
@@ -36,7 +37,6 @@ import static org.hamcrest.core.Is.is;
  */
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
 
 
 public class NetworkUnitTest {
@@ -83,7 +83,7 @@ public class NetworkUnitTest {
     }
 
     @Test
-    public void testTread() {
+    public void testThread() {
         List<JtsThreadModule> result = server.getThread(9440, 2).blockingFirst();
         MatcherAssert.assertThat(result.size(), is(10));
         System.out.println(result);
