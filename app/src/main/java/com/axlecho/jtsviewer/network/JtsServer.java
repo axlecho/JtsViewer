@@ -56,7 +56,7 @@ public class JtsServer {
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
 
         // builder.addNetworkInterceptor(logging);
         builder.addInterceptor(logging);

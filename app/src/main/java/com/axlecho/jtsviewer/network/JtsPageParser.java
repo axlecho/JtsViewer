@@ -277,6 +277,7 @@ public class JtsPageParser {
             comment.authi = c.select("a.xi2").first().text();
             comment.message = c.select("dd:not(.m)").first().text();
             // JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE, TAG, "[parserComment]" + comment.toString());
+            comment.time = comment.time.replaceAll("发表于 ","");
             module.comments.add(comment);
 
         }

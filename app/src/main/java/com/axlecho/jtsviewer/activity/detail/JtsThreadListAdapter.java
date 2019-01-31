@@ -20,6 +20,7 @@ import com.axlecho.jtsviewer.untils.JtsTagHandler;
 import com.bumptech.glide.Glide;
 import com.pixplicity.htmlcompat.HtmlCompat;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.pixplicity.htmlcompat.HtmlCompat.FROM_HTML_MODE_LEGACY;
@@ -30,7 +31,7 @@ import static com.pixplicity.htmlcompat.HtmlCompat.FROM_HTML_MODE_LEGACY;
 
 public class JtsThreadListAdapter extends RecyclerView.Adapter<JtsThreadListAdapter.ThreadViewHolder> {
 
-    private List<JtsThreadModule> threads;
+    private List<JtsThreadModule> threads = new ArrayList<>();
     private Context context;
 
     public JtsThreadListAdapter(Context context) {

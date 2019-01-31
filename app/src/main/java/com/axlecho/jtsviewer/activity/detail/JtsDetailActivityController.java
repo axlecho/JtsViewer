@@ -273,7 +273,8 @@ public class JtsDetailActivityController {
             time.setText(comment.time);
             floor.setText(comment.floor);
             message.setText(HtmlCompat.fromHtml(activity, comment.message, FROM_HTML_MODE_LEGACY, new JtsImageGetter(message), new JtsTagHandler(activity, message)));
-            message.setMovementMethod(LinkMovementMethod.getInstance());
+            // message.setMovementMethod(LinkMovementMethod.getInstance());
+            // message.setClickable(false);
         }
     }
 
