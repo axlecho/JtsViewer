@@ -94,7 +94,11 @@ public class JtsPageParser {
         model.uper = e.select("a[href*=/space/]").first().text();
         model.watch = e.select("span[title*=查看]").first().nextElementSibling().text();
         model.reply = e.select("span[title*=回复]").first().nextElementSibling().text();
-        model.time  = e.select("span[title*=发布时间]").first().nextElementSibling().text();
+        try {
+            model.time = e.select("span[title*=发布时间]").first().nextElementSibling().text();
+        } catch (Exception ex) {
+            model.time = "";
+        }
 
         Element authorObject = e.select("a[href*=/artist/]").first();
         if(authorObject!=null) {
@@ -252,8 +256,14 @@ public class JtsPageParser {
         JtsThreadModule module = new JtsThreadModule();
         Element authiObject = e.select("span.authi2").first();
         module.authi = authiObject != null? authiObject.text(): context.getResources().getString(R.string.unknown_author);
-        module.avatar = e.select("img[src*=http://att.jitashe.org/data/attachment/avatar/]").attr("src");
+        // module.avatar = e.select("img[src*=http://att.jitashe.org/data/attachment/avatar/]").attr("src");
+        try {
+            module.avatar = e.select("div.avatar").first().child(0).child(0).attr("src");
+        } catch (Exception ex) {
+            module.avatar = "";
+        }
         module.time = e.select("em[id*=authorposton]").first().text();
+        module.time = module.time.replaceAll("发表于 ","");
         module.message = e.select("td.t_f").first().html();
         module.floor = e.select("a[onclick*=setCopy]").first().text();
         Elements comments = e.select("div.cmtl");

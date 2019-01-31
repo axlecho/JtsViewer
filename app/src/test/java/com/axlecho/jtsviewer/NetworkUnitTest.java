@@ -84,7 +84,7 @@ public class NetworkUnitTest {
 
     @Test
     public void testThread() {
-        List<JtsThreadModule> result = server.getThread(9440, 2).blockingFirst();
+        List<JtsThreadModule> result = server.getThread(154882, 2).blockingFirst();
         MatcherAssert.assertThat(result.size(), is(10));
         System.out.println(result);
     }
