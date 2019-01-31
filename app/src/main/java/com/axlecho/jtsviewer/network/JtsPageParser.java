@@ -310,7 +310,7 @@ public class JtsPageParser {
         Document doc = Jsoup.parse(html);
 
         // JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE, TAG,html);
-        Elements tabItems = doc.select("div.xld");
+        Elements tabItems = doc.select("div.collection-item");
         Iterator it = tabItems.iterator();
         List<JtsCollectionInfoModel> models = new ArrayList<>();
         while (it.hasNext()) {
@@ -327,13 +327,13 @@ public class JtsPageParser {
     public JtsCollectionInfoModel parserCollectionByElement(Element e) {
         if (e == null) return null;
         JtsCollectionInfoModel model = new JtsCollectionInfoModel();
-        model.num = Integer.parseInt(e.select("dd.m").first()
-                .select("strong.xi2").first().text());
-        model.title = e.select("dt.xw1").first()
-                .select("a.xi2").first().text();
-        model.description = "???";
+        model.title = e.select("a.ci-name").text();
         model.url = e.select("a[href*=/collection/]").first().attr("href");
-
+        model.uper = e.select("a[href*=/space/]").first().text();
+        model.subscribe = e.select("span.icon-dingyue").text();
+        model.comments = e.select("span.icon-huifu").text();
+        model.time = e.select("span.timeline").text();
+        model.avatar = e.select("div.ci-icon").first().child(0).attr("src");
         return model;
     }
 }

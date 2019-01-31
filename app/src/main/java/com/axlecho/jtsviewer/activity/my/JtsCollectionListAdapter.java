@@ -8,9 +8,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.module.JtsCollectionInfoModel;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,8 +90,14 @@ public class JtsCollectionListAdapter extends RecyclerView.Adapter<RecyclerView.
 
         public void setData(JtsCollectionInfoModel model) {
             this.title.setText(model.title);
-            this.reply.setText(String.valueOf(model.num));
-        }
+            this.time.setText(model.time);
+            this.reply.setText(model.comments);
+            this.watch.setText(model.subscribe);
+            this.author.setText(model.uper);
+            TextDrawable defaultDrawable = TextDrawable.builder()
+                    .beginConfig().height(48).width(48).bold().endConfig()
+                    .buildRect(model.title.substring(0, 1), context.getResources().getColor(R.color.colorPrimary));
+            Glide.with(context).load(model.avatar).error(defaultDrawable).into(avatar);        }
     }
 
     public void addOnItemLongClickListener(JtsCollectionListAdapter.OnItemLongClickListener listener) {
