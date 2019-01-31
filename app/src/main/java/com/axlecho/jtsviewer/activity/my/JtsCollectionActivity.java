@@ -2,12 +2,9 @@ package com.axlecho.jtsviewer.activity.my;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 
+import com.afollestad.aesthetic.AestheticActivity;
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.activity.base.JtsCommonSingleTabInfoListActivity;
 import com.axlecho.jtsviewer.module.JtsCollectionInfoModel;
@@ -18,10 +15,13 @@ import com.axlecho.jtsviewer.widget.RecycleViewDivider;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
-public class JtsCollectionActivity extends AppCompatActivity implements JtsCollectionListAdapter.OnItemClickListener, JtsCollectionListAdapter.OnItemLongClickListener {
+public class JtsCollectionActivity extends AestheticActivity implements JtsCollectionListAdapter.OnItemClickListener, JtsCollectionListAdapter.OnItemLongClickListener {
     // implements CacheViewAdapter.OnItemClickListener, CacheViewAdapter.OnItemLongClickListener {
     private static final String TAG = JtsCollectionActivity.class.getSimpleName();
 

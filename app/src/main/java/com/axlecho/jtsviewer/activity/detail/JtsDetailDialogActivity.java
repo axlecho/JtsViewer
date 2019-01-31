@@ -1,10 +1,10 @@
 package com.axlecho.jtsviewer.activity.detail;
 
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.Window;
 import android.widget.Toast;
 
+import com.afollestad.aesthetic.AestheticActivity;
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.action.tab.JtsGtpTabAction;
@@ -20,9 +20,10 @@ import java.util.List;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
-public class JtsDetailDialogActivity extends AppCompatActivity {
+public class JtsDetailDialogActivity extends AestheticActivity {
 
     private List<Disposable> disposables = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +36,7 @@ public class JtsDetailDialogActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        for (Disposable disposable:disposables) {
+        for (Disposable disposable : disposables) {
             disposable.dispose();
         }
         super.onDestroy();
@@ -53,17 +54,17 @@ public class JtsDetailDialogActivity extends AppCompatActivity {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        Toast.makeText(JtsDetailDialogActivity.this,"some error happen",Toast.LENGTH_LONG).show();
+                        Toast.makeText(JtsDetailDialogActivity.this, "some error happen", Toast.LENGTH_LONG).show();
                     }
                 });
         disposables.add(disposable);
     }
 
-    public void processTabPlay(JtsTabDetailModule detail,JtsTabInfoModel info) {
+    public void processTabPlay(JtsTabDetailModule detail, JtsTabInfoModel info) {
         JtsBaseAction action;
         long gid = JtsTextUnitls.getTabKeyFromUrl(info.url);
         if (detail.gtpUrl != null) {
-            action = new JtsGtpTabAction(this, gid, detail.gtpUrl,info);
+            action = new JtsGtpTabAction(this, gid, detail.gtpUrl, info);
 
         } else if (detail.imgUrls != null && detail.imgUrls.size() != 0) {
             action = new JtsImgTabAction(this, gid, detail.imgUrls);
@@ -71,13 +72,13 @@ public class JtsDetailDialogActivity extends AppCompatActivity {
             action = new JtsBaseAction() {
                 @Override
                 public void processAction() {
-                    Toast.makeText(JtsDetailDialogActivity.this,"no support ",Toast.LENGTH_LONG).show();
+                    Toast.makeText(JtsDetailDialogActivity.this, "no support ", Toast.LENGTH_LONG).show();
                     JtsDetailDialogActivity.this.finish();
                 }
             };
         }
         action.execute();
-        overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         finish();
     }
 }

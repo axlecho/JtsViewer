@@ -2,28 +2,28 @@ package com.axlecho.jtsviewer.activity.login;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 
+import com.afollestad.aesthetic.AestheticActivity;
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.network.JtsServer;
 import com.axlecho.jtsviewer.untils.JtsConf;
 import com.axlecho.jtsviewer.untils.JtsToolUnitls;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import androidx.appcompat.widget.Toolbar;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
-public class JtsLoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class JtsLoginActivity extends AestheticActivity implements View.OnClickListener {
 
     private EditText usernameEditText;
     private EditText passwordEditText;

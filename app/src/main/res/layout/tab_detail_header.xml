@@ -97,7 +97,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/activity_margin"
             android:layout_marginEnd="@dimen/activity_margin"
-            app:cardBackgroundColor="@color/white"
+            app:cardBackgroundColor="@color/colorBackground"
 
             app:layout_constraintBottom_toBottomOf="@id/tab_detail_info_layout"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -123,7 +123,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:background="@color/colorPrimary" />
+                    android:background="@color/colorSecondaryText" />
 
                 <TextView
                     android:id="@+id/tab_detail_play"
@@ -131,8 +131,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/action_play_store"
-                    android:textColor="@color/colorPrimary" />
+                    android:text="@string/read"
+                    android:textColor="@color/colorAccent" />
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>

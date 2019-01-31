@@ -3,15 +3,9 @@ package com.axlecho.jtsviewer.activity.my;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 
+import com.afollestad.aesthetic.AestheticActivity;
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.action.ui.JtsShowGtpTabAction;
 import com.axlecho.jtsviewer.activity.detail.JtsDetailActivity;
@@ -20,14 +14,20 @@ import com.axlecho.jtsviewer.module.CacheModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 import com.axlecho.jtsviewer.widget.RecycleViewDivider;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.functions.Consumer;
 
-public class JtsHistoryActivity extends AppCompatActivity implements CacheViewAdapter.OnItemClickListener, CacheViewAdapter.OnItemLongClickListener {
+public class JtsHistoryActivity extends AestheticActivity implements CacheViewAdapter.OnItemClickListener, CacheViewAdapter.OnItemLongClickListener {
     private static final String TAG = JtsHistoryActivity.class.getSimpleName();
     private List<CacheModule> modules;
     private RecyclerView cacheView;

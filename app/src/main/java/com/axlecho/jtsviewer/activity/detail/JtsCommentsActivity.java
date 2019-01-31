@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.afollestad.aesthetic.AestheticActivity;
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
@@ -23,7 +24,6 @@ import com.hippo.refreshlayout.RefreshLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,7 +31,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 
-public class JtsCommentsActivity extends AppCompatActivity implements RefreshLayout.OnRefreshListener {
+public class JtsCommentsActivity extends AestheticActivity implements RefreshLayout.OnRefreshListener {
     private static final String TAG = "comments-scene";
     public RecyclerView recyclerView;
     public EditText comment;

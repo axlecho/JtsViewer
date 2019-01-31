@@ -1,32 +1,24 @@
 package com.axlecho.jtsviewer.activity.detail;
 
 import android.os.Bundle;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.appcompat.widget.PopupMenu;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
-import android.view.animation.TranslateAnimation;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.afollestad.aesthetic.AestheticActivity;
 import com.axlecho.jtsviewer.JtsApplication;
 import com.axlecho.jtsviewer.R;
-import com.axlecho.jtsviewer.widget.RecycleViewDivider;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-import com.hippo.refreshlayout.RefreshLayout;
+import com.google.android.material.snackbar.Snackbar;
 
-public class JtsDetailActivity extends AppCompatActivity {
+import androidx.appcompat.widget.PopupMenu;
+
+public class JtsDetailActivity extends AestheticActivity {
     private static final String TAG = "detail-scene";
 
     public ImageView avatar;
@@ -60,7 +52,7 @@ public class JtsDetailActivity extends AppCompatActivity {
         type = (TextView) findViewById(R.id.tab_detail_type);
 
         favorite = findViewById(R.id.favorite);
-        play =  findViewById(R.id.tab_detail_play);
+        play = findViewById(R.id.tab_detail_play);
 
         comment = findViewById(R.id.comments_text);
         commentLayout = findViewById(R.id.comments);
@@ -87,6 +79,7 @@ public class JtsDetailActivity extends AppCompatActivity {
         super.onStop();
         stopLoading();
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

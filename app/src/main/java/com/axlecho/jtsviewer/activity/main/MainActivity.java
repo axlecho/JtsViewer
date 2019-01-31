@@ -1,15 +1,6 @@
 package com.axlecho.jtsviewer.activity.main;
 
 import android.os.Bundle;
-import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,14 +9,26 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.afollestad.aesthetic.Aesthetic;
+import com.afollestad.aesthetic.AestheticActivity;
 import com.axlecho.jtsviewer.JtsApplication;
 import com.axlecho.jtsviewer.R;
+import com.axlecho.jtsviewer.untils.JtsThemeUnitls;
 import com.axlecho.jtsviewer.widget.RecycleViewDivider;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.hippo.refreshlayout.RefreshLayout;
 
-public class MainActivity extends AppCompatActivity
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+public class MainActivity extends AestheticActivity
         implements NavigationView.OnNavigationItemSelectedListener, RefreshLayout.OnRefreshListener {
     private String TAG = MainActivity.class.getSimpleName();
     public NavigationView navigationView;
@@ -42,6 +45,9 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // if(Aesthetic.Companion.isFirstTime()) {
+            JtsThemeUnitls.getSingleton().apply(this);
+        //}
 
         this.controller = new MainActivityController();
         this.controller.setActivity(this);
@@ -61,7 +67,7 @@ public class MainActivity extends AppCompatActivity
 
         recyclerView = (RecyclerView) this.findViewById(R.id.main_recycler_view);
         recyclerView.addItemDecoration(new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL));
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
         refreshLayout = (RefreshLayout) this.findViewById(R.id.main_swip_refresh_layout);

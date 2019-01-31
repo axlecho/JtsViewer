@@ -58,6 +58,7 @@ dependencies {
     implementation 'com.github.axlecho:SakuraPlayer:1.0.1'
     implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
     implementation 'com.wenwenwen888:searchbox:1.0.1'
+    implementation 'com.afollestad:aesthetic:1.0.0-beta05'
 
     api 'com.github.axlecho.tuxguitar:tuxguitar-ptb:0.1.2'
     api 'com.github.axlecho.tuxguitar:tuxguitar-gtp:0.1.2'

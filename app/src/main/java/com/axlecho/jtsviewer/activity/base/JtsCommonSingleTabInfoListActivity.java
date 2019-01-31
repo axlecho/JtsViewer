@@ -1,23 +1,24 @@
 package com.axlecho.jtsviewer.activity.base;
 
 import android.os.Bundle;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.afollestad.aesthetic.AestheticActivity;
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.activity.my.JtsHistoryActivity;
 import com.axlecho.jtsviewer.widget.RecycleViewDivider;
+import com.google.android.material.snackbar.Snackbar;
 import com.hippo.refreshlayout.RefreshLayout;
 
-public class JtsCommonSingleTabInfoListActivity extends AppCompatActivity
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+public class JtsCommonSingleTabInfoListActivity extends AestheticActivity
         implements RefreshLayout.OnRefreshListener {
     private static final String TAG = JtsHistoryActivity.class.getSimpleName();
     public RecyclerView recyclerView;
