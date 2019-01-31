@@ -2,12 +2,18 @@ package com.axlecho.jtsviewer.activity.detail;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.PopupMenu;
+
+import android.content.Intent;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.axlecho.jtsviewer.R;
@@ -22,11 +28,14 @@ import com.axlecho.jtsviewer.module.JtsThreadModule;
 import com.axlecho.jtsviewer.network.JtsNetworkManager;
 import com.axlecho.jtsviewer.network.JtsServer;
 import com.axlecho.jtsviewer.untils.JtsConf;
+import com.axlecho.jtsviewer.untils.JtsImageGetter;
+import com.axlecho.jtsviewer.untils.JtsTagHandler;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsToolUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 import com.axlecho.sakura.SakuraPlayerView;
 import com.bumptech.glide.Glide;
+import com.pixplicity.htmlcompat.HtmlCompat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +47,8 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 
+import static com.pixplicity.htmlcompat.HtmlCompat.FROM_HTML_MODE_LEGACY;
+
 /**
  * Created by Administrator on 2017/11/7.
  */
@@ -45,10 +56,9 @@ import io.reactivex.functions.Consumer;
 public class JtsDetailActivityController {
     private static final String TAG = "detail";
     private JtsDetailActivity activity;
-    private JtsThreadListAdapter adapter;
     private JtsTabDetailModule detail;
     private JtsTabInfoModel info;
-    private int page = 1;
+
 
     private List<Disposable> disposables = new ArrayList<>();
 
@@ -67,7 +77,6 @@ public class JtsDetailActivityController {
     }
 
     public void bindTabInfo() {
-        this.page = 1;
         JtsTabInfoModel model = (JtsTabInfoModel) activity.getIntent().getSerializableExtra("tabinfo");
         JtsViewerLog.d(TAG, "[bindTabInfo] " + model);
 
@@ -116,16 +125,13 @@ public class JtsDetailActivityController {
                     case R.id.action_refresh:
                         getTabDetail();
                         break;
-                    case R.id.action_favorite:
-                        showCollectionDialog();
-                        break;
                 }
                 return true;
             }
         });
     }
 
-    public void showCollectionDialog(){
+    public void showCollectionDialog() {
         final ProgressDialog loadingProgressDialog;
         loadingProgressDialog = new ProgressDialog(activity);
         loadingProgressDialog.setTitle(null);
@@ -147,19 +153,19 @@ public class JtsDetailActivityController {
     }
 
     public void showCollectionDialog(final List<JtsCollectionInfoModel> collectionInfoModels) {
-            List<String> itemList = new ArrayList<>();
-            for(JtsCollectionInfoModel model:collectionInfoModels) {
-                itemList.add(model.title);
+        List<String> itemList = new ArrayList<>();
+        for (JtsCollectionInfoModel model : collectionInfoModels) {
+            itemList.add(model.title);
+        }
+        AlertDialog.Builder listDialog = new AlertDialog.Builder(activity);
+        listDialog.setTitle(activity.getResources().getString(R.string.title_collection));
+        listDialog.setItems(itemList.toArray(new String[0]), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                favorite(collectionInfoModels.get(which));
             }
-            AlertDialog.Builder listDialog =new AlertDialog.Builder(activity);
-            listDialog.setTitle(activity.getResources().getString(R.string.title_collection));
-            listDialog.setItems(itemList.toArray(new String[0]), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    favorite(collectionInfoModels.get(which));
-                }
-            });
-            listDialog.show();
+        });
+        listDialog.show();
     }
 
     public void favorite(JtsCollectionInfoModel collection) {
@@ -170,7 +176,7 @@ public class JtsDetailActivityController {
         loadingProgressDialog.show();
         final long tabKey = JtsTextUnitls.getTabKeyFromUrl(info.url);
         final long collectionId = JtsTextUnitls.getCollectionIdFromUrl(collection.url);
-        Disposable disposable = JtsServer.getSingleton(activity).favorite(collectionId,tabKey,detail.formhash)
+        Disposable disposable = JtsServer.getSingleton(activity).favorite(collectionId, tabKey, detail.formhash)
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(String s) throws Exception {
@@ -194,11 +200,6 @@ public class JtsDetailActivityController {
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(Disposable disposable) throws Exception {
-                        page = 1;
-                        if (adapter != null) {
-                            adapter.clear();
-                            adapter.notifyDataSetChanged();
-                        }
                         activity.hideError();
                         activity.startLoading();
                     }
@@ -218,142 +219,72 @@ public class JtsDetailActivityController {
         disposables.add(disposable);
     }
 
-    public void loadMoreThread() {
-        page++;
-        this.info = (JtsTabInfoModel) activity.getIntent().getSerializableExtra("tabinfo");
-        long tabKey = JtsTextUnitls.getTabKeyFromUrl(info.url);
-        Disposable disposable = JtsServer.getSingleton(activity).getThread(tabKey, page)
-                .doOnSubscribe(new Consumer<Disposable>() {
-                    @Override
-                    public void accept(Disposable disposable) throws Exception {
-                        activity.refreshLayout.setFooterRefreshing(true);
-                    }
-                })
-                .doOnTerminate(new Action() {
-                    @Override
-                    public void run() throws Exception {
-                        activity.refreshLayout.setFooterRefreshing(false);
-                    }
-                })
-                .subscribe(new Consumer<List<JtsThreadModule>>() {
-                    @Override
-                    public void accept(List<JtsThreadModule> jtsThreadModules) throws Exception {
-                        processLoadMoreThread(jtsThreadModules);
-                    }
-
-                }, errorHandler);
-
-        disposables.add(disposable);
-    }
-
-    public void sendComment() {
-        String comment = activity.comment.getText().toString();
-        if (TextUtils.isEmpty(comment)) {
-            JtsToolUnitls.hideSoftInput(activity, activity.comment);
-            activity.showMessage(R.string.error_comment_null);
-            return;
-        }
-
-        Disposable disposable = JtsServer.getSingleton(activity)
-                .postComment(detail.fid, JtsTextUnitls.getTabKeyFromUrl(info.url), comment, detail.formhash)
-                .doOnTerminate(new Action() {
-                    @Override
-                    public void run() throws Exception {
-                        JtsToolUnitls.hideSoftInput(activity, activity.comment);
-                    }
-                })
-                .subscribe(new Consumer<String>() {
-                    @Override
-                    public void accept(String s) throws Exception {
-                        processPostComment(s);
-                    }
-                }, errorHandler);
-        disposables.add(disposable);
-    }
 
     public void processDetail(JtsTabDetailModule detail) {
         this.detail = detail;
-
-        if (adapter == null) {
-            adapter = new JtsThreadListAdapter(activity);
-            activity.recyclerView.setAdapter(adapter);
-        }
-
-        adapter.addData(detail.threadList);
-        adapter.notifyDataSetChanged();
+        bindComments(detail.threadList);
         activity.play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 processTabPlay();
             }
         });
-        activity.send.setOnClickListener(new View.OnClickListener() {
+        activity.favorite.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                sendComment();
+            public void onClick(View v) {
+                showCollectionDialog();
             }
         });
-
-        Observable.timer(50, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Long>() {
-                    @Override
-                    public void accept(Long aLong) throws Exception {
-                        activity.showPlayBtn();
-                    }
-                });
-
-        Observable.timer(100, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Long>() {
-                    @Override
-                    public void accept(Long aLong) throws Exception {
-                        activity.showCommentEdittext();
-                    }
-                });
-
     }
 
-    public void processLoadMoreThread(List<JtsThreadModule> threads) {
-        if (threads == null) {
-            JtsViewerLog.e(TAG, "[processLoadMoreThread] null");
+    public void bindComments(List<JtsThreadModule> threads) {
+        final int maxShowCount = 2;
+        if (threads == null || threads.size() == 0) {
+            activity.comment.setText(R.string.no_comments);
             return;
-        }
-
-        if (threads.size() == 0) {
-            JtsViewerLog.e(TAG, "[processLoadMoreThread] empty");
-            return;
-        }
-
-        if (threads.get(0) != null) {
-            for (JtsThreadModule module : detail.threadList) {
-                if (module.floor.equals(threads.get(0).floor)) {
-                    JtsViewerLog.w(TAG, "[processLoadMoreThread] over flow");
-                    return;
-                }
-            }
-
-        }
-
-        detail.threadList.addAll(threads);
-        adapter.notifyDataSetChanged();
-    }
-
-    public void processPostComment(String result) {
-        JtsToolUnitls.hideSoftInput(activity, activity.comment);
-
-        if (result.equals(JtsConf.STATUS_SUCCESSED)) {
-            activity.comment.setText("");
-            getTabDetail();
-            activity.showMessage(R.string.comment_success);
+        } else if (threads.size() <= maxShowCount) {
+            activity.comment.setText(R.string.no_more_comments);
         } else {
-            activity.showMessage(R.string.comment_failed);
+            activity.comment.setText(R.string.more_comment);
+            activity.commentLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toCommentsActivity();
+                }
+            });
         }
 
+        int length = Math.min(maxShowCount, threads.size());
+        for (int i = 0; i < length; i++) {
+            JtsThreadModule comment = threads.get(i);
+            View view = activity.getLayoutInflater().inflate(R.layout.item_thread, activity.commentLayout, false);
+            activity.commentLayout.addView(view, i);
 
+            ImageView avatar = view.findViewById(R.id.thread_item_avatar);
+            TextView auth = view.findViewById(R.id.thread_item_auth);
+            TextView time = view.findViewById(R.id.thread_item_time);
+            TextView message = view.findViewById(R.id.thread_item_message);
+            TextView floor = view.findViewById(R.id.thread_item_floor);
+            TextDrawable defaultDrawable = TextDrawable.builder()
+                    .beginConfig().height(48).width(48).bold().endConfig()
+                    .buildRect(comment.authi.substring(0, 1), activity.getResources().getColor(R.color.colorPrimary));
+            Glide.with(activity).load(comment.avatar).error(defaultDrawable).into(avatar);
+            auth.setText(comment.authi);
+            time.setText(comment.time);
+            floor.setText(comment.floor);
+            message.setText(HtmlCompat.fromHtml(activity, comment.message, FROM_HTML_MODE_LEGACY, new JtsImageGetter(message), new JtsTagHandler(activity, message)));
+            message.setMovementMethod(LinkMovementMethod.getInstance());
+        }
     }
 
-    public boolean  processBackPressed() {
+    public void toCommentsActivity() {
+        Intent intent = new Intent(activity, JtsCommentsActivity.class);
+        intent.putExtra("info", info);
+        intent.putExtra("detail", detail);
+        activity.startActivity(intent);
+    }
+
+    public boolean processBackPressed() {
         SakuraPlayerView player = (SakuraPlayerView) activity.findViewById(R.id.player);
         if (player != null) {
             if (player.isFullScreen) {
@@ -374,7 +305,7 @@ public class JtsDetailActivityController {
         JtsBaseAction action;
         long gid = JtsTextUnitls.getTabKeyFromUrl(info.url);
         if (detail.gtpUrl != null) {
-            action = new JtsGtpTabAction(activity, gid, detail.gtpUrl,info);
+            action = new JtsGtpTabAction(activity, gid, detail.gtpUrl, info);
         } else if (detail.imgUrls != null && detail.imgUrls.size() != 0) {
             action = new JtsImgTabAction(activity, gid, detail.imgUrls);
         } else {
@@ -396,7 +327,6 @@ public class JtsDetailActivityController {
     private void openInOtherApp() {
         JtsToolUnitls.openUrl(activity, JtsConf.HOST_URL + info.url);
     }
-
 
 
 }

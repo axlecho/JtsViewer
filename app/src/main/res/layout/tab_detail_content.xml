@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_content_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.axlecho.jtsviewer.activity.detail.JtsDetailActivity"
+    tools:showIn="@layout/activity_detail">
+
+    <include layout="@layout/tab_detail_header" />
+
+    <include layout="@layout/tab_detail_info" />
+
+    <include layout="@layout/tab_detail_comments" />
+
+</LinearLayout>

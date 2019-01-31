@@ -36,6 +36,7 @@
 
     <string name="detail_transition">detail_transition</string>
     <string name="title_activity_detail">详情</string>
+    <string name="title_activity_comment">谱子评论</string>
     <string name="open_in_other_app">在其他应用打开</string>
     <string name="title_activity_jts_settings">设置</string>
 
@@ -76,4 +77,8 @@
 
     <string name="mentronome">节拍器</string>
     <string name="tuner">调音器</string>
+
+    <string name="no_comments">暂无评论</string>
+    <string name="no_more_comments">已显示所有评论</string>
+    <string name="more_comment">查看更多评论</string>
 </resources>

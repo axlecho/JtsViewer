@@ -50,6 +50,11 @@
             android:label="@string/title_activity_detail"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".activity.detail.JtsCommentsActivity"
+            android:label="@string/title_activity_detail"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
             android:name=".activity.my.JtsSettingsActivity"
             android:label="@string/title_activity_jts_settings" />
         <activity
@@ -75,6 +80,7 @@
             android:name=".bookmark.JtsBookMarkWidgetService"
             android:exported="false"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
+
     </application>
 
 </manifest>
