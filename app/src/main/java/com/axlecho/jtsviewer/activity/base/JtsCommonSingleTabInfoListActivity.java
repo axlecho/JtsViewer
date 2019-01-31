@@ -45,7 +45,7 @@ public class JtsCommonSingleTabInfoListActivity extends AppCompatActivity
 
         recyclerView = (RecyclerView) findViewById(R.id.common_content_recyclerview);
         recyclerView.addItemDecoration(new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL));
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
         refreshLayout = (RefreshLayout) findViewById(R.id.common_swip_refresh_layout);
@@ -54,7 +54,6 @@ public class JtsCommonSingleTabInfoListActivity extends AppCompatActivity
         refreshLayout.setHeaderColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
                 android.R.color.holo_orange_light, android.R.color.holo_red_light);
         refreshLayout.setOnRefreshListener(this);
-
         this.controller.loadScene();
     }
 
@@ -80,7 +79,7 @@ public class JtsCommonSingleTabInfoListActivity extends AppCompatActivity
     }
 
     public void setTitle(String title) {
-        toolbar.setTitle(title);
+        getSupportActionBar().setTitle(title);
     }
 
     public void showError(String msg) {

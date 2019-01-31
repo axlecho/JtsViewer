@@ -52,6 +52,7 @@ public class JtsCommonSingleTableInfoListActivityController implements JtsBaseCo
     }
 
     public void loadScene() {
+        activity.setTitle("XXXXXXXXXXXXXXX");
         String sceneType = activity.getIntent().getStringExtra("scene-type");
         if (sceneType == null) {
             activity.showError("scene is null");

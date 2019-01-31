@@ -33,6 +33,7 @@
     <string name="unknown_author">unknown</string>
     <string name="title_activity_detail">DetailActivity</string>
     <string name="title_activity_comment">Comments</string>
+    <string name="title_activity_collection">Collection</string>
     <string name="refresh">refresh</string>
     <string name="favorite">favorite</string>
     <string name="open_in_other_app">open in other app</string>

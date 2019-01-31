@@ -36,6 +36,7 @@
 
     <string name="detail_transition">detail_transition</string>
     <string name="title_activity_detail">详情</string>
+    <string name="title_activity_collection">收藏</string>
     <string name="title_activity_comment">谱子评论</string>
     <string name="open_in_other_app">在其他应用打开</string>
     <string name="title_activity_jts_settings">设置</string>

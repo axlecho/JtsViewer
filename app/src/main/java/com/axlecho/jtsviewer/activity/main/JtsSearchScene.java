@@ -15,7 +15,7 @@ import io.reactivex.functions.Consumer;
  */
 
 public class JtsSearchScene extends BaseScene {
-    private static final String TAG = "serch-scene";
+    private static final String TAG = "search-scene";
 
     private String keyword;
 

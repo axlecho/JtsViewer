@@ -20,7 +20,7 @@ public class JtsCollectionScene extends BaseScene {
 
     public JtsCollectionScene(Context context, long collectionId, JtsBaseController controller) {
         super(context, controller);
-        setTitle("收藏");
+        setTitle("收藏:" + collectionId);
         this.collectionId = collectionId;
     }
 
