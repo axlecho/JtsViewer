@@ -111,7 +111,7 @@ public class JtsTabListAdapter extends RecyclerView.Adapter<JtsTabListAdapter.Ta
 
             TextDrawable defaultDrawable = TextDrawable.builder()
                     .beginConfig().height(48).width(48).bold().endConfig()
-                    .buildRect(model.title.substring(0, 1), context.getResources().getColor(R.color.colorAccent));
+                    .buildRect(model.title.substring(0, 1), context.getResources().getColor(R.color.colorPrimary));
             Glide.with(context).load(model.avatar).error(defaultDrawable).into(avatar);
         }
 
