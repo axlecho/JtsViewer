@@ -7,10 +7,8 @@ import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.module.JtsCollectionInfoModel;
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
-import com.axlecho.jtsviewer.module.JtsThreadCommentModule;
 import com.axlecho.jtsviewer.module.JtsThreadModule;
 import com.axlecho.jtsviewer.module.JtsUserModule;
-import com.axlecho.jtsviewer.untils.JtsConf;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 import com.axlecho.sakura.utils.SakuraTextUtils;
@@ -29,10 +27,6 @@ public class JtsPageParser {
     private String USER_NAME_PATTERN = "(?<=title=\"访问我的空间\">).*?(?=</a>)";
     private String USER_IMAGE_PATTERN = "https://att.jitashe.org/data/attachment/avatar/.*?.jpg";
 
-    private static final String IMAGE_PATTERN = "(?<=src=\"http:)//att.jitashe.org/.+?.(?:jpg|png|gif)";
-    private static final String IMAGE_PATTERN2 = "(?<=src=\"http:)/data/attachment/forum/.+?.(?:jpg|png|gif)@!tab_thumb";
-
-    private static final String GTP_PATTERN = "dlink=\"/forum.php\\?mod=attachment.*?\"";
 
     private static final String TAG = JtsPageParser.class.getSimpleName();
     private String html;
@@ -101,7 +95,7 @@ public class JtsPageParser {
         }
 
         Element authorObject = e.select("a[href*=/artist/]").first();
-        if(authorObject!=null) {
+        if (authorObject != null) {
             model.author = authorObject.text();
         } else {
             model.author = context.getResources().getString(R.string.unknown_author);
@@ -125,165 +119,26 @@ public class JtsPageParser {
         return model;
     }
 
+    public List<JtsThreadModule> parserThread() {
+        return JtsDetailPageParserHelper.parserThread(html);
+    }
 
     public JtsTabDetailModule parserTabDetail() {
         JtsTabDetailModule detail = new JtsTabDetailModule();
         // detail.raw = html;
-        detail.formhash = parserFormHash();
-        detail.fid = Integer.parseInt(JtsTextUnitls.findByPatternOnce(html, "(?<=fid=)\\d+"));
-        detail.threadList = parserThread();
-        detail.gtpUrl = parserGtpUrl();
-        detail.imgUrls = parserImgUrl();
+        detail.formhash = JtsDetailPageParserHelper.parserFormHash(html);
+        detail.fid = JtsDetailPageParserHelper.parserFid(html);
+        detail.threadList = JtsDetailPageParserHelper.parserThread(html);
+        detail.gtpUrl = JtsDetailPageParserHelper.parserGtpUrl(html);
+        detail.imgUrls = JtsDetailPageParserHelper.parserImgUrl(html);
         if (detail.imgUrls == null || detail.imgUrls.size() == 0) {
-            detail.imgUrls = parserPdfUrl();
+            detail.imgUrls = JtsDetailPageParserHelper.parserPdfUrl(html);
         }
+        detail.lyric = JtsDetailPageParserHelper.parserLyric(html);
+        detail.info = JtsDetailPageParserHelper.parserInfo(html);
+        detail.relatedTabs = JtsDetailPageParserHelper.parserRelatedTab(html);
         return detail;
     }
-
-    public List<String> parserImgUrl() {
-
-        List<String> imageUrls = new ArrayList<>();
-
-        if (html == null) return imageUrls;
-        Document doc = Jsoup.parse(html);
-        Element tab = doc.select("div.imgtab").first();
-
-        if (tab == null) {
-            return imageUrls;
-        }
-
-        JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, tab.toString());
-
-        Elements tabimg = tab.select("img[id*=aimg]");
-
-
-        Iterator it = tabimg.iterator();
-        while (it.hasNext()) {
-            Element element = (Element) it.next();
-            JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE, TAG, element.toString());
-            String url = element.attr("src");
-            JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE, TAG, url);
-            imageUrls.add(url);
-        }
-
-        if (imageUrls.size() == 0) {
-            JtsViewerLog.e(TAG, "processAction failed - image url is null");
-            return null;
-        }
-
-        return imageUrls;
-    }
-
-    public List<String> parserPdfUrl() {
-
-        List<String> imageUrls = new ArrayList<>();
-
-        if (html == null) return imageUrls;
-        Document doc = Jsoup.parse(html);
-        Element tab = doc.select("div#pdfpngContainer").first();
-
-        if (tab == null) {
-            return imageUrls;
-        }
-
-        JtsViewerLog.d(JtsViewerLog.NETWORK_MODULE, TAG, tab.toString());
-
-        Elements tabimg = tab.select("img");
-
-
-        Iterator it = tabimg.iterator();
-        while (it.hasNext()) {
-            Element element = (Element) it.next();
-            JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE, TAG, element.toString());
-            String url = element.attr("src");
-            JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE, TAG, url);
-            imageUrls.add(url);
-        }
-
-        if (imageUrls.size() == 0) {
-            JtsViewerLog.e(TAG, "processAction failed - image url is null");
-            return null;
-        }
-
-        return imageUrls;
-    }
-
-    public String parserGtpUrl() {
-        List<String> gtpUrls = JtsTextUnitls.findByPattern(html, GTP_PATTERN);
-        JtsViewerLog.i(TAG, gtpUrls.toString());
-
-        if (gtpUrls.size() == 0) {
-            return null;
-        }
-
-        String gtpUrl = gtpUrls.get(0);
-        gtpUrl = gtpUrl.replaceAll("dlink=\"", "");
-        gtpUrl = gtpUrl.replaceAll("\"$", "");
-        gtpUrl = gtpUrl.replaceAll("amp;", "");
-        gtpUrl = JtsConf.HOST_URL + gtpUrl;
-        return gtpUrl;
-    }
-
-    public String parserFormHash() {
-        if (html == null) return null;
-        Document doc = Jsoup.parse(html);
-        return doc.select("input[name=formhash]").first().attr("value");
-    }
-
-    public List<JtsThreadModule> parserThread() {
-        if (html == null) return null;
-
-        Document doc = Jsoup.parse(html);
-        Elements tbodys = doc.select("div.post-item");
-        List<JtsThreadModule> moduleList = new ArrayList<>();
-
-        Iterator it = tbodys.iterator();
-        while (it.hasNext()) {
-            Element c = (Element) it.next();
-            JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE, TAG, c.toString());
-            if (!c.attr("id").matches("post_\\d+")) {
-                continue;
-            }
-            JtsThreadModule module = parserThraed(c);
-            JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE, TAG, "[parserThread]" + module);
-            moduleList.add(module);
-        }
-        return moduleList;
-    }
-
-    private JtsThreadModule parserThraed(Element e) {
-        if (e == null) return null;
-        JtsThreadModule module = new JtsThreadModule();
-        Element authiObject = e.select("span.authi2").first();
-        module.authi = authiObject != null? authiObject.text(): context.getResources().getString(R.string.unknown_author);
-        // module.avatar = e.select("img[src*=http://att.jitashe.org/data/attachment/avatar/]").attr("src");
-        try {
-            module.avatar = e.select("div.avatar").first().child(0).child(0).attr("src");
-        } catch (Exception ex) {
-            module.avatar = "";
-        }
-        module.time = e.select("em[id*=authorposton]").first().text();
-        module.time = module.time.replaceAll("发表于 ","");
-        module.message = e.select("td.t_f").first().html();
-        module.floor = e.select("a[onclick*=setCopy]").first().text();
-        Elements comments = e.select("div.cmtl");
-        Iterator it = comments.iterator();
-        while (it.hasNext()) {
-            Element c = (Element) it.next();
-            // JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE, TAG, "[parserComment]" + c.toString());
-            JtsThreadCommentModule comment = new JtsThreadCommentModule();
-            comment.time = c.select("span.xg1").first().text();
-            comment.avatar = c.select("img[src*=avatar.php]").attr("src");
-            comment.authi = c.select("a.xi2").first().text();
-            comment.message = c.select("dd:not(.m)").first().text();
-            // JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE, TAG, "[parserComment]" + comment.toString());
-            comment.time = comment.time.replaceAll("发表于 ","");
-            module.comments.add(comment);
-
-        }
-        return module;
-    }
-
 
     public JtsUserModule parserUserInfo() {
         JtsUserModule user = new JtsUserModule();

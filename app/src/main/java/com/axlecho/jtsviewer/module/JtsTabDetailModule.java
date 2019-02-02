@@ -18,6 +18,14 @@ public class JtsTabDetailModule implements Serializable {
     public String gtpUrl;
     public List<String> imgUrls;
 
+    public List<JtsRelatedVideoModule> relatedVideos;
+    public List<JtsRelatedTabModule> relatedTabs;
+    public List<JtsRelatedPostModule> relatedPosts;
+    public List<JtsRelateCollectionModule> relatedCollections;
+
+    public String info;
+    public String lyric;
+
     @Override
     public String toString() {
         return new Gson().toJson(this);

@@ -2,13 +2,7 @@ package com.axlecho.jtsviewer.activity.detail;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.PopupMenu;
-
 import android.content.Intent;
-import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,10 +33,9 @@ import com.pixplicity.htmlcompat.HtmlCompat;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.PopupMenu;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
@@ -89,7 +82,6 @@ public class JtsDetailActivityController {
         activity.title.setText(model.title);
         activity.author.setText(model.author);
         activity.type.setText(model.type);
-
         activity.otherActions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -222,7 +214,8 @@ public class JtsDetailActivityController {
 
     public void processDetail(JtsTabDetailModule detail) {
         this.detail = detail;
-        bindComments(detail.threadList);
+        this.bindInfo(detail);
+        this.bindComments(detail.threadList);
         activity.play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -265,6 +258,9 @@ public class JtsDetailActivityController {
             TextView time = view.findViewById(R.id.thread_item_time);
             TextView message = view.findViewById(R.id.thread_item_message);
             TextView floor = view.findViewById(R.id.thread_item_floor);
+            if (comment.avatar == null) {
+                comment.avatar = activity.getResources().getString(R.string.unknown_author);
+            }
             TextDrawable defaultDrawable = TextDrawable.builder()
                     .beginConfig().height(48).width(48).bold().endConfig()
                     .buildRect(comment.authi.substring(0, 1), activity.getResources().getColor(R.color.colorPrimary));
@@ -275,6 +271,19 @@ public class JtsDetailActivityController {
             message.setText(HtmlCompat.fromHtml(activity, comment.message, FROM_HTML_MODE_LEGACY, new JtsImageGetter(message), new JtsTagHandler(activity, message)));
             // message.setMovementMethod(LinkMovementMethod.getInstance());
             // message.setClickable(false);
+        }
+    }
+
+    public void bindInfo(JtsTabDetailModule detail) {
+        if (activity.info != null) {
+            activity.info.setText(HtmlCompat.fromHtml(activity, detail.info, FROM_HTML_MODE_LEGACY));
+        } else {
+            activity.info.setText(activity.getResources().getText(R.string.no_info));
+        }
+        if (activity.lyric != null) {
+            activity.lyric.setText(HtmlCompat.fromHtml(activity, detail.lyric, FROM_HTML_MODE_LEGACY));
+        } else {
+            activity.lyric.setText(activity.getResources().getText(R.string.no_lyric));
         }
     }
 

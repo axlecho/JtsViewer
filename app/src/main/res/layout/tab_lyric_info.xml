@@ -2,14 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:divider="@drawable/divider_tab_detail"
     android:orientation="vertical"
     android:padding="@dimen/activity_margin"
     android:showDividers="middle">
 
     <TextView
-        android:id="@+id/tab_detail_info_tip"
+        android:id="@+id/tab_lyric_tip"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textSize="12sp" />
+
 </LinearLayout>

@@ -25,7 +25,8 @@ public class JtsDetailActivity extends AestheticActivity {
     public TextView title;
     public TextView author;
     public TextView type;
-
+    public TextView info;
+    public TextView lyric;
     public TextView play;
     public TextView favorite;
 
@@ -50,11 +51,12 @@ public class JtsDetailActivity extends AestheticActivity {
         title = (TextView) findViewById(R.id.tab_detail_title);
         author = (TextView) findViewById(R.id.tab_detail_author);
         type = (TextView) findViewById(R.id.tab_detail_type);
-
+        info = findViewById(R.id.tab_detail_info_tip);
+        lyric = findViewById(R.id.tab_lyric_tip);
         favorite = findViewById(R.id.favorite);
         play = findViewById(R.id.tab_detail_play);
 
-        comment = findViewById(R.id.comments_text);
+        comment = findViewById(R.id.comments_tip);
         commentLayout = findViewById(R.id.comments);
 
         otherActions = findViewById(R.id.tab_detail_other_actions);
@@ -94,11 +96,13 @@ public class JtsDetailActivity extends AestheticActivity {
     }
 
     public void startLoading() {
+        findViewById(R.id.below_header).setVisibility(View.INVISIBLE);
         findViewById(R.id.detail_loading_progressbar).setVisibility(View.VISIBLE);
     }
 
     public void stopLoading() {
         findViewById(R.id.detail_loading_progressbar).setVisibility(View.GONE);
+        findViewById(R.id.below_header).setVisibility(View.VISIBLE);
     }
 
     public void showError(String msg) {

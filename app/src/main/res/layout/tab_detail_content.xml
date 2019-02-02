@@ -10,8 +10,26 @@
 
     <include layout="@layout/tab_detail_header" />
 
-    <include layout="@layout/tab_detail_info" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <include layout="@layout/tab_detail_comments" />
+        <LinearLayout
+            android:id="@+id/below_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="?attr/tabDetailDivider"
+            android:dividerPadding="@dimen/activity_horizontal_margin"
+            android:orientation="vertical"
+            android:showDividers="middle"
+            android:visibility="invisible">
+
+            <include layout="@layout/tab_detail_comments" />
+
+            <include layout="@layout/tab_detail_info" />
+
+            <include layout="@layout/tab_lyric_info" />
+        </LinearLayout>
+    </FrameLayout>
 
 </LinearLayout>

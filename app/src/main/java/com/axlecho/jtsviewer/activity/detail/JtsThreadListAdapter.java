@@ -1,8 +1,6 @@
 package com.axlecho.jtsviewer.activity.detail;
 
 import android.content.Context;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +20,9 @@ import com.pixplicity.htmlcompat.HtmlCompat;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 import static com.pixplicity.htmlcompat.HtmlCompat.FROM_HTML_MODE_LEGACY;
 
@@ -83,6 +84,10 @@ public class JtsThreadListAdapter extends RecyclerView.Adapter<JtsThreadListAdap
         }
 
         public void bindData(JtsThreadModule model) {
+            if (model.avatar == null) {
+                model.avatar = context.getResources().getString(R.string.unknown_author);
+            }
+
             TextDrawable defaultDrawable = TextDrawable.builder()
                     .beginConfig().height(48).width(48).bold().endConfig()
                     .buildRect(model.authi.substring(0, 1), context.getResources().getColor(R.color.colorPrimary));

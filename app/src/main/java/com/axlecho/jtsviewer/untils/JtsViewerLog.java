@@ -21,7 +21,7 @@ public class JtsViewerLog {
     public static String NETWORK_MODULE = "jts-network";
     public static String CACHE_MODULE = "jts-cache";
     public static String TRACE_MODULE = "jts-trace";
-    private static int level = VERBOSE_LEVEL;
+    private static int level = DEBUG_LEVEL;
 
 
     public static int v(String module, String tag, String msg) {
