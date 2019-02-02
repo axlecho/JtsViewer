@@ -26,32 +26,16 @@
 
     <color name="title_black">#333333</color>
     <color name="subtitle_black">#888888</color>
-    <color name="floor_black">#cccccc</color>
     <color name="sub_grey">#e8e8e8</color>
-    <color name="primary_drawable_light">#8a000000</color>
-    <color name="secondary_drawable_light">#42000000</color>
-    <color name="primary_drawable_dark">#ffffffff</color>
     <color name="secondary_drawable_dark">#4dffffff</color>
 
+    <color name="main_light">#2fa591</color>
+    <color name="accent_light">@color/nakabeni</color>
+    <color name="main_light_deep">#217466</color>
 
-    <color name="colorPrimary">#2fa591</color>
-    <color name="colorAccent">@color/nakabeni</color>
-    <color name="colorPrimaryWood">#3E2723</color>
-    <color name="colorAccentWood">#A1887F</color>
-    <color name="colorPrimaryAmoled">#000000</color>
-    <color name="colorAccentAmoled">#FFFFFF</color>
-    <color name="colorPrimaryDark">#212121</color>
-    <color name="colorAccentDark">#FF8A80</color>
-    <color name="colorBorder">#30000000</color>
-    <color name="colorBorderDark">#20FFFFFF</color>
-    <color name="colorBackground">#FAFAFA</color>
-    <color name="colorBackgroundDark">#303030</color>
-    <color name="textColorPrimary">#ffffff</color>
-    <color name="textColorSecondary">#B3ffffff</color>
-    <color name="textColorTertiary">#80FFFFFF</color>
-    <color name="textColorPrimaryInverse">#DE000000</color>
-    <color name="textColorSecondaryInverse">#8A000000</color>
-    <color name="textColorTertiaryInverse">#26000000</color>
+    <color name="colorPrimary">@color/main_light</color>
+    <color name="colorAccent">@color/accent_light</color>
+    <color name="colorPrimaryDark">@color/main_light_deep</color>
 
     <!-- divider -->
     <color name="divider_light">#20000000</color>

@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     android:padding="32dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-
-    tools:context="com.axlecho.jtsviewer.activity.login.JtsLoginActivity">
+    tools:context="com.axlecho.jtsviewer.activity.login.JtsLoginActivity"
+    android:fitsSystemWindows="true">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/login_username_layout"

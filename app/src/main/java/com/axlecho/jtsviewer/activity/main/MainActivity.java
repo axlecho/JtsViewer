@@ -46,7 +46,7 @@ public class MainActivity extends AestheticActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // if(Aesthetic.Companion.isFirstTime()) {
-            JtsThemeUnitls.getSingleton().apply(this);
+        //   JtsThemeUnitls.getSingleton().apply(this);
         //}
 
         this.controller = new MainActivityController();
