@@ -3,8 +3,11 @@
     android:id="@+id/comments"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:descendantFocusability="blocksDescendants"
+    android:background="?android:attr/selectableItemBackground"
     android:orientation="vertical"
-    android:descendantFocusability="blocksDescendants">
+    android:paddingTop="@dimen/activity_margin"
+    android:paddingBottom="@dimen/activity_margin">
 
     <TextView
         android:id="@+id/comments_tip"

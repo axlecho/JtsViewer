@@ -2,7 +2,9 @@ package com.axlecho.jtsviewer.module;
 
 import com.google.gson.Gson;
 
-public class JtsRelatedTabModule {
+import java.io.Serializable;
+
+public class JtsRelatedTabModule implements Serializable {
     public String title;
     public String url;
 

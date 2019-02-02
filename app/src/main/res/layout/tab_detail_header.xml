@@ -79,6 +79,7 @@
                 android:id="@+id/tab_detail_other_actions"
                 android:layout_width="48dp"
                 android:layout_height="56dp"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:paddingLeft="12dp"
                 android:paddingTop="16dp"
                 android:paddingRight="12dp"
@@ -113,6 +114,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:foreground="@drawable/ripple_foreground"
                     android:text="@string/favorite"
                     android:textColor="@color/colorPrimary" />
 
@@ -121,7 +123,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:background="@color/colorSecondaryText" />
+                    android:background="@color/divider_light" />
 
                 <TextView
                     android:id="@+id/tab_detail_play"
@@ -129,6 +131,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:foreground="@drawable/ripple_foreground"
                     android:text="@string/read"
                     android:textColor="@color/colorAccent" />
 
