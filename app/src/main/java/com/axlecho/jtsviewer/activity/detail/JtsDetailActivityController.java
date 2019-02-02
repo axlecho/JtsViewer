@@ -95,7 +95,6 @@ public class JtsDetailActivityController {
     }
 
     public void detachFromActivity() {
-        this.stopVideoPlayer();
         JtsNetworkManager.getInstance(activity).cancelAll();
 
         for (Disposable disposable : disposables) {
@@ -268,7 +267,10 @@ public class JtsDetailActivityController {
             auth.setText(comment.authi);
             time.setText(comment.time);
             floor.setText(comment.floor);
-            message.setText(HtmlCompat.fromHtml(activity, comment.message, FROM_HTML_MODE_LEGACY, new JtsImageGetter(message), new JtsTagHandler(activity, message)));
+            JtsViewerLog.d("html",comment.message);
+            message.setText(HtmlCompat.fromHtml(activity, comment.message, FROM_HTML_MODE_LEGACY,
+                    new JtsImageGetter(message),
+                    new JtsTagHandler(activity, message,comment.message)));
             // message.setMovementMethod(LinkMovementMethod.getInstance());
             // message.setClickable(false);
         }
@@ -294,21 +296,7 @@ public class JtsDetailActivityController {
         activity.startActivity(intent);
     }
 
-    public boolean processBackPressed() {
-        SakuraPlayerView player = (SakuraPlayerView) activity.findViewById(R.id.player);
-        if (player != null) {
-            if (player.isFullScreen) {
-                player.toggleFullScreen();
-                return false;
-            }
 
-            player.stop();
-            ViewGroup root = (ViewGroup) activity.findViewById(android.R.id.content);
-            root.removeView(player);
-            return false;
-        }
-        return true;
-    }
 
     public void processTabPlay() {
 
@@ -329,10 +317,7 @@ public class JtsDetailActivityController {
         action.execute();
     }
 
-    private void stopVideoPlayer() {
-        JtsStopVideoAction action = new JtsStopVideoAction(activity);
-        action.execute();
-    }
+
 
     private void openInOtherApp() {
         JtsToolUnitls.openUrl(activity, JtsConf.HOST_URL + info.url);

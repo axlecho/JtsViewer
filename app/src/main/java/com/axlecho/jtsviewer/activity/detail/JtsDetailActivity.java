@@ -88,12 +88,6 @@ public class JtsDetailActivity extends AestheticActivity {
         controller.detachFromActivity();
     }
 
-    @Override
-    public void onBackPressed() {
-        if (controller.processBackPressed()) {
-            super.onBackPressed();
-        }
-    }
 
     public void startLoading() {
         findViewById(R.id.below_header).setVisibility(View.INVISIBLE);

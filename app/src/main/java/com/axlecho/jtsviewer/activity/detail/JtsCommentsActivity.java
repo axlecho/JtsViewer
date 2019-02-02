@@ -3,11 +3,13 @@ package com.axlecho.jtsviewer.activity.detail;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.afollestad.aesthetic.AestheticActivity;
 import com.axlecho.jtsviewer.R;
+import com.axlecho.jtsviewer.action.ui.JtsStopVideoAction;
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.JtsThreadModule;
@@ -18,6 +20,7 @@ import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsToolUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 import com.axlecho.jtsviewer.widget.RecycleViewDivider;
+import com.axlecho.sakura.SakuraPlayerView;
 import com.google.android.material.snackbar.Snackbar;
 import com.hippo.refreshlayout.RefreshLayout;
 
@@ -221,6 +224,7 @@ public class JtsCommentsActivity extends AestheticActivity implements RefreshLay
     }
 
     public void quit() {
+        this.stopVideoPlayer();
         JtsNetworkManager.getInstance(this).cancelAll();
 
         for (Disposable disposable : disposables) {
@@ -229,5 +233,33 @@ public class JtsCommentsActivity extends AestheticActivity implements RefreshLay
             }
         }
         disposables.clear();
+    }
+
+    private void stopVideoPlayer() {
+        JtsStopVideoAction action = new JtsStopVideoAction(this);
+        action.execute();
+    }
+
+    public boolean processBackPressed() {
+        SakuraPlayerView player = (SakuraPlayerView) this.findViewById(R.id.player);
+        if (player != null) {
+            if (player.isFullScreen) {
+                player.toggleFullScreen();
+                return false;
+            }
+
+            player.stop();
+            ViewGroup root = (ViewGroup) this.findViewById(android.R.id.content);
+            root.removeView(player);
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (this.processBackPressed()) {
+            super.onBackPressed();
+        }
     }
 }

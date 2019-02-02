@@ -25,33 +25,35 @@ public class JtsTagHandler implements HtmlCompat.TagHandler {
     private static final String TAG = "html";
     private Context context;
     private TextView parent;
-
+    private String source;
     private int mark;
 
-    public JtsTagHandler(Context context, TextView parent) {
+    public JtsTagHandler(Context context, TextView parent,String source) {
         this.context = context;
         this.parent = parent;
+        this.source = source;
     }
 
-    @Override
-    public void handleTag(boolean opening, String tag, Attributes attributes, Editable output, XMLReader xmlReader) {
-
-
-        if (tag.equalsIgnoreCase("script")) {
-
+    private void handleIframe(boolean opening, String tag, Attributes attributes, Editable output, XMLReader xmlReader) {
+        if (tag.equalsIgnoreCase("iframe")) {
+            JtsViewerLog.d(TAG, "[handleTag] - " + tag + " - " + opening);
             if (opening) {
                 mark = output.length();
                 return;
             }
 
-            JtsViewerLog.d(TAG, "[handleTag] -- script");
+            JtsViewerLog.d(TAG, "[handleTag] -- iframe");
             JtsViewerLog.d(TAG, "[handleTag] content \n " + output.toString());
-
+            try {
+                JtsViewerLog.d(TAG, xmlReader.getProperty("src").toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             final String videoUrl;
-            if (output.toString().contains("YKU.Player")) {
-                videoUrl = this.parserAidForYouku(output.toString());
+            if (source.contains("biliPlayer")) {
+                videoUrl = this.parserAidForBiliBili(source);
             } else {
-                videoUrl = this.parserAidForBiliBili(output.toString());
+                videoUrl = this.parserAidForYouku(source);
             }
 
             ClickableSpan s = new ClickableSpan() {
@@ -70,6 +72,27 @@ public class JtsTagHandler implements HtmlCompat.TagHandler {
             }
             output.setSpan(s, mark, mark + ("[" + videoUrl + "]").length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
+    }
+
+    private void handleScript(boolean opening, String tag, Attributes attributes, Editable output, XMLReader xmlReader) {
+        if (tag.equalsIgnoreCase("script")) {
+            if (opening) {
+                mark = output.length();
+                return;
+            }
+
+            JtsViewerLog.d(TAG, "[handleTag] -- script");
+            JtsViewerLog.d(TAG, "[handleTag] content \n " + output.toString());
+
+            // output.clear();
+            output.replace(mark, output.length(), "");
+        }
+    }
+
+    @Override
+    public void handleTag(boolean opening, String tag, Attributes attributes, Editable output, XMLReader xmlReader) {
+        this.handleIframe(opening, tag, attributes, output, xmlReader);
+        this.handleScript(opening, tag, attributes, output, xmlReader);
     }
 
     private String parserAidForBiliBili(String content) {

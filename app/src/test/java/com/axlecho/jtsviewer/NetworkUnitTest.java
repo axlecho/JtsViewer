@@ -122,7 +122,7 @@ public class NetworkUnitTest {
 
     @Test
     public void testDetail() {
-        JtsTabDetailModule result = server.getDetail(154882).blockingFirst();
+        JtsTabDetailModule result = server.getDetail(1335262).blockingFirst();
         System.out.println(result);
         MatcherAssert.assertThat(result.threadList.size(), is(10));
     }
