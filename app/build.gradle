@@ -68,8 +68,8 @@ dependencies {
     api 'com.github.axlecho.tuxguitar:tuxguitar-gpx:0.1.2'
     api 'com.github.axlecho.tuxguitar:tuxguitar-widget:0.1.2'
     api 'com.github.axlecho.tuxguitar:tuxguitar-android-gervill:0.1.2'
-    implementation 'com.github.axlecho:Metronome-Android:10.4'
-    implementation 'com.github.axlecho:guitar-tuner:1.2'
+    implementation 'com.github.axlecho:Metronome-Android:10.5'
+    implementation 'com.github.axlecho:guitar-tuner:1.4'
 
     implementation 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.4'
     implementation 'tv.danmaku.ijk.media:ijkplayer-armv5:0.8.4'
