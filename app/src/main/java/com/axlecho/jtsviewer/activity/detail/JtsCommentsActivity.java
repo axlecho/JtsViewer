@@ -1,5 +1,6 @@
 package com.axlecho.jtsviewer.activity.detail;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -261,5 +262,10 @@ public class JtsCommentsActivity extends AestheticActivity implements RefreshLay
         if (this.processBackPressed()) {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 }

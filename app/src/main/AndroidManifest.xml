@@ -44,9 +44,9 @@
             android:label="@string/title_login" />
         <activity
             android:name=".activity.detail.JtsDetailActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_detail" />
         <activity
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:name=".activity.detail.JtsCommentsActivity"
             android:label="@string/title_activity_comment" />
         <activity
