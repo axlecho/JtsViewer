@@ -44,11 +44,7 @@ public class JtsTagHandler implements HtmlCompat.TagHandler {
 
             JtsViewerLog.d(TAG, "[handleTag] -- iframe");
             JtsViewerLog.d(TAG, "[handleTag] content \n " + output.toString());
-            try {
-                JtsViewerLog.d(TAG, xmlReader.getProperty("src").toString());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+
             final String videoUrl;
             if (source.contains("biliPlayer")) {
                 videoUrl = this.parserAidForBiliBili(source);

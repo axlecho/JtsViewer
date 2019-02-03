@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
@@ -16,6 +17,7 @@ import com.axlecho.jtsviewer.action.tab.JtsGtpTabAction;
 import com.axlecho.jtsviewer.action.tab.JtsImgTabAction;
 import com.axlecho.jtsviewer.action.ui.JtsStopVideoAction;
 import com.axlecho.jtsviewer.module.JtsCollectionInfoModel;
+import com.axlecho.jtsviewer.module.JtsRelatedTabModule;
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.JtsThreadModule;
@@ -36,6 +38,8 @@ import java.util.List;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
@@ -215,6 +219,7 @@ public class JtsDetailActivityController {
         this.detail = detail;
         this.bindInfo(detail);
         this.bindComments(detail.threadList);
+        this.bindRelated();
         activity.play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -274,6 +279,48 @@ public class JtsDetailActivityController {
             // message.setMovementMethod(LinkMovementMethod.getInstance());
             // message.setClickable(false);
         }
+    }
+
+    public void bindRelated() {
+        bindRelatedTabs(detail.relatedTabs);
+    }
+
+
+    public void bindRelatedTabs(List<JtsRelatedTabModule> tabs) {
+        if(tabs == null || tabs.size() == 0) {
+            return;
+        }
+
+        LinearLayout root = activity.findViewById(R.id.below_header);
+        View view = activity.getLayoutInflater().inflate(R.layout.tab_detail_related, root, false);
+        root.addView(view);
+
+        LinearLayout parent = view.findViewById(R.id.detail_related);
+        for(final JtsRelatedTabModule tab :tabs) {
+            View itemView = activity.getLayoutInflater().inflate(R.layout.widget_bookmark_item,parent,false);
+            TextView title = itemView.findViewById(R.id.bookmark_item_title);
+            title.setText(tab.title);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    JtsTabInfoModel model = new JtsTabInfoModel();
+                    model.title = tab.title;
+                    model.url = tab.url;
+                    model.author = activity.getResources().getString(R.string.unknown_author);
+                    model.time = activity.getResources().getString(R.string.unknown_time);
+                    model.reply = "";
+                    model.watch = "";
+                    model.type = activity.getResources().getString(R.string.unlogin_tip);
+                    model.uper = activity.getResources().getString(R.string.unknown_uper);
+                    model.avatar = "";
+                    Intent intent = new Intent();
+                    intent.putExtra("tabinfo", model);
+                    intent.setClass(activity, JtsDetailActivity.class);
+                    activity.startActivity(intent);              }
+            });
+            parent.addView(itemView);
+        }
+
     }
 
     public void bindInfo(JtsTabDetailModule detail) {

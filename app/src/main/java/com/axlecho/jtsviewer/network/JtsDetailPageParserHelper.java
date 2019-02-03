@@ -271,7 +271,10 @@ public class JtsDetailPageParserHelper {
             module.title = c.select("p.v-title").first().text();
             module.url = c.attr("href");
             module.thumbnail = c.select("img[onerror]").first().attr("src");
-            module.info = c.select("span.v_info").first().text();
+            Element vInfoObject = c.select("span.v_info").first();
+            if(vInfoObject != null) {
+                module.info = vInfoObject.text();
+            }
             relatedVideoModules.add(module);
         }
         return relatedVideoModules;
