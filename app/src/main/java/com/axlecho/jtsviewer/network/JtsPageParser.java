@@ -137,6 +137,9 @@ public class JtsPageParser {
         detail.lyric = JtsDetailPageParserHelper.parserLyric(html);
         detail.info = JtsDetailPageParserHelper.parserInfo(html);
         detail.relatedTabs = JtsDetailPageParserHelper.parserRelatedTab(html);
+        detail.relatedVideos = JtsDetailPageParserHelper.parserVideo(html);
+        detail.relatedPosts = JtsDetailPageParserHelper.parserRelatedPost(html);
+        detail.relatedCollections = JtsDetailPageParserHelper.parserRelatedCollection(html);
         return detail;
     }
 

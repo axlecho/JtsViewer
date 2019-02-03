@@ -1,6 +1,9 @@
 package com.axlecho.jtsviewer.network;
 
+import com.axlecho.jtsviewer.module.JtsRelateCollectionModule;
+import com.axlecho.jtsviewer.module.JtsRelatedPostModule;
 import com.axlecho.jtsviewer.module.JtsRelatedTabModule;
+import com.axlecho.jtsviewer.module.JtsRelatedVideoModule;
 import com.axlecho.jtsviewer.module.JtsThreadCommentModule;
 import com.axlecho.jtsviewer.module.JtsThreadModule;
 import com.axlecho.jtsviewer.untils.JtsConf;
@@ -200,43 +203,90 @@ public class JtsDetailPageParserHelper {
         return lyricObject.html();
     }
 
-    public static List<JtsRelatedTabModule> parserRelatedTab(String html) {
+    public static Document parserDocument(String html)  {
         if (html == null) {
             JtsViewerLog.w(JtsViewerLog.NETWORK_MODULE, TAG, "html is null");
             return null;
         }
 
-        Document doc = Jsoup.parse(html);
-        Element locationObject = doc.select("label.flex-fill:contains(曲谱)").first();
+        return Jsoup.parse(html);
+    }
+
+    public static Element parserRelatedObject(Document doc, String type){
+        int index = -1;
+        Element locationObject = doc.select("label.flex-fill:contains(" + type+ ")").first();
         if (locationObject == null) {
-            JtsViewerLog.w(JtsViewerLog.NETWORK_MODULE, TAG, "info model not found");
+            JtsViewerLog.w(JtsViewerLog.NETWORK_MODULE, TAG, type +"model not found");
             return null;
         }
 
         String forAttr = locationObject.attr("for");
         if (forAttr == null) {
-            JtsViewerLog.w(JtsViewerLog.NETWORK_MODULE, TAG, "attr for not found");
+            JtsViewerLog.w(JtsViewerLog.NETWORK_MODULE, TAG, type +"attr for not found");
             return null;
         }
 
-        int index = -1;
         try {
             index = Integer.parseInt(forAttr.substring(forAttr.length() - 1));
         } catch (NumberFormatException e) {
-            JtsViewerLog.w(JtsViewerLog.NETWORK_MODULE, TAG, "index not found - " + forAttr);
+            JtsViewerLog.w(JtsViewerLog.NETWORK_MODULE, TAG, type + "index not found - " + forAttr);
             return null;
         }
 
         Element content = doc.select("div.tabpanel-c").first();
         if (content == null) {
-            JtsViewerLog.w(JtsViewerLog.NETWORK_MODULE, TAG, "content panel not found - " + forAttr);
+            JtsViewerLog.w(JtsViewerLog.NETWORK_MODULE, TAG, "content panel not found - ");
             return null;
         }
 
-        Element relatedTabObject = content.child(index - 1);
+        Element relatedObject = content.child(index - 1);
 
-        if (relatedTabObject == null) {
-            JtsViewerLog.w(JtsViewerLog.NETWORK_MODULE, TAG, "related tab not found - " + forAttr);
+        if (relatedObject == null) {
+            JtsViewerLog.w(JtsViewerLog.NETWORK_MODULE, TAG, "related tab not found");
+            return null;
+        }
+
+        return relatedObject;
+    }
+
+    public static List<JtsRelatedVideoModule> parserVideo(String html) {
+        Document doc = parserDocument(html);
+        if(doc == null) {
+            JtsViewerLog.w(JtsViewerLog.NETWORK_MODULE,TAG,"parser document failed");
+            return null;
+        }
+
+        Element relatedTabObject = parserRelatedObject(doc,"视频");
+        if(relatedTabObject == null) {
+            JtsViewerLog.w(JtsViewerLog.NETWORK_MODULE,TAG,"get related Object failed for video");
+            return null;
+        }
+        Elements relatedVideosObject = relatedTabObject.select("a[vid]");
+        List<JtsRelatedVideoModule> relatedVideoModules = new ArrayList<>();
+        Iterator it = relatedVideosObject.iterator();
+        while (it.hasNext()) {
+            Element c = (Element) it.next();
+            JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE,TAG,c.toString());
+            JtsRelatedVideoModule module = new JtsRelatedVideoModule();
+            module.title = c.select("p.v-title").first().text();
+            module.url = c.attr("href");
+            module.thumbnail = c.select("img[onerror]").first().attr("src");
+            module.info = c.select("span.v_info").first().text();
+            relatedVideoModules.add(module);
+        }
+        return relatedVideoModules;
+    }
+
+    public static List<JtsRelatedTabModule> parserRelatedTab(String html) {
+        Document doc = parserDocument(html);
+        if(doc == null) {
+            JtsViewerLog.w(JtsViewerLog.NETWORK_MODULE,TAG,"parser document failed");
+            return null;
+        }
+
+        Element relatedTabObject = parserRelatedObject(doc,"曲谱");
+        if(relatedTabObject == null) {
+            JtsViewerLog.w(JtsViewerLog.NETWORK_MODULE,TAG,"get related Object failed for tab");
             return null;
         }
 
@@ -253,4 +303,59 @@ public class JtsDetailPageParserHelper {
         }
         return relatedTabs;
     }
+
+    public static List<JtsRelatedPostModule> parserRelatedPost(String html) {
+        Document doc = parserDocument(html);
+        if(doc == null) {
+            JtsViewerLog.w(JtsViewerLog.NETWORK_MODULE,TAG,"parser document failed");
+            return null;
+        }
+
+        Element relatedTabObject = parserRelatedObject(doc,"帖子");
+        if(relatedTabObject == null) {
+            JtsViewerLog.w(JtsViewerLog.NETWORK_MODULE,TAG,"get related Object failed for posts");
+            return null;
+        }
+
+        Elements relatedTabsObject = relatedTabObject.select("a[href]");
+        List<JtsRelatedPostModule> relatedTabs = new ArrayList<>();
+        Iterator it = relatedTabsObject.iterator();
+        while (it.hasNext()) {
+            Element c = (Element) it.next();
+            JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE,TAG,c.toString());
+            JtsRelatedPostModule module = new JtsRelatedPostModule();
+            module.title = c.attr("title");
+            module.url = c.attr("href");
+            relatedTabs.add(module);
+        }
+        return relatedTabs;
+    }
+
+    public static List<JtsRelateCollectionModule> parserRelatedCollection(String html) {
+        Document doc = parserDocument(html);
+        if(doc == null) {
+            JtsViewerLog.w(JtsViewerLog.NETWORK_MODULE,TAG,"parser document failed");
+            return null;
+        }
+
+        Element relatedTabObject = parserRelatedObject(doc,"琴包");
+        if(relatedTabObject == null) {
+            JtsViewerLog.w(JtsViewerLog.NETWORK_MODULE,TAG,"get related Object failed for collections");
+            return null;
+        }
+
+        Elements relatedTabsObject = relatedTabObject.select("a[href]");
+        List<JtsRelateCollectionModule> relatedTabs = new ArrayList<>();
+        Iterator it = relatedTabsObject.iterator();
+        while (it.hasNext()) {
+            Element c = (Element) it.next();
+            JtsViewerLog.i(JtsViewerLog.NETWORK_MODULE,TAG,c.toString());
+            JtsRelateCollectionModule module = new JtsRelateCollectionModule();
+            module.title = c.attr("title");
+            module.url = c.attr("href");
+            relatedTabs.add(module);
+        }
+        return relatedTabs;
+    }
+
 }
