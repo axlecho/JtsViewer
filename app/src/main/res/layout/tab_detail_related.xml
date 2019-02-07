@@ -3,10 +3,17 @@
     android:id="@+id/detail_related"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:descendantFocusability="blocksDescendants"
     android:background="?android:attr/selectableItemBackground"
+    android:descendantFocusability="blocksDescendants"
     android:orientation="vertical"
-    android:paddingTop="@dimen/activity_margin"
-    android:paddingBottom="@dimen/activity_margin">
+    android:padding="@dimen/activity_margin">
 
+    <TextView
+        android:id="@+id/tab_related_tip"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="@dimen/activity_margin"
+        android:paddingEnd="@dimen/activity_margin"
+        android:textColor="@color/colorAccent"
+        android:textSize="22sp" />
 </LinearLayout>

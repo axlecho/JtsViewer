@@ -1,5 +1,6 @@
 package com.axlecho.jtsviewer.activity.detail;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -25,19 +26,28 @@ public class JtsDetailActivity extends AestheticActivity {
     public TextView title;
     public TextView author;
     public TextView type;
-    public TextView info;
-    public TextView lyric;
+
+
     public TextView play;
     public TextView favorite;
 
     public TextView comment;
     public LinearLayout commentLayout;
 
+    public TextView gtpInfoTip;
+    public LinearLayout gtpInfoLayout;
+
+    public TextView lyricTip;
+    public LinearLayout lyricLayout;
+
+
     public PopupMenu popupMenu;
     public View otherActions;
 
 
     private JtsDetailActivityController controller;
+
+    private ProgressDialog loadingProgressDialog;
 
     private Tracker mTracker;
 
@@ -51,13 +61,18 @@ public class JtsDetailActivity extends AestheticActivity {
         title = (TextView) findViewById(R.id.tab_detail_title);
         author = (TextView) findViewById(R.id.tab_detail_author);
         type = (TextView) findViewById(R.id.tab_detail_type);
-        info = findViewById(R.id.tab_detail_info_tip);
-        lyric = findViewById(R.id.tab_lyric_tip);
+
         favorite = findViewById(R.id.favorite);
         play = findViewById(R.id.tab_detail_play);
 
         comment = findViewById(R.id.comments_tip);
         commentLayout = findViewById(R.id.comments);
+
+        gtpInfoTip = findViewById(R.id.tab_detail_gtp_info_tip);
+        gtpInfoLayout = findViewById(R.id.tab_detail_gtp_info_layout);
+
+        lyricTip = findViewById(R.id.tab_lyric_tip);
+        lyricLayout = findViewById(R.id.tab_detail_lyric_layout);
 
         otherActions = findViewById(R.id.tab_detail_other_actions);
 
@@ -142,5 +157,16 @@ public class JtsDetailActivity extends AestheticActivity {
 
     public void popMenu() {
         popupMenu.show();
+    }
+
+    public void showLoadingCollectionDialog() {
+        loadingProgressDialog = new ProgressDialog(this);
+        loadingProgressDialog.setTitle(null);
+        loadingProgressDialog.setMessage(getResources().getString(R.string.login_tip));
+        loadingProgressDialog.show();
+    }
+
+    public void dismissLoadingCollectionDialog() {
+        loadingProgressDialog.dismiss();
     }
 }

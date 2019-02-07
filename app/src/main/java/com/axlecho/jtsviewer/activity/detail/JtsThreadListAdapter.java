@@ -97,7 +97,7 @@ public class JtsThreadListAdapter extends RecyclerView.Adapter<JtsThreadListAdap
             message.setText(HtmlCompat.fromHtml(context, model.message,
                     FROM_HTML_MODE_LEGACY,
                     new JtsImageGetter(message),
-                    new JtsTagHandler(context, message,model.message)));
+                    new JtsTagHandler(context, message, model.message)));
             message.setMovementMethod(LinkMovementMethod.getInstance());
 
             floor.setText(model.floor);
@@ -106,8 +106,7 @@ public class JtsThreadListAdapter extends RecyclerView.Adapter<JtsThreadListAdap
                 for (JtsThreadCommentModule commentModel : model.comments) {
                     bindComment(comments, commentModel);
                 }
-            } else {
-                comments.setVisibility(View.GONE);
+                comments.setVisibility(View.VISIBLE);
             }
         }
 

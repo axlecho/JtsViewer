@@ -26,9 +26,9 @@
 
             <include layout="@layout/tab_detail_comments" />
 
-            <include layout="@layout/tab_detail_info" />
+            <include layout="@layout/tab_detail_gtp_info" />
 
-            <include layout="@layout/tab_lyric_info" />
+            <include layout="@layout/tab_detail_lyric" />
         </LinearLayout>
     </FrameLayout>
 

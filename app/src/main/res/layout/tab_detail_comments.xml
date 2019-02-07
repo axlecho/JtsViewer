@@ -6,13 +6,13 @@
     android:descendantFocusability="blocksDescendants"
     android:background="?android:attr/selectableItemBackground"
     android:orientation="vertical"
-    android:paddingTop="@dimen/activity_margin"
-    android:paddingBottom="@dimen/activity_margin">
+    android:padding="@dimen/activity_margin">
 
     <TextView
         android:id="@+id/comments_tip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:textColor="@color/colorAccent" />
+        android:textColor="@color/colorAccent"
+        android:textSize="15sp"/>
 </LinearLayout>

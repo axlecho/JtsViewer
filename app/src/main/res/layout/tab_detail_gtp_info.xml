@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tab_detail_gtp_info_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:divider="@drawable/divider_tab_detail"
+    android:orientation="vertical"
+    android:padding="@dimen/activity_margin"
+    android:showDividers="middle">
+
+    <TextView
+        android:id="@+id/tab_detail_gtp_info_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@color/colorAccent"
+        android:textSize="15sp" />
+</LinearLayout>
