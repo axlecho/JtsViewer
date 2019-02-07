@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,9 +14,9 @@ import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.action.tab.JtsGtpTabAction;
 import com.axlecho.jtsviewer.action.tab.JtsImgTabAction;
-import com.axlecho.jtsviewer.action.ui.JtsStopVideoAction;
 import com.axlecho.jtsviewer.module.JtsCollectionInfoModel;
 import com.axlecho.jtsviewer.module.JtsRelatedTabModule;
+import com.axlecho.jtsviewer.module.JtsRelatedVideoModule;
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.JtsThreadModule;
@@ -29,7 +28,6 @@ import com.axlecho.jtsviewer.untils.JtsTagHandler;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsToolUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
-import com.axlecho.sakura.SakuraPlayerView;
 import com.bumptech.glide.Glide;
 import com.pixplicity.htmlcompat.HtmlCompat;
 
@@ -38,8 +36,6 @@ import java.util.List;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.PopupMenu;
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.ActivityOptionsCompat;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
@@ -241,6 +237,12 @@ public class JtsDetailActivityController {
             return;
         } else if (threads.size() <= maxShowCount) {
             activity.comment.setText(R.string.no_more_comments);
+            activity.commentLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toCommentsActivity();
+                }
+            });
         } else {
             activity.comment.setText(R.string.more_comment);
             activity.commentLayout.setOnClickListener(new View.OnClickListener() {
@@ -272,22 +274,37 @@ public class JtsDetailActivityController {
             auth.setText(comment.authi);
             time.setText(comment.time);
             floor.setText(comment.floor);
-            JtsViewerLog.d("html",comment.message);
+            JtsViewerLog.d("html", comment.message);
             message.setText(HtmlCompat.fromHtml(activity, comment.message, FROM_HTML_MODE_LEGACY,
                     new JtsImageGetter(message),
-                    new JtsTagHandler(activity, message,comment.message)));
+                    new JtsTagHandler(activity, message, comment.message)));
             // message.setMovementMethod(LinkMovementMethod.getInstance());
             // message.setClickable(false);
         }
     }
 
+
+    public void bindInfo(JtsTabDetailModule detail) {
+        if (detail.info != null) {
+            activity.info.setText(HtmlCompat.fromHtml(activity, detail.info, FROM_HTML_MODE_LEGACY));
+        } else {
+            activity.info.setText(activity.getResources().getText(R.string.no_info));
+        }
+        if (detail.lyric != null) {
+            activity.lyric.setText(HtmlCompat.fromHtml(activity, detail.lyric, FROM_HTML_MODE_LEGACY));
+        } else {
+            activity.lyric.setText(activity.getResources().getText(R.string.no_lyric));
+        }
+    }
+
     public void bindRelated() {
         bindRelatedTabs(detail.relatedTabs);
+        bindRelatedVideos(detail.relatedVideos);
     }
 
 
     public void bindRelatedTabs(List<JtsRelatedTabModule> tabs) {
-        if(tabs == null || tabs.size() == 0) {
+        if (tabs == null || tabs.size() == 0) {
             return;
         }
 
@@ -296,8 +313,8 @@ public class JtsDetailActivityController {
         root.addView(view);
 
         LinearLayout parent = view.findViewById(R.id.detail_related);
-        for(final JtsRelatedTabModule tab :tabs) {
-            View itemView = activity.getLayoutInflater().inflate(R.layout.widget_bookmark_item,parent,false);
+        for (final JtsRelatedTabModule tab : tabs) {
+            View itemView = activity.getLayoutInflater().inflate(R.layout.widget_bookmark_item, parent, false);
             TextView title = itemView.findViewById(R.id.bookmark_item_title);
             title.setText(tab.title);
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -316,24 +333,39 @@ public class JtsDetailActivityController {
                     Intent intent = new Intent();
                     intent.putExtra("tabinfo", model);
                     intent.setClass(activity, JtsDetailActivity.class);
-                    activity.startActivity(intent);              }
+                    activity.startActivity(intent);
+                }
             });
             parent.addView(itemView);
         }
 
     }
 
-    public void bindInfo(JtsTabDetailModule detail) {
-        if (activity.info != null) {
-            activity.info.setText(HtmlCompat.fromHtml(activity, detail.info, FROM_HTML_MODE_LEGACY));
-        } else {
-            activity.info.setText(activity.getResources().getText(R.string.no_info));
+    public void bindRelatedVideos(List<JtsRelatedVideoModule> videos) {
+        if(videos == null || videos.size() == 0) {
+            return;
         }
-        if (activity.lyric != null) {
-            activity.lyric.setText(HtmlCompat.fromHtml(activity, detail.lyric, FROM_HTML_MODE_LEGACY));
-        } else {
-            activity.lyric.setText(activity.getResources().getText(R.string.no_lyric));
+
+        LinearLayout root = activity.findViewById(R.id.below_header);
+        View view = activity.getLayoutInflater().inflate(R.layout.tab_detail_related, root, false);
+        root.addView(view);
+
+        LinearLayout parent = view.findViewById(R.id.detail_related);
+        for (final JtsRelatedVideoModule video : videos) {
+            View itemView = activity.getLayoutInflater().inflate(R.layout.widget_bookmark_item, parent, false);
+            TextView title = itemView.findViewById(R.id.bookmark_item_title);
+            title.setText(video.title);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    JtsToolUnitls.openUrl(activity,JtsConf.HOST_URL + video.url);
+                }
+            });
+
+            parent.addView(itemView);
         }
+
     }
 
     public void toCommentsActivity() {
@@ -341,8 +373,9 @@ public class JtsDetailActivityController {
         intent.putExtra("info", info);
         intent.putExtra("detail", detail);
         activity.startActivity(intent);
-    }
 
+
+    }
 
 
     public void processTabPlay() {
@@ -363,7 +396,6 @@ public class JtsDetailActivityController {
         }
         action.execute();
     }
-
 
 
     private void openInOtherApp() {
