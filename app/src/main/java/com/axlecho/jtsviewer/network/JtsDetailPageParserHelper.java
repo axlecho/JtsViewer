@@ -220,18 +220,7 @@ public class JtsDetailPageParserHelper {
             return null;
         }
 
-        String forAttr = locationObject.attr("for");
-        if (forAttr == null) {
-            JtsViewerLog.w(JtsViewerLog.NETWORK_MODULE, TAG, type +"attr for not found");
-            return null;
-        }
-
-        try {
-            index = Integer.parseInt(forAttr.substring(forAttr.length() - 1));
-        } catch (NumberFormatException e) {
-            JtsViewerLog.w(JtsViewerLog.NETWORK_MODULE, TAG, type + "index not found - " + forAttr);
-            return null;
-        }
+        index = locationObject.elementSiblingIndex();
 
         Element content = doc.select("div.tabpanel-c").first();
         if (content == null) {
@@ -239,7 +228,7 @@ public class JtsDetailPageParserHelper {
             return null;
         }
 
-        Element relatedObject = content.child(index - 1);
+        Element relatedObject = content.child(index);
 
         if (relatedObject == null) {
             JtsViewerLog.w(JtsViewerLog.NETWORK_MODULE, TAG, "related tab not found");
