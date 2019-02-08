@@ -13,8 +13,11 @@ import android.widget.RemoteViews;
 import com.andryr.guitartuner.TunerActivity;
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.activity.detail.JtsDetailDialogActivity;
+import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 
- import james.metronome.activities.MetronomeActivity;
+import java.util.List;
+
+import james.metronome.activities.MetronomeActivity;
 
 
 public class JtsBookMarkWidget extends AppWidgetProvider {
@@ -26,6 +29,19 @@ public class JtsBookMarkWidget extends AppWidgetProvider {
         ComponentName thisWidget = new ComponentName(context, JtsBookMarkWidget.class);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
         appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.bookmark_listview);
+    }
+
+    public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, List<JtsTabInfoModel> data) {
+        RemoteViews bookmark = new RemoteViews(context.getPackageName(), R.layout.widget_bookmark);
+
+        // set list view template action
+        Intent listDataSrc = new Intent(context, JtsBookMarkWidgetService.class);
+        listDataSrc.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        listDataSrc.setData(Uri.parse(listDataSrc.toUri(Intent.URI_INTENT_SCHEME)));
+        bookmark.setRemoteAdapter(R.id.bookmark_listview, listDataSrc);
+        bookmark.setEmptyView(R.id.bookmark_listview, R.id.empty_view);
+
+        appWidgetManager.updateAppWidget(appWidgetId, bookmark);
     }
 
     @Override
@@ -51,11 +67,11 @@ public class JtsBookMarkWidget extends AppWidgetProvider {
             bookmark.setOnClickPendingIntent(R.id.btn_setting, pendingIntent);
 
             Intent metronomeIntent = new Intent(context, MetronomeActivity.class);
-            PendingIntent metronomePendingIntent = PendingIntent.getActivity(context,0,metronomeIntent,0);
+            PendingIntent metronomePendingIntent = PendingIntent.getActivity(context, 0, metronomeIntent, 0);
             bookmark.setOnClickPendingIntent(R.id.btn_metronome, metronomePendingIntent);
 
-            Intent tunnerIntent = new Intent(context,TunerActivity.class);
-            PendingIntent tunnerPendingIntent = PendingIntent.getActivity(context,0,tunnerIntent,0);
+            Intent tunnerIntent = new Intent(context, TunerActivity.class);
+            PendingIntent tunnerPendingIntent = PendingIntent.getActivity(context, 0, tunnerIntent, 0);
             bookmark.setOnClickPendingIntent(R.id.btn_tuner, tunnerPendingIntent);
 
 
@@ -63,11 +79,11 @@ public class JtsBookMarkWidget extends AppWidgetProvider {
             Intent listDataSrc = new Intent(context, JtsBookMarkWidgetService.class);
             listDataSrc.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             listDataSrc.setData(Uri.parse(listDataSrc.toUri(Intent.URI_INTENT_SCHEME)));
-            bookmark.setRemoteAdapter(appWidgetId, R.id.bookmark_listview, listDataSrc);
+            bookmark.setRemoteAdapter(R.id.bookmark_listview, listDataSrc);
             bookmark.setEmptyView(R.id.bookmark_listview, R.id.empty_view);
 
             Intent toastIntent = new Intent(context, JtsDetailDialogActivity.class);
-            toastIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+            toastIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             PendingIntent toastPendingIntent = PendingIntent.getActivity(context, 0, toastIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             bookmark.setPendingIntentTemplate(R.id.bookmark_listview, toastPendingIntent);
 

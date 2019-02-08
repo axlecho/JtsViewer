@@ -15,7 +15,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/JtsAppTheme.NoActionBar">
-
         <activity
             android:name=".activity.main.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -31,7 +30,6 @@
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activity.base.JtsCommonSingleTabInfoListActivity"
             android:label="@string/title_common" />
@@ -46,8 +44,8 @@
             android:name=".activity.detail.JtsDetailActivity"
             android:label="@string/title_activity_detail" />
         <activity
-            android:configChanges="orientation|keyboardHidden|screenSize"
             android:name=".activity.detail.JtsCommentsActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_comment" />
         <activity
             android:name=".activity.my.JtsSettingsActivity"
@@ -59,6 +57,13 @@
         <activity
             android:name=".activity.detail.JtsDetailDialogActivity"
             android:theme="@style/DetailDialogStyle" />
+
+
+        <activity android:name=".bookmark.JtsBookMarkConfigureActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
 
         <receiver android:name=".bookmark.JtsBookMarkWidget">
             <intent-filter>
