@@ -58,8 +58,8 @@ public class JtsServer {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-        builder.addNetworkInterceptor(logging);
-        // builder.addInterceptor(logging);
+        // builder.addNetworkInterceptor(logging);
+        builder.addInterceptor(logging);
         builder.cookieJar(new JtsCookieJar(context));
         builder.readTimeout(TIME_OUT, TimeUnit.SECONDS);
         builder.writeTimeout(TIME_OUT, TimeUnit.SECONDS);

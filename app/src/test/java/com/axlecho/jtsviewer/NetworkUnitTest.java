@@ -1,7 +1,6 @@
 package com.axlecho.jtsviewer;
 
 import android.content.Context;
-import android.os.Build;
 import android.text.TextUtils;
 
 import com.axlecho.jtsviewer.cache.CacheManager;
@@ -22,7 +21,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowLog;
 
 import java.io.File;
@@ -86,7 +84,7 @@ public class NetworkUnitTest {
     public void testThread() {
         List<JtsThreadModule> result = server.getThread(154882, 1).blockingFirst();
         MatcherAssert.assertThat(result.size(), is(10));
-         result = server.getThread(154882, 2).blockingFirst();
+        result = server.getThread(154882, 2).blockingFirst();
         MatcherAssert.assertThat(result.size(), is(10));
         System.out.println(result);
     }
@@ -127,19 +125,19 @@ public class NetworkUnitTest {
         MatcherAssert.assertThat(result.threadList.size(), is(10));
     }
 
-    // @Test
+    @Test
     public void testPostComment() {
-        JtsTabDetailModule detail = server.getDetail(24285L).blockingFirst();
-        String result = server.postComment(detail.fid, 24285, "谢谢楼主分享", detail.formhash).blockingFirst();
+        JtsTabDetailModule detail = server.getDetail(1334041L).blockingFirst();
+        String result = server.postComment(detail.fid, 1334041, "谢谢楼主分享", detail.formhash).blockingFirst();
         MatcherAssert.assertThat("comment without login", result.equals(JtsConf.STATUS_FAILED));
 
         server.login("d39", "123456789").blockingSubscribe();
-        detail = server.getDetail(24285L).blockingFirst();
-        result = server.postComment(detail.fid, 24285, "谢谢楼主分享", detail.formhash).blockingFirst();
+        detail = server.getDetail(1334041L).blockingFirst();
+        result = server.postComment(detail.fid, 1334041, "谢谢楼主分享", detail.formhash).blockingFirst();
         MatcherAssert.assertThat("comment with login", result.equals(JtsConf.STATUS_SUCCESSED));
     }
 
-     @Test
+    @Test
     public void testGetNewVersionInfo() {
         JtsVersionInfoModule versionInfo = server.getLastVersionInfo().blockingFirst();
         System.out.println(versionInfo);
@@ -160,21 +158,21 @@ public class NetworkUnitTest {
     public void testCollection() {
         server.login("d39", "123456789").blockingSubscribe();
         List<JtsCollectionInfoModel> infos = server.getCollection().blockingFirst();
-        MatcherAssert.assertThat(infos.size(),is(2));
+        MatcherAssert.assertThat(infos.size(), is(2));
     }
 
     @Test
     public void testCollectionDetail() {
-        List<JtsTabInfoModel> collection = server.getCollectionDetail(244939,1).blockingFirst();
-        MatcherAssert.assertThat(collection.size(),is(3));
+        List<JtsTabInfoModel> collection = server.getCollectionDetail(244939, 1).blockingFirst();
+        MatcherAssert.assertThat(collection.size(), is(3));
     }
 
     @Test
     public void testFavorites() {
         server.login("d39", "123456789").blockingSubscribe();
         JtsTabDetailModule detail = server.getDetail(1332451).blockingFirst();
-        String result = server.favorite(244939,1332451,detail.formhash).blockingFirst();
-        MatcherAssert.assertThat(result,is(JtsConf.STATUS_SUCCESSED));
+        String result = server.favorite(244939, 1332451, detail.formhash).blockingFirst();
+        MatcherAssert.assertThat(result, is(JtsConf.STATUS_SUCCESSED));
     }
 
     private class MockSchedulers extends JtsSchedulers {
