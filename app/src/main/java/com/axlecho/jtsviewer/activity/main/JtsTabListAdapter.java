@@ -1,8 +1,9 @@
 package com.axlecho.jtsviewer.activity.main;
 
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +13,16 @@ import android.widget.TextView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.activity.base.JtsBaseController;
+import com.axlecho.jtsviewer.bookmark.JtsBookMarkWidget;
+import com.axlecho.jtsviewer.bookmark.JtsBookMarkWidgetService;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 public class JtsTabListAdapter extends RecyclerView.Adapter<JtsTabListAdapter.TabViewHolder> {
 
@@ -137,8 +142,18 @@ public class JtsTabListAdapter extends RecyclerView.Adapter<JtsTabListAdapter.Ta
         @Override
         public boolean onLongClick(View view) {
             JtsTabInfoModel model = content.get(getAdapterPosition());
-            JtsViewerLog.d(TAG, model.url);
-            controller.generateShortcut(model);
+            // JtsViewerLog.d(TAG, model.url);
+            // controller.generateShortcut(model);
+
+
+            AppWidgetManager mgr = AppWidgetManager.getInstance(context);
+            ComponentName cn = new ComponentName(context, JtsBookMarkWidget.class);
+
+            JtsBookMarkWidgetService.addItem(model );
+            mgr.notifyAppWidgetViewDataChanged(mgr.getAppWidgetIds(cn), R.id.bookmark_listview);
+
+
+
             return true;
         }
     }

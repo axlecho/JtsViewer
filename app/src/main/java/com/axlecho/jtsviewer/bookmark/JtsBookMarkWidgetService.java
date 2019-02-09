@@ -16,9 +16,18 @@ import java.util.List;
 
 public class JtsBookMarkWidgetService extends RemoteViewsService {
 
+    private static WidgetFactory factory;
+
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        return new WidgetFactory(this.getApplicationContext(), intent);
+        factory = new WidgetFactory(this.getApplicationContext(), intent);
+        return factory;
+    }
+
+    public static void addItem(JtsTabInfoModel item) {
+        if (factory != null) {
+            factory.mWidgetItems.add(item);
+        }
     }
 
     public class WidgetFactory implements RemoteViewsService.RemoteViewsFactory {
@@ -35,17 +44,17 @@ public class JtsBookMarkWidgetService extends RemoteViewsService {
 
         @Override
         public void onDataSetChanged() {
-            try {
-                List<JtsCollectionInfoModel> collectionInfoModelList = JtsServer.getSingleton(mContext).getCollection().blockingFirst();
-                if (collectionInfoModelList != null && collectionInfoModelList.size() != 0) {
-                    for (JtsCollectionInfoModel collection : collectionInfoModelList) {
-                        long id = JtsTextUnitls.getCollectionIdFromUrl(collection.url);
-                        mWidgetItems.addAll(JtsServer.getSingleton(mContext).getCollectionDetail(id, 1).blockingFirst());
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+//            try {
+//                List<JtsCollectionInfoModel> collectionInfoModelList = JtsServer.getSingleton(mContext).getCollection().blockingFirst();
+//                if (collectionInfoModelList != null && collectionInfoModelList.size() != 0) {
+//                    for (JtsCollectionInfoModel collection : collectionInfoModelList) {
+//                        long id = JtsTextUnitls.getCollectionIdFromUrl(collection.url);
+//                        mWidgetItems.addAll(JtsServer.getSingleton(mContext).getCollectionDetail(id, 1).blockingFirst());
+//                    }
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
         }
 
         @Override
