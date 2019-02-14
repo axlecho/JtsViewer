@@ -20,6 +20,7 @@ import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,10 +32,10 @@ public class JtsTabListAdapter extends RecyclerView.Adapter<JtsTabListAdapter.Ta
     private Context context;
     private JtsBaseController controller;
 
-    public JtsTabListAdapter(Context context, List<JtsTabInfoModel> content,JtsBaseController controller) {
+    public JtsTabListAdapter(Context context,JtsBaseController controller) {
         this.context = context;
-        this.content = content;
         this.controller = controller;
+        this.content = new ArrayList<>();
     }
 
     public void addData(List<JtsTabInfoModel> content) {

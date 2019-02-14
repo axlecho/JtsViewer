@@ -1,4 +1,4 @@
-package com.axlecho.jtsviewer.action.parser;
+package com.axlecho.jtsviewer.network.parser;
 
 import com.axlecho.jtsviewer.untils.JtsConf;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;

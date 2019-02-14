@@ -31,9 +31,6 @@ public class JtsCommonSingleTabInfoListActivity extends AestheticActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_common);
 
-        this.controller = new JtsCommonSingleTableInfoListActivityController();
-        this.controller.setActivity(this);
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -55,6 +52,9 @@ public class JtsCommonSingleTabInfoListActivity extends AestheticActivity
         refreshLayout.setHeaderColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
                 android.R.color.holo_orange_light, android.R.color.holo_red_light);
         refreshLayout.setOnRefreshListener(this);
+
+        this.controller = new JtsCommonSingleTableInfoListActivityController();
+        this.controller.setActivity(this);
         this.controller.loadScene();
     }
 

@@ -3,16 +3,15 @@ package com.axlecho.jtsviewer.network;
 import android.content.Context;
 
 import com.axlecho.jtsviewer.action.download.JtsDownloadFunction;
-import com.axlecho.jtsviewer.action.parser.JtsParseCollectionFunction;
-import com.axlecho.jtsviewer.action.parser.JtsParseCommentFunction;
-import com.axlecho.jtsviewer.action.parser.JtsParseFavoriteFunction;
-import com.axlecho.jtsviewer.action.parser.JtsParseLoginFunction;
-import com.axlecho.jtsviewer.action.parser.JtsParseSearchKeyConsumer;
-import com.axlecho.jtsviewer.action.parser.JtsParseTabDetailFunction;
-import com.axlecho.jtsviewer.action.parser.JtsParseTabListFunction;
-import com.axlecho.jtsviewer.action.parser.JtsParseThreadFunction;
-import com.axlecho.jtsviewer.action.parser.JtsParseUserInfoFunction;
-import com.axlecho.jtsviewer.activity.main.MainActivityController;
+import com.axlecho.jtsviewer.network.parser.JtsParseCollectionFunction;
+import com.axlecho.jtsviewer.network.parser.JtsParseCommentFunction;
+import com.axlecho.jtsviewer.network.parser.JtsParseFavoriteFunction;
+import com.axlecho.jtsviewer.network.parser.JtsParseLoginFunction;
+import com.axlecho.jtsviewer.network.parser.JtsParseSearchKeyConsumer;
+import com.axlecho.jtsviewer.network.parser.JtsParseTabDetailFunction;
+import com.axlecho.jtsviewer.network.parser.JtsParseTabListFunction;
+import com.axlecho.jtsviewer.network.parser.JtsParseThreadFunction;
+import com.axlecho.jtsviewer.network.parser.JtsParseUserInfoFunction;
 import com.axlecho.jtsviewer.cache.CacheManager;
 import com.axlecho.jtsviewer.module.CacheModule;
 import com.axlecho.jtsviewer.module.JtsCollectionInfoModel;
@@ -154,12 +153,12 @@ public class JtsServer {
         return schedulers.switchSchedulers(o);
     }
 
-    public Observable<String> favorite(long ctid,long tid,String formhash) {
+    public Observable<String> favorite(long ctid, long tid, String formhash) {
         String reason = "";
         int inajax = 1;
         String handlekey = "k_collect";
         int addthread = 1;
-        Observable<String> o = service.favorite(ctid,reason,tid,inajax,handlekey,formhash,addthread).map(new JtsParseFavoriteFunction());
+        Observable<String> o = service.favorite(ctid, reason, tid, inajax, handlekey, formhash, addthread).map(new JtsParseFavoriteFunction());
         return schedulers.switchSchedulers(o);
     }
 
@@ -181,7 +180,7 @@ public class JtsServer {
     }
 
     public Observable<List<JtsTabInfoModel>> getCollectionDetail(long id, int page) {
-        Observable<List<JtsTabInfoModel>> o = service.getCollectionDetail(id,page).map(new JtsParseTabListFunction(context));
+        Observable<List<JtsTabInfoModel>> o = service.getCollectionDetail(id, page).map(new JtsParseTabListFunction(context));
         return schedulers.switchSchedulers(o);
     }
 
@@ -196,7 +195,7 @@ public class JtsServer {
         return schedulers.switchSchedulers(o);
     }
 
-    public Single<String> downloadWithCache(final long gid, String gtpUrl,final JtsTabInfoModel tabInfo) {
+    public Single<String> downloadWithCache(final long gid, String gtpUrl, final JtsTabInfoModel tabInfo) {
 
         Observable<String> cache = Observable.create(new ObservableOnSubscribe<String>() {
             @Override

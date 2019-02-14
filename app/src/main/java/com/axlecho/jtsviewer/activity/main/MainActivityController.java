@@ -5,8 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.ActivityOptionsCompat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -39,6 +37,8 @@ import com.wyt.searchbox.custom.IOnSearchClickListener;
 
 import java.util.List;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
 import io.reactivex.functions.Consumer;
 
 public class MainActivityController implements JtsBaseController {
@@ -62,6 +62,8 @@ public class MainActivityController implements JtsBaseController {
 
     public void setActivity(MainActivity activity) {
         this.activity = activity;
+        adapter = new JtsTabListAdapter(activity, this);
+        activity.recyclerView.setAdapter(adapter);
     }
 
     public MainActivity getActivity() {
@@ -147,7 +149,7 @@ public class MainActivityController implements JtsBaseController {
                 toSearch(keyword);
             }
         });
-        searchFragment.showFragment(activity.getSupportFragmentManager(),SearchFragment.TAG);
+        searchFragment.showFragment(activity.getSupportFragmentManager(), SearchFragment.TAG);
     }
 
     public void loadDefaultScene() {
@@ -208,7 +210,6 @@ public class MainActivityController implements JtsBaseController {
     public JtsTabInfoModel findTabInfoByGid(long gid) {
         return adapter.findTabInfoByGid(gid);
     }
-
 
 
     public void detachFromActivity() {
@@ -276,7 +277,7 @@ public class MainActivityController implements JtsBaseController {
             @Override
             public void accept(JtsTabDetailModule detail) throws Exception {
                 if (detail.gtpUrl != null) {
-                    JtsServer.getSingleton(activity).downloadWithCache(tabKey, detail.gtpUrl,model)
+                    JtsServer.getSingleton(activity).downloadWithCache(tabKey, detail.gtpUrl, model)
                             .subscribe(new Consumer<String>() {
                                 @Override
                                 public void accept(String s) throws Exception {
@@ -350,13 +351,7 @@ public class MainActivityController implements JtsBaseController {
     }
 
     public void processDataNotify(final List<JtsTabInfoModel> content) {
-        if (adapter == null) {
-            adapter = new JtsTabListAdapter(activity, content,this);
-            activity.recyclerView.setAdapter(adapter);
-        } else {
-            adapter.addData(content);
-        }
-
+        adapter.addData(content);
         adapter.notifyDataSetChanged();
     }
 

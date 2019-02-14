@@ -49,9 +49,7 @@ public class MainActivity extends AestheticActivity
         //   JtsThemeUnitls.getSingleton().apply(this);
         //}
 
-        this.controller = new MainActivityController();
-        this.controller.setActivity(this);
-        this.controller.verifyStoragePermissions();
+
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -77,6 +75,10 @@ public class MainActivity extends AestheticActivity
                 android.R.color.holo_orange_light, android.R.color.holo_red_light);
         refreshLayout.setOnRefreshListener(this);
 
+
+        this.controller = new MainActivityController();
+        this.controller.setActivity(this);
+        this.controller.verifyStoragePermissions();
         this.controller.loadDefaultScene();
         this.controller.checkForUpdate();
 

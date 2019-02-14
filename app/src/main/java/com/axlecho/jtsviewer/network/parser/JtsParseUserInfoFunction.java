@@ -1,4 +1,4 @@
-package com.axlecho.jtsviewer.action.parser;
+package com.axlecho.jtsviewer.network.parser;
 
 import android.content.Context;
 

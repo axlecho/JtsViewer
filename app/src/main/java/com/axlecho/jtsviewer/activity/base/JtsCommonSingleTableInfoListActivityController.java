@@ -2,8 +2,6 @@ package com.axlecho.jtsviewer.activity.base;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.ActivityOptionsCompat;
 import android.view.View;
 
 import com.axlecho.jtsviewer.R;
@@ -24,6 +22,8 @@ import com.axlecho.jtsviewer.untils.JtsViewerLog;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
@@ -45,6 +45,8 @@ public class JtsCommonSingleTableInfoListActivityController implements JtsBaseCo
 
     public void setActivity(JtsCommonSingleTabInfoListActivity activity) {
         this.activity = activity;
+        this.adapter = new JtsTabListAdapter(activity, this);
+        this.activity.recyclerView.setAdapter(adapter);
     }
 
     public BaseScene getScene() {
@@ -52,7 +54,6 @@ public class JtsCommonSingleTableInfoListActivityController implements JtsBaseCo
     }
 
     public void loadScene() {
-        activity.setTitle("XXXXXXXXXXXXXXX");
         String sceneType = activity.getIntent().getStringExtra("scene-type");
         if (sceneType == null) {
             activity.showError("scene is null");
@@ -64,8 +65,8 @@ public class JtsCommonSingleTableInfoListActivityController implements JtsBaseCo
             this.scene = new JtsSearchScene(activity, keyword, this);
             this.scene.refresh();
         } else if (sceneType.equals("collection")) {
-            long collectionId = activity.getIntent().getLongExtra("collection-id",-1);
-            JtsViewerLog.d(TAG,"collection id is "+ collectionId);
+            long collectionId = activity.getIntent().getLongExtra("collection-id", -1);
+            JtsViewerLog.d(TAG, "collection id is " + collectionId);
             this.scene = new JtsCollectionScene(activity, collectionId, this);
             this.scene.refresh();
         } else {
@@ -118,13 +119,7 @@ public class JtsCommonSingleTableInfoListActivityController implements JtsBaseCo
 
     public void processDataNotify(final List<JtsTabInfoModel> content) {
         JtsViewerLog.i(JtsViewerLog.DEFAULT_MODULE, TAG, content.toString());
-        if (adapter == null) {
-            adapter = new JtsTabListAdapter(activity, content, this);
-            activity.recyclerView.setAdapter(adapter);
-        } else {
-            adapter.addData(content);
-        }
-
+        adapter.addData(content);
         adapter.notifyDataSetChanged();
     }
 

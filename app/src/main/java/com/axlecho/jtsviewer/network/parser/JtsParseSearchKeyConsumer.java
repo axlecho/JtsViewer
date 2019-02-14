@@ -1,19 +1,16 @@
-package com.axlecho.jtsviewer.action.parser;
+package com.axlecho.jtsviewer.network.parser;
 
 import android.content.Context;
 
 import com.axlecho.jtsviewer.network.JtsPageParser;
 import com.axlecho.jtsviewer.network.JtsSearchHelper;
-import com.axlecho.jtsviewer.untils.JtsViewerLog;
 
 import java.nio.charset.Charset;
 
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import okhttp3.ResponseBody;
 import okio.Buffer;
 import okio.BufferedSource;
-import retrofit2.Response;
 
 public class JtsParseSearchKeyConsumer implements Consumer<ResponseBody> {
     private static final String TAG = JtsParseSearchKeyConsumer.class.getSimpleName();
