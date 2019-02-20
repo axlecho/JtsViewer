@@ -54,7 +54,7 @@ dependencies {
 
     implementation 'com.github.bumptech.glide:glide:3.7.0'
     implementation 'com.github.seven332:refreshlayout:0.1.0'
-    implementation 'com.github.axlecho:ImageTab:0.0.12'
+    implementation 'com.github.axlecho:image-tab:0.1.0'
     implementation 'com.github.axlecho:SakuraPlayer:1.0.1'
     implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
     implementation 'com.wenwenwen888:searchbox:1.0.1'
@@ -66,8 +66,8 @@ dependencies {
     api 'com.github.axlecho.tuxguitar:tuxguitar-gm-utils:0.1.3'
     api 'com.github.axlecho.tuxguitar:tuxguitar-editor-utils:0.1.3'
     api 'com.github.axlecho.tuxguitar:tuxguitar-gpx:0.1.3'
-    api 'com.github.axlecho.tuxguitar:tuxguitar-widget:0.1.3'
     api 'com.github.axlecho.tuxguitar:tuxguitar-android-gervill:0.1.3'
+    implementation 'com.github.axlecho.tuxguitar:tuxguitar-widget:0.1.3'
     implementation 'com.github.axlecho:Metronome-Android:10.5'
     implementation 'com.github.axlecho:guitar-tuner:1.4'
 
