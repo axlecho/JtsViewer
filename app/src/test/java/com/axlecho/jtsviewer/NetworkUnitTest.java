@@ -16,6 +16,7 @@ import com.axlecho.jtsviewer.network.JtsServer;
 import com.axlecho.jtsviewer.untils.JtsConf;
 
 import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -119,10 +120,19 @@ public class NetworkUnitTest {
     }
 
     @Test
-    public void testDetail() {
+    public void testGtpDetail() {
         JtsTabDetailModule result = server.getDetail(1307896).blockingFirst();
         System.out.println(result);
-        MatcherAssert.assertThat(result.threadList.size(), is(10));
+        MatcherAssert.assertThat(result.threadList.size(), Matchers.is(10));
+        MatcherAssert.assertThat(result.gtpUrl, Matchers.not(null));
+    }
+
+    @Test
+    public void testImageDetaile() {
+        JtsTabDetailModule result = server.getDetail(1335946).blockingFirst();
+        System.out.println(result);
+        MatcherAssert.assertThat(result.imgUrls, Matchers.not(null));
+        MatcherAssert.assertThat(result.imgUrls.size(), Matchers.greaterThan(0));
     }
 
     @Test
