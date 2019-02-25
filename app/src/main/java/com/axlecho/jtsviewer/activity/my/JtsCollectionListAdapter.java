@@ -93,7 +93,7 @@ public class JtsCollectionListAdapter extends RecyclerView.Adapter<RecyclerView.
             this.time.setText(model.time);
             this.reply.setText(model.comments);
             this.watch.setText(model.subscribe);
-            this.author.setText(model.uper);
+            this.uper.setText(model.uper);
             TextDrawable defaultDrawable = TextDrawable.builder()
                     .beginConfig().height(48).width(48).bold().endConfig()
                     .buildRect(model.title.substring(0, 1), context.getResources().getColor(R.color.colorPrimary));
