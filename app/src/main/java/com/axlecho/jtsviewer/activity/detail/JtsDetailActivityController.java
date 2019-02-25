@@ -13,6 +13,7 @@ import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.action.tab.JtsGtpTabAction;
 import com.axlecho.jtsviewer.action.tab.JtsImgTabAction;
+import com.axlecho.jtsviewer.action.tab.JtsTextTabAction;
 import com.axlecho.jtsviewer.module.JtsCollectionInfoModel;
 import com.axlecho.jtsviewer.module.JtsRelatedTabModule;
 import com.axlecho.jtsviewer.module.JtsRelatedVideoModule;
@@ -198,7 +199,9 @@ public class JtsDetailActivityController {
             action = new JtsGtpTabAction(activity, gid, detail.gtpUrl, info);
         } else if (detail.imgUrls != null && detail.imgUrls.size() != 0) {
             action = new JtsImgTabAction(activity, gid, detail.imgUrls);
-        } else {
+        } else if(detail.textTabData != null) {
+            action = new JtsTextTabAction(activity,detail.textTabData);
+        }else {
             action = new JtsBaseAction() {
                 @Override
                 public void processAction() {

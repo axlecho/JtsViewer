@@ -17,6 +17,7 @@ public class JtsTabDetailModule implements Serializable {
 
     public String gtpUrl;
     public List<String> imgUrls;
+    public String textTabData;
 
     public List<JtsRelatedVideoModule> relatedVideos;
     public List<JtsRelatedTabModule> relatedTabs;

@@ -9,6 +9,7 @@ import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.action.tab.JtsGtpTabAction;
 import com.axlecho.jtsviewer.action.tab.JtsImgTabAction;
+import com.axlecho.jtsviewer.action.tab.JtsTextTabAction;
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.network.JtsServer;
@@ -68,6 +69,8 @@ public class JtsDetailDialogActivity extends AestheticActivity {
 
         } else if (detail.imgUrls != null && detail.imgUrls.size() != 0) {
             action = new JtsImgTabAction(this, gid, detail.imgUrls);
+        } else if (detail.textTabData != null) {
+            action = new JtsTextTabAction(this, detail.textTabData);
         } else {
             action = new JtsBaseAction() {
                 @Override
@@ -77,6 +80,7 @@ public class JtsDetailDialogActivity extends AestheticActivity {
                 }
             };
         }
+
         action.execute();
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         finish();

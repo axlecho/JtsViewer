@@ -9,9 +9,9 @@ import com.axlecho.jtsviewer.module.JtsTabDetailModule;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
 import com.axlecho.jtsviewer.module.JtsThreadModule;
 import com.axlecho.jtsviewer.module.JtsUserModule;
+import com.axlecho.jtsviewer.untils.JtsStringUtils;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
-import com.axlecho.sakura.utils.SakuraTextUtils;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -134,6 +134,7 @@ public class JtsPageParser {
         if (detail.imgUrls == null || detail.imgUrls.size() == 0) {
             detail.imgUrls = JtsDetailPageParserHelper.parserPdfUrl(html);
         }
+        detail.textTabData = JtsDetailPageParserHelper.parserTextTabData(html);
         detail.lyric = JtsDetailPageParserHelper.parserLyric(html);
         detail.info = JtsDetailPageParserHelper.parserInfo(html);
         detail.relatedTabs = JtsDetailPageParserHelper.parserRelatedTab(html);
@@ -160,7 +161,7 @@ public class JtsPageParser {
         if (html == null) return -1;
         // Document doc = Jsoup.parse(html);
         // String href = doc.select("a[href*=search.php?mod=tab&searchid]").first().attr("href");
-        String searchId = SakuraTextUtils.search(html, "searchid=(\\d+)");
+        String searchId = JtsStringUtils.search(html, "searchid=(\\d+)");
         return searchId == null ? -1 : Integer.parseInt(searchId);
     }
 

@@ -136,7 +136,7 @@ public class JtsDetailActivity extends AestheticActivity {
     }
 
     public void showMessage(int resId) {
-        View rootView = findViewById(R.id.comment_layout);
+        View rootView = findViewById(R.id.detail_scroll_view);
         Snackbar.make(rootView, resId, Snackbar.LENGTH_LONG).show();
     }
 
