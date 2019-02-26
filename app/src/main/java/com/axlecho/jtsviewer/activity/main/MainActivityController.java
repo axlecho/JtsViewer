@@ -35,10 +35,14 @@ import com.bumptech.glide.Glide;
 import com.wyt.searchbox.SearchFragment;
 import com.wyt.searchbox.custom.IOnSearchClickListener;
 
+import com.afollestad.dragselectrecyclerview.DragAndDropCallBack;
+
+
 import java.util.List;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.ActivityOptionsCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import io.reactivex.functions.Consumer;
 
 public class MainActivityController implements JtsBaseController {
@@ -64,6 +68,8 @@ public class MainActivityController implements JtsBaseController {
         this.activity = activity;
         adapter = new JtsTabListAdapter(activity, this);
         activity.recyclerView.setAdapter(adapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new DragAndDropCallBack(adapter,adapter.getData()));
+        itemTouchHelper.attachToRecyclerView(activity.recyclerView);
     }
 
     public MainActivity getActivity() {

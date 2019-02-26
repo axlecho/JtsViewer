@@ -46,6 +46,10 @@ public class JtsTabListAdapter extends RecyclerView.Adapter<JtsTabListAdapter.Ta
         this.content.clear();
     }
 
+    public List<JtsTabInfoModel> getData() {
+        return content;
+    }
+
     @Override
     public TabViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_tab, parent, false);
