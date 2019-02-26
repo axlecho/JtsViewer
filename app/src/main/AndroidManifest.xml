@@ -47,21 +47,24 @@
             android:name=".activity.detail.JtsCommentsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_comment" />
-        <activity
-            android:name=".activity.my.JtsSettingsActivity"
-            android:label="@string/title_activity_jts_settings"
-            android:theme="@style/JtsAppTheme.NoActionBar" />
+
         <activity
             android:name=".activity.my.JtsCollectionActivity"
             android:label="@string/title_activity_collection" />
+
+        <activity
+            android:name=".bookmark.JtsBookMarkConfigureActivity"
+            android:label="@string/title_bookmark_settings" />
+
+        <activity
+            android:name=".activity.my.JtsSettingsActivity"
+            android:label="@string/title_activity_jts_settings"
+            android:theme="@style/JtsAppTheme" />
+
         <activity
             android:name=".activity.detail.JtsDetailDialogActivity"
             android:theme="@style/DetailDialogStyle" />
-        <activity android:name=".bookmark.JtsBookMarkConfigureActivity">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
-            </intent-filter>
-        </activity>
+
 
         <receiver android:name=".bookmark.JtsBookMarkWidget">
             <intent-filter>

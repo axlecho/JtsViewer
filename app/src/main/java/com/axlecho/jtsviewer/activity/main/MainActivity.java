@@ -150,6 +150,8 @@ public class MainActivity extends AestheticActivity
             this.controller.toSettings();
         } else if (id == R.id.nav_collection) {
             this.controller.toCollection();
+        } else if (id == R.id.nav_bookmark_settings) {
+            this.controller.toBookMarkSettings();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

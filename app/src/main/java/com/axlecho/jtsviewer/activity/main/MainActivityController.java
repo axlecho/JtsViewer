@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.afollestad.dragselectrecyclerview.DragAndDropCallBack;
+import com.afollestad.materialcab.MaterialCab;
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.action.user.JtsShowLoginAction;
@@ -19,6 +21,7 @@ import com.axlecho.jtsviewer.activity.login.JtsLoginActivity;
 import com.axlecho.jtsviewer.activity.my.JtsCollectionActivity;
 import com.axlecho.jtsviewer.activity.my.JtsHistoryActivity;
 import com.axlecho.jtsviewer.activity.my.JtsSettingsActivity;
+import com.axlecho.jtsviewer.bookmark.JtsBookMarkConfigureActivity;
 import com.axlecho.jtsviewer.cache.CacheManager;
 import com.axlecho.jtsviewer.module.CacheModule;
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
@@ -35,15 +38,14 @@ import com.bumptech.glide.Glide;
 import com.wyt.searchbox.SearchFragment;
 import com.wyt.searchbox.custom.IOnSearchClickListener;
 
-import com.afollestad.dragselectrecyclerview.DragAndDropCallBack;
-
-
 import java.util.List;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import io.reactivex.functions.Consumer;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 
 public class MainActivityController implements JtsBaseController {
     private static final String TAG = MainActivityController.class.getSimpleName();
@@ -68,8 +70,6 @@ public class MainActivityController implements JtsBaseController {
         this.activity = activity;
         adapter = new JtsTabListAdapter(activity, this);
         activity.recyclerView.setAdapter(adapter);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new DragAndDropCallBack(adapter,adapter.getData()));
-        itemTouchHelper.attachToRecyclerView(activity.recyclerView);
     }
 
     public MainActivity getActivity() {
@@ -210,6 +210,12 @@ public class MainActivityController implements JtsBaseController {
     public void toSettings() {
         Intent intent = new Intent();
         intent.setClass(activity, JtsSettingsActivity.class);
+        activity.startActivity(intent);
+    }
+
+    public void toBookMarkSettings() {
+        Intent intent = new Intent();
+        intent.setClass(activity, JtsBookMarkConfigureActivity.class);
         activity.startActivity(intent);
     }
 

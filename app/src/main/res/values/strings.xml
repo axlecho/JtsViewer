@@ -11,6 +11,7 @@
     <string name="title_login">Login</string>
     <string name="title_communicate">Communicate</string>
     <string name="title_common">Common</string>
+    <string name="title_bookmark_settings">Bookmark Settings</string>
     <string name="action_share">Share</string>
     <string name="unlogin_tip">Please login</string>
     <string name="unlogin_tip_long">Please login if download gtp tab</string>
