@@ -10,6 +10,7 @@ import com.axlecho.jtsviewer.activity.base.JtsCommonSingleTabInfoListActivity;
 import com.axlecho.jtsviewer.module.JtsCollectionInfoModel;
 import com.axlecho.jtsviewer.network.JtsServer;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
+import com.axlecho.jtsviewer.activity.base.JtsBaseRecycleViewAdapter;
 import com.axlecho.jtsviewer.widget.RecycleViewDivider;
 
 import java.util.ArrayList;
@@ -21,8 +22,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
-public class JtsCollectionActivity extends AestheticActivity implements JtsCollectionListAdapter.OnItemClickListener, JtsCollectionListAdapter.OnItemLongClickListener {
-    // implements CacheViewAdapter.OnItemClickListener, CacheViewAdapter.OnItemLongClickListener {
+public class JtsCollectionActivity extends AestheticActivity implements
+        JtsBaseRecycleViewAdapter.OnItemClickListener<JtsCollectionInfoModel>,
+        JtsBaseRecycleViewAdapter.OnItemLongClickListener<JtsCollectionInfoModel> {
     private static final String TAG = JtsCollectionActivity.class.getSimpleName();
 
     private RecyclerView recyclerView;
@@ -47,7 +49,7 @@ public class JtsCollectionActivity extends AestheticActivity implements JtsColle
         });
 
         recyclerView = (RecyclerView) findViewById(R.id.cache_recycler_view);
-        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL));
 
@@ -75,7 +77,7 @@ public class JtsCollectionActivity extends AestheticActivity implements JtsColle
     }
 
     @Override
-    public void onItemClick(JtsCollectionInfoModel module) {
+    public void onItemClick(JtsCollectionInfoModel module,View shareView) {
         long collectionId = JtsTextUnitls.getCollectionIdFromUrl(module.url);
         Intent intent = new Intent();
         intent.putExtra("scene-type", "collection");

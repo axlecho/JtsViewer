@@ -3,15 +3,17 @@ package com.axlecho.jtsviewer.bookmark;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
+import com.afollestad.aesthetic.AestheticActivity;
 import com.afollestad.materialcab.MaterialCab;
 import com.axlecho.jtsviewer.R;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 
-public class JtsBookMarkConfigureActivity extends AppCompatActivity {
+public class JtsBookMarkConfigureActivity extends AestheticActivity {
     private static final String TAG = "book_mark";
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
@@ -19,6 +21,16 @@ public class JtsBookMarkConfigureActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_mark_configure);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
 //        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new DragAndDropCallBack(adapter, adapter.getData()));
 //        itemTouchHelper.attachToRecyclerView(activity.recyclerView);

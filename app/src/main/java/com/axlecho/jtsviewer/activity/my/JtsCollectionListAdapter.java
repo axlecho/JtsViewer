@@ -1,7 +1,6 @@
 package com.axlecho.jtsviewer.activity.my;
 
 import android.content.Context;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,55 +11,40 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.module.JtsCollectionInfoModel;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
+import com.axlecho.jtsviewer.activity.base.JtsBaseRecycleViewAdapter;
 import com.bumptech.glide.Glide;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class JtsCollectionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+public class JtsCollectionListAdapter extends JtsBaseRecycleViewAdapter<JtsCollectionInfoModel> {
     private static final String TAG = JtsCollectionListAdapter.class.getSimpleName();
-    private List<JtsCollectionInfoModel> modules;
-    private Context context;
-    private List<JtsCollectionListAdapter.OnItemClickListener> clickListenerList;
-    private List<JtsCollectionListAdapter.OnItemLongClickListener> longClickListenerList;
 
     public JtsCollectionListAdapter(Context context, List<JtsCollectionInfoModel> modules) {
-        this.context = context;
-        this.modules = modules;
-        clickListenerList = new ArrayList<>();
-        longClickListenerList = new ArrayList<>();
+        super(context, modules);
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    @NonNull
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_tab, parent, false);
         return new JtsCollectionListAdapter.JtsCollectionListViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (!(holder instanceof JtsCollectionListAdapter.JtsCollectionListViewHolder)) {
             JtsViewerLog.w(TAG, "holder is not a valid holder");
             return;
         }
 
         final JtsCollectionListAdapter.JtsCollectionListViewHolder viewHolder = (JtsCollectionListAdapter.JtsCollectionListViewHolder) holder;
-        final JtsCollectionInfoModel module = modules.get(position);
+        final JtsCollectionInfoModel module = data.get(position);
         viewHolder.setData(module);
-
-        viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (JtsCollectionListAdapter.OnItemClickListener listener : clickListenerList) {
-                    listener.onItemClick(module);
-                }
-            }
-        });
-    }
-
-    @Override
-    public int getItemCount() {
-        return modules.size();
+        viewHolder.cardView.setOnClickListener(new BaseItemClickListener(module, viewHolder.avatar));
+        viewHolder.cardView.setOnLongClickListener(new BaseItemLongClickListener(module));
     }
 
     private class JtsCollectionListViewHolder extends RecyclerView.ViewHolder {
@@ -76,17 +60,16 @@ public class JtsCollectionListAdapter extends RecyclerView.Adapter<RecyclerView.
 
         public JtsCollectionListViewHolder(View view) {
             super(view);
-            title = (TextView) view.findViewById(R.id.tab_item_title);
-            author = (TextView) view.findViewById(R.id.tab_item_author);
-            time = (TextView) view.findViewById(R.id.tab_item_time);
-            reply = (TextView) view.findViewById(R.id.tab_item_reply);
-            watch = (TextView) view.findViewById(R.id.tab_item_watch);
-            type = (ImageView) view.findViewById(R.id.tab_item_type);
-            uper = (TextView) view.findViewById(R.id.tab_item_uper);
-            avatar = (ImageView) view.findViewById(R.id.tab_item_avatar);
+            title = view.findViewById(R.id.tab_item_title);
+            author = view.findViewById(R.id.tab_item_author);
+            time = view.findViewById(R.id.tab_item_time);
+            reply = view.findViewById(R.id.tab_item_reply);
+            watch = view.findViewById(R.id.tab_item_watch);
+            type = view.findViewById(R.id.tab_item_type);
+            uper = view.findViewById(R.id.tab_item_uper);
+            avatar = view.findViewById(R.id.tab_item_avatar);
             cardView = view.findViewById(R.id.tab_item_view);
         }
-
 
         public void setData(JtsCollectionInfoModel model) {
             this.title.setText(model.title);
@@ -97,24 +80,7 @@ public class JtsCollectionListAdapter extends RecyclerView.Adapter<RecyclerView.
             TextDrawable defaultDrawable = TextDrawable.builder()
                     .beginConfig().height(48).width(48).bold().endConfig()
                     .buildRect(model.title.substring(0, 1), context.getResources().getColor(R.color.colorPrimary));
-            Glide.with(context).load(model.avatar).error(defaultDrawable).into(avatar);        }
-    }
-
-    public void addOnItemLongClickListener(JtsCollectionListAdapter.OnItemLongClickListener listener) {
-        this.longClickListenerList.add(listener);
-    }
-
-    public void addOnItemClickListener(JtsCollectionListAdapter.OnItemClickListener listener) {
-        this.clickListenerList.add(listener);
-    }
-
-    public interface OnItemClickListener {
-        void onItemClick(JtsCollectionInfoModel module);
-
-        void onItemAvatarClick(JtsCollectionInfoModel module, View shareView);
-    }
-
-    public interface OnItemLongClickListener {
-        void onItemLongClick(JtsCollectionInfoModel module);
+            Glide.with(context).load(model.avatar).error(defaultDrawable).into(avatar);
+        }
     }
 }
