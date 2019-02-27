@@ -1,21 +1,31 @@
 package com.axlecho.jtsviewer.bookmark;
 
-import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 import com.afollestad.aesthetic.AestheticActivity;
-import com.afollestad.materialcab.MaterialCab;
 import com.axlecho.jtsviewer.R;
+import com.axlecho.jtsviewer.activity.base.JtsBaseRecycleViewAdapter;
+import com.axlecho.jtsviewer.activity.detail.JtsDetailActivity;
+import com.axlecho.jtsviewer.activity.main.JtsTabListAdapter;
+import com.axlecho.jtsviewer.module.JtsTabInfoModel;
+import com.axlecho.jtsviewer.widget.RecycleViewDivider;
 
 import androidx.appcompat.widget.Toolbar;
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-public class JtsBookMarkConfigureActivity extends AestheticActivity {
+public class JtsBookMarkConfigureActivity extends AestheticActivity implements
+        JtsBaseRecycleViewAdapter.OnItemClickListener<JtsTabInfoModel>,
+        JtsBaseRecycleViewAdapter.OnItemLongClickListener<JtsTabInfoModel>,
+        JtsBaseRecycleViewAdapter.OnDataEditListener<JtsTabInfoModel> {
     private static final String TAG = "book_mark";
-    private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+    private JtsTabListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,27 +42,56 @@ public class JtsBookMarkConfigureActivity extends AestheticActivity {
             }
         });
 
-//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new DragAndDropCallBack(adapter, adapter.getData()));
-//        itemTouchHelper.attachToRecyclerView(activity.recyclerView);
 
-        MaterialCab.Companion.attach(this, R.id.cab_stub, new Function1<MaterialCab, Unit>() {
-            @Override
-            public Unit invoke(MaterialCab materialCab) {
-                materialCab.setTitle("选择模式");
-                return null;
-            }
-        });
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.addItemDecoration(new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL));
 
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        if (extras != null) {
-            appWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-        }
-
-//        if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
-//            finish();
-//        }
-
-        // JtsBookMarkWidget.updateAppWidget(context, appWidgetManager, mAppWidgetId, titlePrefix);
+        adapter = new JtsTabListAdapter(this);
+        adapter.addOnItemClickListener(this);
+        adapter.addOnItemLongClickListener(this);
+        adapter.addOnDataEditListener(this);
+        recyclerView.setAdapter(adapter);
+        adapter.addData(JtsBookMarkHelper.getSingleton(this).load());
+        adapter.enableDragAndDrop(recyclerView);
     }
+
+    @Override
+    public void onItemClick(JtsTabInfoModel module, View shareView) {
+        startDetailActivity(module, shareView);
+    }
+
+    @Override
+    public void onItemAvatarClick(JtsTabInfoModel module, View shareView) {
+
+    }
+
+    @Override
+    public void onItemLongClick(JtsTabInfoModel module) {
+
+    }
+
+    @Override
+    public void onItemSwiped(JtsTabInfoModel module) {
+        JtsBookMarkHelper.getSingleton(this).save(adapter.getData());
+        JtsBookMarkHelper.getSingleton(this).notifyDataChange();
+    }
+
+    @Override
+    public void onItemMoved(JtsTabInfoModel module, int from, int to) {
+        JtsBookMarkHelper.getSingleton(this).save(adapter.getData());
+        JtsBookMarkHelper.getSingleton(this).notifyDataChange();
+    }
+
+    private void startDetailActivity(JtsTabInfoModel model, View shareView) {
+        String transition_name = this.getResources().getString(R.string.detail_transition);
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, shareView, transition_name);
+
+        Intent intent = new Intent();
+        intent.putExtra("tabinfo", model);
+        intent.setClass(this, JtsDetailActivity.class);
+        ActivityCompat.startActivity(this, intent, options.toBundle());
+    }
+
 }

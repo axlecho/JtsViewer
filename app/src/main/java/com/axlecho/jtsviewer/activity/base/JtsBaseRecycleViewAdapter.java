@@ -6,6 +6,7 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 public abstract class JtsBaseRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -18,6 +19,7 @@ public abstract class JtsBaseRecycleViewAdapter<T> extends RecyclerView.Adapter<
 
     protected List<OnItemClickListener<T>> clickListenerList;
     protected List<OnItemLongClickListener<T>> longClickListenerList;
+    protected List<OnDataEditListener<T>> dataEditListenerList;
 
     protected JtsBaseRecycleViewAdapter(Context context, List<T> data) {
         if (data == null) {
@@ -29,6 +31,7 @@ public abstract class JtsBaseRecycleViewAdapter<T> extends RecyclerView.Adapter<
         this.context = context;
         this.clickListenerList = new ArrayList<>();
         this.longClickListenerList = new ArrayList<>();
+        this.dataEditListenerList = new ArrayList<>();
     }
 
     public void addData(List<T> content) {
@@ -57,6 +60,9 @@ public abstract class JtsBaseRecycleViewAdapter<T> extends RecyclerView.Adapter<
         this.clickListenerList.add(listener);
     }
 
+    public void addOnDataEditListener(OnDataEditListener<T> listener) {
+        this.dataEditListenerList.add(listener);
+    }
 
     public interface OnItemClickListener<T> {
         void onItemClick(T module, View shareView);
@@ -72,9 +78,10 @@ public abstract class JtsBaseRecycleViewAdapter<T> extends RecyclerView.Adapter<
         void onItemSelected(T module);
     }
 
+    public interface OnDataEditListener<T> {
+        void onItemSwiped(T module);
 
-    public void enableSelectMode() {
-        mode = Mode.SELECT;
+        void onItemMoved(T module, int from, int to);
     }
 
     protected class BaseItemClickListener implements View.OnClickListener {
@@ -111,5 +118,31 @@ public abstract class JtsBaseRecycleViewAdapter<T> extends RecyclerView.Adapter<
             }
             return false;
         }
+    }
+
+    protected class BaseDataEditListener implements OnDataEditListener {
+
+        @Override
+        public void onItemSwiped(Object module) {
+            for (OnDataEditListener listener : dataEditListenerList) {
+                listener.onItemSwiped(module);
+            }
+        }
+
+        @Override
+        public void onItemMoved(Object module, int from, int to) {
+            for (OnDataEditListener listener : dataEditListenerList) {
+                listener.onItemMoved(module, from, to);
+            }
+        }
+    }
+
+    public void enableSelectMode() {
+        mode = Mode.SELECT;
+    }
+
+    public void enableDragAndDrop(RecyclerView target) {
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new JtsDragAndDrapCallBack(this, data, new BaseDataEditListener()));
+        itemTouchHelper.attachToRecyclerView(target);
     }
 }

@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.activity.main.JtsTabListAdapter;
+import com.axlecho.jtsviewer.bookmark.JtsBookMarkHelper;
 import com.axlecho.jtsviewer.bookmark.JtsBookMarkWidget;
 import com.axlecho.jtsviewer.bookmark.JtsBookMarkWidgetService;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
@@ -43,10 +44,7 @@ public abstract class JtsBaseTableInfoListActivityController implements JtsBaseC
 
     @Override
     public void onItemLongClick(JtsTabInfoModel module) {
-        AppWidgetManager mgr = AppWidgetManager.getInstance(activity);
-        ComponentName cn = new ComponentName(activity, JtsBookMarkWidget.class);
-
-        JtsBookMarkWidgetService.addItem(module);
-        mgr.notifyAppWidgetViewDataChanged(mgr.getAppWidgetIds(cn), R.id.bookmark_listview);
+        JtsBookMarkHelper.getSingleton(activity).add(module);
+        JtsBookMarkHelper.getSingleton(activity).notifyDataChange();
     }
 }

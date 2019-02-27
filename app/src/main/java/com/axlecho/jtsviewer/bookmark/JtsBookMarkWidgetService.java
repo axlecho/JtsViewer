@@ -6,17 +6,14 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.axlecho.jtsviewer.R;
-import com.axlecho.jtsviewer.module.JtsCollectionInfoModel;
 import com.axlecho.jtsviewer.module.JtsTabInfoModel;
-import com.axlecho.jtsviewer.network.JtsServer;
-import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class JtsBookMarkWidgetService extends RemoteViewsService {
 
-    private static WidgetFactory factory;
+    private WidgetFactory factory;
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
@@ -24,11 +21,6 @@ public class JtsBookMarkWidgetService extends RemoteViewsService {
         return factory;
     }
 
-    public static void addItem(JtsTabInfoModel item) {
-        if (factory != null) {
-            factory.mWidgetItems.add(item);
-        }
-    }
 
     public class WidgetFactory implements RemoteViewsService.RemoteViewsFactory {
         private Context mContext;
@@ -44,17 +36,7 @@ public class JtsBookMarkWidgetService extends RemoteViewsService {
 
         @Override
         public void onDataSetChanged() {
-//            try {
-//                List<JtsCollectionInfoModel> collectionInfoModelList = JtsServer.getSingleton(mContext).getCollection().blockingFirst();
-//                if (collectionInfoModelList != null && collectionInfoModelList.size() != 0) {
-//                    for (JtsCollectionInfoModel collection : collectionInfoModelList) {
-//                        long id = JtsTextUnitls.getCollectionIdFromUrl(collection.url);
-//                        mWidgetItems.addAll(JtsServer.getSingleton(mContext).getCollectionDetail(id, 1).blockingFirst());
-//                    }
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
+            mWidgetItems = JtsBookMarkHelper.getSingleton(mContext).load();
         }
 
         @Override

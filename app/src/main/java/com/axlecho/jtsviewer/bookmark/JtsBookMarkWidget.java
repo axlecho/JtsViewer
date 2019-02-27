@@ -62,9 +62,9 @@ public class JtsBookMarkWidget extends AppWidgetProvider {
             RemoteViews bookmark = new RemoteViews(context.getPackageName(), R.layout.widget_bookmark);
 
             // set button action
-            Intent clickIntent = new Intent(UPDATE_BOOKMARK_ACTION);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, clickIntent, 0);
-            bookmark.setOnClickPendingIntent(R.id.btn_setting, pendingIntent);
+            Intent settingsIntent = new Intent(context, JtsBookMarkConfigureActivity.class);
+            PendingIntent settingsPendingIntent = PendingIntent.getActivity(context, 0, settingsIntent, 0);
+            bookmark.setOnClickPendingIntent(R.id.btn_setting, settingsPendingIntent);
 
             Intent metronomeIntent = new Intent(context, MetronomeActivity.class);
             PendingIntent metronomePendingIntent = PendingIntent.getActivity(context, 0, metronomeIntent, 0);

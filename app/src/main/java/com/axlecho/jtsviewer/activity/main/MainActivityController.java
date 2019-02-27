@@ -1,8 +1,6 @@
 package com.axlecho.jtsviewer.activity.main;
 
 import android.app.AlertDialog;
-import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,6 +13,7 @@ import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.action.user.JtsShowLoginAction;
 import com.axlecho.jtsviewer.activity.base.JtsBaseController;
+import com.axlecho.jtsviewer.activity.base.JtsBaseRecycleViewAdapter;
 import com.axlecho.jtsviewer.activity.base.JtsCommonSingleTabInfoListActivity;
 import com.axlecho.jtsviewer.activity.detail.JtsDetailActivity;
 import com.axlecho.jtsviewer.activity.login.JtsLoginActivity;
@@ -22,8 +21,7 @@ import com.axlecho.jtsviewer.activity.my.JtsCollectionActivity;
 import com.axlecho.jtsviewer.activity.my.JtsHistoryActivity;
 import com.axlecho.jtsviewer.activity.my.JtsSettingsActivity;
 import com.axlecho.jtsviewer.bookmark.JtsBookMarkConfigureActivity;
-import com.axlecho.jtsviewer.bookmark.JtsBookMarkWidget;
-import com.axlecho.jtsviewer.bookmark.JtsBookMarkWidgetService;
+import com.axlecho.jtsviewer.bookmark.JtsBookMarkHelper;
 import com.axlecho.jtsviewer.cache.CacheManager;
 import com.axlecho.jtsviewer.module.CacheModule;
 import com.axlecho.jtsviewer.module.JtsTabDetailModule;
@@ -36,7 +34,6 @@ import com.axlecho.jtsviewer.untils.JtsDeviceUnitls;
 import com.axlecho.jtsviewer.untils.JtsTextUnitls;
 import com.axlecho.jtsviewer.untils.JtsToolUnitls;
 import com.axlecho.jtsviewer.untils.JtsViewerLog;
-import com.axlecho.jtsviewer.activity.base.JtsBaseRecycleViewAdapter;
 import com.bumptech.glide.Glide;
 import com.wyt.searchbox.SearchFragment;
 import com.wyt.searchbox.custom.IOnSearchClickListener;
@@ -87,11 +84,8 @@ public class MainActivityController implements JtsBaseController {
         adapter.addOnItemLongClickListener(new JtsBaseRecycleViewAdapter.OnItemLongClickListener<JtsTabInfoModel>() {
             @Override
             public void onItemLongClick(JtsTabInfoModel module) {
-                AppWidgetManager mgr = AppWidgetManager.getInstance(activity);
-                ComponentName cn = new ComponentName(activity, JtsBookMarkWidget.class);
-
-                JtsBookMarkWidgetService.addItem(module);
-                mgr.notifyAppWidgetViewDataChanged(mgr.getAppWidgetIds(cn), R.id.bookmark_listview);
+                JtsBookMarkHelper.getSingleton(activity).add(module);
+                JtsBookMarkHelper.getSingleton(activity).notifyDataChange();
             }
         });
     }
