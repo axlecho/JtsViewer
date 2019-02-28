@@ -19,7 +19,7 @@
 
     <string name="reply">reply</string>
     <string name="watch">watch</string>
-
+    <string name="sending_tip">Sending</string>
     <string name="title_hot">Hot</string>
     <string name="title_new">New</string>
     <string name="title_acg">Acg</string>

@@ -1,6 +1,7 @@
 package com.axlecho.jtsviewer.activity.detail;
 
 import android.animation.Animator;
+import android.app.ProgressDialog;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Looper;
@@ -261,12 +262,26 @@ public class JtsCommentsActivity extends AestheticActivity implements RefreshLay
             return;
         }
 
+        final ProgressDialog loadingProgressDialog = new ProgressDialog(this);
+        loadingProgressDialog.setTitle(null);
+        loadingProgressDialog.setMessage(getResources().getString(R.string.sending_tip));
+
         Disposable disposable = JtsServer.getSingleton(this)
                 .postComment(detail.fid, JtsTextUnitls.getTabKeyFromUrl(info.url), content, detail.formhash)
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+                        loadingProgressDialog.show();
+                    }
+                })
                 .doOnTerminate(new Action() {
                     @Override
                     public void run() throws Exception {
                         JtsToolUnitls.hideSoftInput(JtsCommentsActivity.this, comment);
+                        if (null != commentLayout && commentLayout.getVisibility() == View.VISIBLE) {
+                            hideEditPanelWithAnimation();
+                        }
+                        loadingProgressDialog.dismiss();
                     }
                 })
                 .subscribe(new Consumer<String>() {
@@ -376,8 +391,6 @@ public class JtsCommentsActivity extends AestheticActivity implements RefreshLay
 
     @Override
     public void onBackPressed() {
-
-
         if (this.processBackPressed()) {
             super.onBackPressed();
         }
