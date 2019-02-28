@@ -116,7 +116,7 @@ public abstract class JtsBaseRecycleViewAdapter<T> extends RecyclerView.Adapter<
             for (OnItemLongClickListener<T> listener : longClickListenerList) {
                 listener.onItemLongClick(data);
             }
-            return false;
+            return true;
         }
     }
 
