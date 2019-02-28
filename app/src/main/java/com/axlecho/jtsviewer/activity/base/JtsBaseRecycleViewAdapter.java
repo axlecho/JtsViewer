@@ -79,7 +79,7 @@ public abstract class JtsBaseRecycleViewAdapter<T> extends RecyclerView.Adapter<
     }
 
     public interface OnDataEditListener<T> {
-        void onItemSwiped(T module);
+        void onItemSwiped(T module,int pos);
 
         void onItemMoved(T module, int from, int to);
     }
@@ -123,9 +123,9 @@ public abstract class JtsBaseRecycleViewAdapter<T> extends RecyclerView.Adapter<
     protected class BaseDataEditListener implements OnDataEditListener {
 
         @Override
-        public void onItemSwiped(Object module) {
+        public void onItemSwiped(Object module,int pos) {
             for (OnDataEditListener listener : dataEditListenerList) {
-                listener.onItemSwiped(module);
+                listener.onItemSwiped(module,pos);
             }
         }
 

@@ -73,7 +73,7 @@ public class JtsBookMarkConfigureActivity extends AestheticActivity implements
     }
 
     @Override
-    public void onItemSwiped(JtsTabInfoModel module) {
+    public void onItemSwiped(JtsTabInfoModel module,int pos) {
         JtsBookMarkHelper.getSingleton(this).save(adapter.getData());
         JtsBookMarkHelper.getSingleton(this).notifyDataChange();
     }

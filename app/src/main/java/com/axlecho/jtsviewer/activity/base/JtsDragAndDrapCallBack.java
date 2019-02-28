@@ -46,10 +46,10 @@ public class JtsDragAndDrapCallBack extends ItemTouchHelper.SimpleCallback {
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
         int pos = viewHolder.getAdapterPosition();
-        data.remove(pos);
+        Object model = data.remove(pos);
         adapter.notifyItemRemoved(pos);
         if (listener != null) {
-            listener.onItemSwiped(data.get(pos));
+            listener.onItemSwiped(model,pos);
         }
     }
 
