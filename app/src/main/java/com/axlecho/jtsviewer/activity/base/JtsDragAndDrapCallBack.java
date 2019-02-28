@@ -28,7 +28,7 @@ public class JtsDragAndDrapCallBack extends ItemTouchHelper.SimpleCallback {
         int to = target.getAdapterPosition();
 
         if (from < to) {
-            for (int i = from; i <= to; i++) {
+            for (int i = from; i <= to - 1; i++) {
                 Collections.swap(data, i, i + 1);
             }
         } else {
