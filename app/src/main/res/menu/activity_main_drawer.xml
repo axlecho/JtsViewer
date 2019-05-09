@@ -25,24 +25,38 @@
             android:title="@string/title_learn" />
     </group>
 
+    <group android:id="@+id/nav_local">
+        <item
+            android:id="@+id/nav_history"
+            android:icon="@drawable/ic_menu_history"
+            android:title="@string/title_history" />
 
-    <item
-        android:id="@+id/nav_history"
-        android:icon="@drawable/ic_menu_history"
-        android:title="@string/title_history" />
+        <item
+            android:id="@+id/nav_collection"
+            android:icon="@drawable/ic_menu_collection"
+            android:title="@string/title_collection" />
 
-    <item
-        android:id="@+id/nav_collection"
-        android:icon="@drawable/ic_menu_collection"
-        android:title="@string/title_collection" />
+        <item
+            android:id="@+id/nav_setting"
+            android:icon="@drawable/ic_menu_settings"
+            android:title="@string/action_settings" />
 
-    <item
-        android:id="@+id/nav_setting"
-        android:icon="@drawable/ic_menu_settings"
-        android:title="@string/action_settings" />
+        <item
+            android:id="@+id/nav_bookmark_settings"
+            android:icon="@drawable/ic_menu_bookmark"
+            android:title="@string/title_bookmark_settings" />
+    </group>
 
-    <item
-        android:id="@+id/nav_bookmark_settings"
-        android:icon="@drawable/ic_menu_bookmark"
-        android:title="@string/title_bookmark_settings" />
+    <group android:id="@+id/nav_tools">
+        <item
+            android:id="@+id/nav_tuner"
+            android:icon="@drawable/ic_menu_tuner"
+            android:title="@string/title_tuner" />
+
+        <item
+            android:id="@+id/nav_metronome"
+            android:icon="@drawable/ic_menu_metronome"
+            android:title="@string/title_metronome" />
+    </group>
+
 </menu>

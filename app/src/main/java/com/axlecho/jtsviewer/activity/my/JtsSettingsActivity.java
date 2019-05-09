@@ -11,7 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import androidx.appcompat.app.ActionBar;
 import android.view.MenuItem;
 
 import com.axlecho.jtsviewer.R;
@@ -20,8 +19,9 @@ import com.axlecho.jtsviewer.untils.JtsDeviceUnitls;
 
 import java.util.List;
 
-public class JtsSettingsActivity extends AppCompatPreferenceActivity {
+import androidx.appcompat.app.ActionBar;
 
+public class JtsSettingsActivity extends AppCompatPreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +33,15 @@ public class JtsSettingsActivity extends AppCompatPreferenceActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /**

@@ -11,6 +11,8 @@
     <string name="title_communicate">社交</string>
     <string name="title_common">没标题</string>
     <string name="title_bookmark_settings">书签</string>
+    <string name="title_tuner">调音器</string>
+    <string name="title_metronome">节拍器</string>
     <string name="title_login">登录</string>
 
     <string name="title_hot">热门</string>
@@ -79,9 +81,6 @@
     <string name="error_network">网络错误</string>
     <string name="error_network_unknow_host">未知主机</string>
     <string name="error_network_time_out">连接超时</string>
-
-    <string name="mentronome">节拍器</string>
-    <string name="tuner">调音器</string>
 
     <string name="no_comments">暂无评论</string>
     <string name="no_more_comments">已显示所有评论</string>

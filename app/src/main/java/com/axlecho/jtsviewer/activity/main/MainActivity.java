@@ -9,11 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.afollestad.aesthetic.Aesthetic;
 import com.afollestad.aesthetic.AestheticActivity;
 import com.axlecho.jtsviewer.JtsApplication;
 import com.axlecho.jtsviewer.R;
-import com.axlecho.jtsviewer.untils.JtsThemeUnitls;
 import com.axlecho.jtsviewer.widget.RecycleViewDivider;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -25,7 +23,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -152,6 +149,10 @@ public class MainActivity extends AestheticActivity
             this.controller.toCollection();
         } else if (id == R.id.nav_bookmark_settings) {
             this.controller.toBookMarkSettings();
+        } else if (id == R.id.nav_tuner) {
+            this.controller.toTuner();
+        } else if (id == R.id.nav_metronome) {
+            this.controller.toMetronome();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

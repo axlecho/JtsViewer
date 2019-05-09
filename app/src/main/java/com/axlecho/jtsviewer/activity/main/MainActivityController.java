@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.andryr.guitartuner.TunerActivity;
 import com.axlecho.jtsviewer.R;
 import com.axlecho.jtsviewer.action.JtsBaseAction;
 import com.axlecho.jtsviewer.action.user.JtsShowLoginAction;
@@ -43,6 +44,7 @@ import java.util.List;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.ActivityOptionsCompat;
 import io.reactivex.functions.Consumer;
+import james.metronome.activities.MetronomeActivity;
 
 public class MainActivityController implements JtsBaseController {
     private static final String TAG = MainActivityController.class.getSimpleName();
@@ -237,6 +239,17 @@ public class MainActivityController implements JtsBaseController {
         activity.startActivity(intent);
     }
 
+    public void toTuner() {
+        Intent intent = new Intent();
+        intent.setClass(activity, TunerActivity.class);
+        activity.startActivity(intent);
+    }
+
+    public void toMetronome() {
+        Intent intent = new Intent();
+        intent.setClass(activity, MetronomeActivity.class);
+        activity.startActivity(intent);
+    }
 
     public void detachFromActivity() {
         JtsNetworkManager.getInstance(activity).cancelAll();
