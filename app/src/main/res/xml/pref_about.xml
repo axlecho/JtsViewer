@@ -17,5 +17,9 @@
     <Preference
         android:key="@string/pref_version_key"
         android:summary="@string/pref_version_code"
-        android:title="@string/pref_version_code_tile" />
+        android:title="@string/pref_version_code_title" />
+
+    <Preference
+        android:key="@string/pref_privacy_policy_key"
+        android:title = "@string/pref_privacy_policy_title"/>
 </PreferenceScreen>

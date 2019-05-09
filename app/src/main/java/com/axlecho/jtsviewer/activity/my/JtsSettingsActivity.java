@@ -118,6 +118,21 @@ public class JtsSettingsActivity extends AppCompatPreferenceActivity {
                     }
                 });
             }
+
+            Preference privacyPolicyPreference = getPreferenceManager().findPreference(getString(R.string.pref_privacy_policy_key));
+            if(privacyPolicyPreference != null) {
+                privacyPolicyPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        Intent intent = new Intent();
+                        intent.setAction("android.intent.action.VIEW");
+                        Uri content_url = Uri.parse("http://axlecho.com/2019/05/09/JtsViewer/");
+                        intent.setData(content_url);
+                        startActivity(intent);
+                        return false;
+                    }
+                });
+            }
         }
 
         @Override
