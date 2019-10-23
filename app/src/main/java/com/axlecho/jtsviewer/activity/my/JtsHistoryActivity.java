@@ -49,7 +49,7 @@ public class JtsHistoryActivity extends AestheticActivity implements CacheViewAd
         });
 
         cacheView = (RecyclerView) findViewById(R.id.cache_recycler_view);
-        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         cacheView.setLayoutManager(layoutManager);
         cacheView.addItemDecoration(new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL));
 
