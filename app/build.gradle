@@ -78,8 +78,10 @@ dependencies {
     implementation 'tv.danmaku.ijk.media:ijkplayer-x86:0.8.4'
     implementation 'tv.danmaku.ijk.media:ijkplayer-x86_64:0.8.4'
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.robolectric:robolectric:4.1'
-    testImplementation 'org.bouncycastle:bcprov-jdk15on:1.57'
+    testImplementation ('org.robolectric:robolectric:4.1') {
+        exclude group: 'org.bouncycastle'
+    }
+    testImplementation 'org.bouncycastle:bcprov-jdk15on:1.52'
 
     apply plugin: 'com.google.gms.google-services'
 }
