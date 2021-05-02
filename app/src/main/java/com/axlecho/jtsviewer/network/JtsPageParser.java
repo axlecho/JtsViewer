@@ -80,8 +80,9 @@ public class JtsPageParser {
         if (e == null) return null;
         JtsTabInfoModel model = new JtsTabInfoModel();
 
-        model.avatar = e.select("img[src*=http://pic.xiami.net/]").attr("src");
-        model.title = e.select("a[href*=/tab/]").first().text();
+        model.avatar = e.select("img").attr("src");
+        model.title = e.select("a.title").first().text();
+
         model.url = e.select("a[href*=/tab/]").first().attr("href");
         model.type = e.select("span.tabtype").first().text();
         // model.uper = e.select("span[title*=发布者]").first().nextElementSibling().text();

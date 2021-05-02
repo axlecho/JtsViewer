@@ -93,7 +93,7 @@ public class NetworkUnitTest {
     @Test
     public void testDaily() {
         List<JtsTabInfoModel> result = server.getHotTab(1).blockingFirst();
-        MatcherAssert.assertThat(result.size(), is(50));
+        MatcherAssert.assertThat(result.size(), is(60));
     }
 
     @Test
